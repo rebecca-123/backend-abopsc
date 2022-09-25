@@ -1,0 +1,27 @@
+<!DOCTYPE HTML>
+<!DOCTYPE HTML>
+<html xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{layouts/base}" lang="en">
+
+<head>
+  <title>Car Range Calculator</title>
+</head>
+
+<body>
+<th:block layout:fragment="body" th:remove="tag">
+  <div class="px-4 py-5 my-5">
+    <h3 class="display-5 fw-bold">Car Range Calculator</h3>
+
+    <form action="/range" method="GET" id="rangeForm">
+      <div>
+        <label for="mpgField">Enter MPG(Miles per Gallon)</label>
+        <input name="mpg" id="mpgField">
+        <button>Calculate!</button>
+        <p th:text="'MPG is, ' + ${mpg} + '!'"></p>
+      </div>
+    </form>
+  </div>
+</th:block>
+</body>
+
+</html>
