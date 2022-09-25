@@ -9,18 +9,32 @@
 
 <body>
 <th:block layout:fragment="body" th:remove="tag">
-  <div class="px-4 py-5 my-5">
-    <h3 class="display-5 fw-bold">Car Range Calculator</h3>
+    <div class="text-center"> 
+        <div class="px-4 py-5 my-5">
+            <h3 class="display-5 fw-bold">Car Range Calculator</h3>
+        
+            <form action="/range" method="GET" id="rangeForm">
+                <div>
+                    <label for="mpgField">Enter MPG(Miles per Gallon)</label>
+                    <input name="mpg" id="mpgField">
+                </div>
+                <br>
+                <div>
+                    <label for="tankField">Enter Fuel Tank Max Capacity</label>
+                    <input name="tank" id="tankField">
+                </div>
+                <br>
+                <div>
+                    <button>Calculate!</button>
+                    <p th:text="'MPG is, ' + ${mpg} "></p>
+                    <p th:text="'Tank Capacity is, ' + ${tank} "></p>
+                    <!-- <p th:text="'Your car's range is, ' + ${rangeCalc} "></p> -->
 
-    <form action="/range" method="GET" id="rangeForm">
-      <div>
-        <label for="mpgField">Enter MPG(Miles per Gallon)</label>
-        <input name="mpg" id="mpgField">
-        <button>Calculate!</button>
-        <p th:text="'MPG is, ' + ${mpg} + '!'"></p>
-      </div>
-    </form>
-  </div>
+                </div>
+
+            </form>
+          </div>
+    </div>
 </th:block>
 </body>
 
