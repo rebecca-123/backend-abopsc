@@ -1,0 +1,92 @@
+<!DOCTYPE HTML>
+<!DOCTYPE HTML>
+<html xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{layouts/base}" lang="en">
+
+<head>
+  <title>Power to Weight Calculator</title>
+</head>
+
+<style>
+    table, th, td {
+      border:1px solid black;
+    }
+</style>
+
+<body>
+<th:block layout:fragment="body" th:remove="tag">
+    <div class="text-center"> 
+        <div class="px-4 py-5 my-5">
+            <h3 class="display-5 fw-bold">Power to Weight Calculator</h3>
+        
+            <form action="/range" method="GET" id="rangeForm">
+                <div>
+                    <label for="mpgField">Enter Horsepower of Vehicle</label>
+                    <input name="mpg" id="mpgField">
+                </div>
+                <br>
+                <div>
+                    <label for="tankField">Enter Weight of Vehicle</label>
+                    <input name="tank" id="tankField">
+                </div>
+                <br>
+                <div>
+                    <button>Calculate!</button>
+                    <br>
+                    <p th:text="'MPG is, ' + ${mpg} "></p>
+                    <p th:text="'Tank Capacity is, ' + ${tank} "></p>
+                    <!-- <p th:text="'Your car's range is, ' + ${rangeCalc} "></p> -->
+
+                </div>
+            </form>
+            <h4 id="result"> </h4>
+
+            <table id="table" class="text-center"> 
+                <tr>    
+                    <th>Car</th>
+                    <th>Power to Weight</th>
+                </tr>
+            </table>
+        </div>
+ 
+    </div>
+
+
+    <script th:inline="javascript">
+        var horsepower = /*[[${horsepower}]]*/ "";
+        var weight = /*[[${weight}]]*/ "";
+        var ratio = horsepower * 1.0 / weight;
+        const resultContainer = document.getElementById("result");
+        const tableContainer = document.getElementById("table");
+        resultContainer.innerHTML = "Your car's power to weight ratio is " + ratio + " horsepower per pound. ";
+
+        const data = [
+            ["Toyota Prius", 0.0402], ["Tesla Model X", 0.1292], ["Honda Odyssey", 0.0625]
+        ];
+        for (const row of data) {
+            // tr for each row
+            const tr = document.createElement("tr");
+            // td for each column
+            const car = document.createElement("td");
+            const powerToWeight = document.createElement("td");
+            // data is specific to the API
+            car.innerHTML = row[0];
+            powerToWeight.innerHTML = row[1]; 
+            // this build td's into tr
+            tr.appendChild(car);
+            tr.appendChild(powerToWeight);
+            // add HTML to container
+            tableContainer.appendChild(tr);
+        }
+    </script>
+
+
+</th:block>
+
+
+
+
+</body>
+
+
+</html>
