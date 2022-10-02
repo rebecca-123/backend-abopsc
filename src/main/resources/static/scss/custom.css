@@ -98,7 +98,7 @@ $theme-colors: (
   --bs-body-font-weight: 400;
   --bs-body-line-height: 1.5;
   --bs-body-color: #212529;
-  --bs-body-bg: #cfd8dc;
+  --bs-body-bg: linear-gradient(45deg, blue, red);
 }
 
 *,
