@@ -23,17 +23,11 @@ public class CarAPIController {
     // GET Covid 19 Stats
     @GetMapping("/daily")   //added to end of prefix as endpoint
     public ResponseEntity<JSONObject> getCovid() {
-        System.out.println("1 Hello hello hello");
-        System.out.println("1 Hello hello hello");
-        System.out.println("1 Hello hello hello");
         //calls API once a day, sets body and status properties
         String today = new Date().toString().substring(0,10); 
         if (last_run == null || !today.equals(last_run))
         {
             try {  //APIs can fail (ie Internet or Service down)
-                System.out.println("2 Hello hello hello");
-                System.out.println("2 Hello hello hello");
-                System.out.println("2 Hello hello hello");
                 // HttpRequest request = HttpRequest.newBuilder()
                 //     .uri(URI.create("https://car-data.p.rapidapi.com/cars"))
                 //     .header("X-RapidAPI-Key", "df17610e35msh51d75ac58fb44f9p14c5f0jsn7d95a150e08b")
@@ -72,10 +66,6 @@ public class CarAPIController {
                 this.body = (JSONObject) status;
                 this.status = HttpStatus.INTERNAL_SERVER_ERROR; //500 error
                 this.last_run = null;
-
-                System.out.println("3 Hello hello hello");
-                System.out.println("3 Hello hello hello");
-                System.out.println("3 Hello hello hello");
             }
         }
 
