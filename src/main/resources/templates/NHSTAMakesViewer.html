@@ -1,0 +1,104 @@
+<!DOCTYPE HTML>
+<!DOCTYPE HTML>
+<html xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{layouts/base}" lang="en">
+
+<head>
+  <title>NHSTA Makes Viewer</title>
+</head>
+
+
+<body>
+<th:block layout:fragment="body" th:remove="tag">
+  <table id="table" class="redTable">
+    <thead>
+    <tr>
+      <th>Make ID</th>
+      <th>Make</th>
+    </tr>
+    </thead>
+    <tbody id="result">
+      <!-- generated rows -->
+    </tbody>
+  </table>
+
+  <!-- Script is layed out in a sequence (no function) and will execute when page is loaded -->
+  <script>
+    // prepare HTML result container for new output
+    const resultContainer = document.getElementById("result");
+
+    // prepare fetch options
+    const url = "http://localhost:8080/api/NHSTAmakes/dailyMakes";
+
+    const options = {
+      method: 'GET', // *GET, POST, PUT, DELETE, etc.
+      mode: 'cors', // no-cors, *cors, same-origin
+      cache: 'default', // *default, no-cache, reload, force-cache, only-if-cached
+      credentials: 'omit', // include, *same-origin, omit
+      headers: {
+        'Content-Type': 'application/json'
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+      },
+    };
+
+    // fetch the API
+    fetch(url, options)
+      // response is a RESTful "promise" on any successful fetch
+      .then(response => {
+        // check for response errors
+        if (response.status !== 200) {
+            const errorMsg = 'Database response error: ' + response.status;
+            console.log(errorMsg);
+            const tr = document.createElement("tr");
+            const td = document.createElement("td");
+            td.innerHTML = errorMsg;
+            tr.appendChild(td);
+            resultContainer.appendChild(tr);
+            return;
+        }
+        // valid response will have json data
+        response.json().then(data => {
+            console.log(data);
+            console.log(data["Results"])
+
+            // Country data
+            for (const row of data["Results"]) {
+              console.log(row);
+
+              // tr for each row
+              const tr = document.createElement("tr");
+              // td for each column
+              const makeID = document.createElement("td");
+              const make = document.createElement("td");
+
+              // data is specific to the API
+              makeID.innerHTML = row["Make_ID"];
+              make.innerHTML = row["Make_Name"]; 
+
+              // this build td's into tr
+              tr.appendChild(makeID);
+              tr.appendChild(make);
+          
+
+              // add HTML to container
+              resultContainer.appendChild(tr);
+            }
+        })
+    })
+    // catch fetch errors (ie ACCESS to server blocked)
+    .catch(err => {
+      console.error(err);
+      const tr = document.createElement("tr");
+      const td = document.createElement("td");
+      td.innerHTML = err;
+      tr.appendChild(td);
+      resultContainer.appendChild(tr);
+    });
+  </script>
+
+
+</th:block>
+
+</body>
+
+</html>
