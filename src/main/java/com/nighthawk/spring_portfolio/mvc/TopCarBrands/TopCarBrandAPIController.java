@@ -50,7 +50,7 @@ public class TopCarBrandAPIController {
     /* Update Jeer
      */
     @PutMapping("/dislike/{id}")
-    public ResponseEntity<CarBrands> setJeer(@PathVariable long id) {
+    public ResponseEntity<CarBrands> setDislike (@PathVariable long id) {
         Optional<CarBrands> optional = repository.findById(id);
         if (optional.isPresent()) {  // Good ID
             CarBrands brand = optional.get();
