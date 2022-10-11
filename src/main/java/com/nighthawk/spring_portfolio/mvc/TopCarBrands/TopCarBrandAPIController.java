@@ -22,7 +22,7 @@ public class TopCarBrandAPIController {
      * @GetMapping annotation is used for mapping HTTP GET requests onto specific handler methods.
      */
     @GetMapping("/")
-    public ResponseEntity<List<CarBrands>> getJokes() {
+    public ResponseEntity<List<CarBrands>> getBrands() {
         // ResponseEntity returns List of Jokes provide by JPA findAll()
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set("Access-Control-Allow-Origin", "4000");
