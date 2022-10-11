@@ -5,6 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import org.springframework.http.HttpHeaders;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -22,7 +24,14 @@ public class TopCarBrandAPIController {
     @GetMapping("/")
     public ResponseEntity<List<CarBrands>> getJokes() {
         // ResponseEntity returns List of Jokes provide by JPA findAll()
-        return new ResponseEntity<>( repository.findAll(), HttpStatus.OK);
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.set("Access-Control-Allow-Origin", "4000");
+        responseHeaders.set("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+        System.out.println(responseHeaders);
+        ResponseEntity<List<CarBrands>> ent =  new ResponseEntity<>( repository.findAll(), responseHeaders, HttpStatus.OK);
+        System.out.println(ent);
+        return ent;
+        
     }
 
     /* Update Like
