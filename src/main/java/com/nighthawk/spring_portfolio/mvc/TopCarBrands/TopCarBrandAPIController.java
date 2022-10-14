@@ -24,11 +24,11 @@ public class TopCarBrandAPIController {
     @GetMapping("/")
     public ResponseEntity<List<CarBrands>> getBrands() {
         // ResponseEntity returns List of Jokes provide by JPA findAll()
-        HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.set("Access-Control-Allow-Origin", "4000");
-        responseHeaders.set("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-        System.out.println(responseHeaders);
-        ResponseEntity<List<CarBrands>> ent =  new ResponseEntity<>( repository.findAll(), responseHeaders, HttpStatus.OK);
+        // HttpHeaders responseHeaders = new HttpHeaders();
+        // responseHeaders.set("Access-Control-Allow-Origin", "4000");
+        // responseHeaders.set("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+        // System.out.println(responseHeaders);
+        ResponseEntity<List<CarBrands>> ent =  new ResponseEntity<>( repository.findAll(), HttpStatus.OK);
         System.out.println(ent);
         return ent;
         
