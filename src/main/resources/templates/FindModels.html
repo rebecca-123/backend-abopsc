@@ -1,0 +1,76 @@
+<!DOCTYPE HTML>
+<!DOCTYPE HTML>
+<html xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{layouts/base}" lang="en">
+
+<head>
+  <title>Find Model</title>
+</head>
+
+
+<body>
+<th:block layout:fragment="body" th:remove="tag">
+
+    <h3>Enter a brand name</h3>
+
+    <input type="text" id="brand" value="honda">
+
+    <p>Click the button to get car models of that brand. </p>
+
+    <button onclick="search()">FIND</button>
+
+    <p id="demo"></p>
+
+    <script>
+        function search() {
+            const resultContainer = document.getElementById("demo");
+            var brand = document.getElementById("brand").value;
+            console.log(brand);
+            var url = "https://vpic.nhtsa.dot.gov/api/vehicles/getmodelsformake/";
+            var format = "?format=json";
+            var apiCall = url + brand + format;
+            fetch(apiCall)
+                .then((response) => response.json())
+                .then((data) => console.log(data));
+                response.json().then(data => {
+                    // Country data
+                    for (const row of data["Results"]) {
+                        console.log(row);
+
+                        // tr for each row
+                        const tr = document.createElement("tr");
+                        // td for each column
+                        const makeID = document.createElement("td");
+                        const makeName = document.createElement("td");
+                        const modelID = document.createElement("td");
+                        const modelName = document.createElement("td");
+
+                        // data is specific to the API
+                        makeID.innerHTML = row["Make_ID"];
+                        makeName.innerHTML = row["Make_Name"]; 
+                        modelID.innerHTML = row["Model_ID"]; 
+                        modelName.innerHTML = row["Model_Name"]; 
+
+
+                        // this build td's into tr
+                        tr.appendChild(makeID);
+                        tr.appendChild(makeName);
+                        tr.appendChild(modelID);
+                        tr.appendChild(modelName);
+                    
+
+                        // add HTML to container
+                        resultContainer.appendChild(tr);
+                    }
+                }
+
+                
+
+        }
+    </script>
+
+
+</th:block>
+
+</body>
+</html>

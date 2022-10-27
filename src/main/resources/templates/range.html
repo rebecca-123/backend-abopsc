@@ -51,8 +51,12 @@
 
 
     <script th:inline="javascript">
+        // Notation to get the Thymeleaf variables
+        
         var mpg = /*[[${mpg}]]*/ "";
         var tank = /*[[${tank}]]*/ "";
+
+        // Calculating the range and changing the DOM to display it
         var range = mpg * tank;
         const resultContainer = document.getElementById("result");
         const tableContainer = document.getElementById("table");
