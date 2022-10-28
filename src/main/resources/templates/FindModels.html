@@ -19,19 +19,57 @@
 
     <button onclick="search()">FIND</button>
 
-    <p id="demo"></p>
+    <table id="table" class="redTable">
+        <thead>
+        <tr>
+          <th>Make ID</th>
+          <th>Make</th>
+          <th>Model ID</th>
+          <th>Model</th>
+        </tr>
+        </thead>
+        <tbody id="demo">
+          <!-- generated rows -->
+        </tbody>
+    </table>
 
     <script>
         function search() {
+
             const resultContainer = document.getElementById("demo");
+            resultContainer.innerHTML = "";
             var brand = document.getElementById("brand").value;
             console.log(brand);
             var url = "https://vpic.nhtsa.dot.gov/api/vehicles/getmodelsformake/";
             var format = "?format=json";
+
             var apiCall = url + brand + format;
-            fetch(apiCall)
-                .then((response) => response.json())
-                .then((data) => console.log(data));
+
+            // prepare fetch options
+            const options = {
+            method: 'GET', // *GET, POST, PUT, DELETE, etc.
+            mode: 'cors', // no-cors, *cors, same-origin
+            cache: 'default', // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: 'omit', // include, *same-origin, omit
+            headers: {
+                'Content-Type': 'application/json'
+                // 'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            };
+
+            fetch(apiCall, options)
+                .then(response => {
+                    if (response.status !== 200) {
+                        const errorMsg = 'Database response error: ' + response.status;
+                        console.log(errorMsg);
+                        const tr = document.createElement("tr");
+                        const td = document.createElement("td");
+                        td.innerHTML = errorMsg;
+                        tr.appendChild(td);
+                        resultContainer.appendChild(tr);
+                        return;
+                    }
+                // valid response will have json data
                 response.json().then(data => {
                     // Country data
                     for (const row of data["Results"]) {
@@ -62,10 +100,18 @@
                         // add HTML to container
                         resultContainer.appendChild(tr);
                     }
-                }
-
-                
-
+                })
+            })
+            
+            // catch fetch errors (ie ACCESS to server blocked)
+            .catch(err => {
+                console.error(err);
+                const tr = document.createElement("tr");
+                const td = document.createElement("td");
+                td.innerHTML = err;
+                tr.appendChild(td);
+                resultContainer.appendChild(tr);
+            });
         }
     </script>
 
