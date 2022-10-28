@@ -1,0 +1,122 @@
+<!DOCTYPE HTML>
+<!DOCTYPE HTML>
+<html xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{layouts/base}" lang="en">
+
+<head>
+  <title>Find Model</title>
+</head>
+
+
+<body>
+<th:block layout:fragment="body" th:remove="tag">
+
+    <h3>Enter a brand name</h3>
+
+    <input type="text" id="brand" value="honda">
+
+    <p>Click the button to get car models of that brand. </p>
+
+    <button onclick="search()">FIND</button>
+
+    <table id="table" class="redTable">
+        <thead>
+        <tr>
+          <th>Make ID</th>
+          <th>Make</th>
+          <th>Model ID</th>
+          <th>Model</th>
+        </tr>
+        </thead>
+        <tbody id="demo">
+          <!-- generated rows -->
+        </tbody>
+    </table>
+
+    <script>
+        function search() {
+
+            const resultContainer = document.getElementById("demo");
+            resultContainer.innerHTML = "";
+            var brand = document.getElementById("brand").value;
+            console.log(brand);
+            var url = "https://vpic.nhtsa.dot.gov/api/vehicles/getmodelsformake/";
+            var format = "?format=json";
+
+            var apiCall = url + brand + format;
+
+            // prepare fetch options
+            const options = {
+            method: 'GET', // *GET, POST, PUT, DELETE, etc.
+            mode: 'cors', // no-cors, *cors, same-origin
+            cache: 'default', // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: 'omit', // include, *same-origin, omit
+            headers: {
+                'Content-Type': 'application/json'
+                // 'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            };
+
+            fetch(apiCall, options)
+                .then(response => {
+                    if (response.status !== 200) {
+                        const errorMsg = 'Database response error: ' + response.status;
+                        console.log(errorMsg);
+                        const tr = document.createElement("tr");
+                        const td = document.createElement("td");
+                        td.innerHTML = errorMsg;
+                        tr.appendChild(td);
+                        resultContainer.appendChild(tr);
+                        return;
+                    }
+                // valid response will have json data
+                response.json().then(data => {
+                    // Country data
+                    for (const row of data["Results"]) {
+                        console.log(row);
+
+                        // tr for each row
+                        const tr = document.createElement("tr");
+                        // td for each column
+                        const makeID = document.createElement("td");
+                        const makeName = document.createElement("td");
+                        const modelID = document.createElement("td");
+                        const modelName = document.createElement("td");
+
+                        // data is specific to the API
+                        makeID.innerHTML = row["Make_ID"];
+                        makeName.innerHTML = row["Make_Name"]; 
+                        modelID.innerHTML = row["Model_ID"]; 
+                        modelName.innerHTML = row["Model_Name"]; 
+
+
+                        // this build td's into tr
+                        tr.appendChild(makeID);
+                        tr.appendChild(makeName);
+                        tr.appendChild(modelID);
+                        tr.appendChild(modelName);
+                    
+
+                        // add HTML to container
+                        resultContainer.appendChild(tr);
+                    }
+                })
+            })
+            
+            // catch fetch errors (ie ACCESS to server blocked)
+            .catch(err => {
+                console.error(err);
+                const tr = document.createElement("tr");
+                const td = document.createElement("td");
+                td.innerHTML = err;
+                tr.appendChild(td);
+                resultContainer.appendChild(tr);
+            });
+        }
+    </script>
+
+
+</th:block>
+
+</body>
+</html>
