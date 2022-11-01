@@ -1,0 +1,63 @@
+<!DOCTYPE HTML>
+<!DOCTYPE HTML>
+<html xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{layouts/base}" lang="en">
+
+<head>
+  <title>Login System</title>
+</head>
+
+<style>
+
+</style>
+
+<body>
+<form action="action_page.php" method="post">
+    <div class="imgcontainer">
+      <img src="img_avatar2.png" alt="Avatar" class="avatar">
+    </div>
+  
+    <div class="container">
+      <label for="user"><b>Username</b></label>
+      <input type="text" placeholder="Enter Username" name="user" required>
+  
+      <label for="pass"><b>Password</b></label>
+      <input type="password" placeholder="Enter Password" name="pass" required>
+  
+      <button type="submit">Login</button>
+      <label>
+        <input type="checkbox" checked="checked" name="remember"> Remember me
+      </label>
+    </div>
+  
+    <div class="container" style="background-color:#f1f1f1">
+      <button type="button" class="cancelbtn">Cancel</button>
+      <span class="psw">Forgot <a href="#">password?</a></span>
+    </div>
+  </form>
+
+</body>
+<script>
+
+function validation()
+{
+var id=document.f1.user.value;
+var ps=document.f1.pass.value;
+if(id.length=="" && ps.length=="") {
+alert("User Name and Password fields are empty");
+return false;
+}
+else
+{
+if(id.length=="") {
+alert("User Name is empty");
+return false;
+}
+if (ps.length=="") {
+alert("Password field is empty");
+return false;
+}
+}
+}
+</script>
+</html>
