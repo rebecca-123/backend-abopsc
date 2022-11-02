@@ -53,13 +53,15 @@ public class FindModelFromBrand {
             JSONArray obj = (JSONArray) parser.parse(jsonData);
             Object obj2;
             String temp;
-            JSONArray array2 = new JSONArray();
+            String[] arr = null;
             for (int i=0;i<obj.size(); i++) {
                 temp = "";
                 obj2 = parser.parse(obj.get(i).toString());
                 temp = obj2.toString();
-                System.out.println(temp);
-                //System.out.println(temp.getClass().getName());
+                arr = temp.split("Make_Name\":");
+                arr = arr[1].split("}");
+                arr = arr[0].split("\"");
+                System.out.println(arr[1]);
             }
             //System.out.println(obj.get(5));
         } catch (ParseException e) {
