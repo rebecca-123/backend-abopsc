@@ -7,11 +7,14 @@ import java.net.http.HttpResponse;
 import java.util.Date;
 import java.util.HashMap;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 
 @RestController
 @RequestMapping("/api/models") 
@@ -27,7 +30,7 @@ public class FindModelFromBrand {
         {
             try { 
                 HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create("https://vpic.nhtsa.dot.gov/api/vehicles/getmodelsformake/?format=json"))
+                    .uri(URI.create("https://vpic.nhtsa.dot.gov/api/vehicles/getallmakes?format=json"))
                     .method("GET", HttpRequest.BodyPublishers.noBody())
                     .build();
                 HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
@@ -44,6 +47,28 @@ public class FindModelFromBrand {
                 this.last_run = null;
             }
         }
+        JSONParser parser = new JSONParser();
+        String jsonData = body.get("Results").toString();
+        try {
+            JSONArray obj = (JSONArray) parser.parse(jsonData);
+            Object obj2;
+            String temp;
+            JSONArray array2 = new JSONArray();
+            for (int i=0;i<obj.size(); i++) {
+                temp = "";
+                obj2 = parser.parse(obj.get(i).toString());
+                temp = obj2.toString();
+                System.out.println(temp);
+                //System.out.println(temp.getClass().getName());
+            }
+            //System.out.println(obj.get(5));
+        } catch (ParseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        // System.out.println(jsonData);
+
 
         return new ResponseEntity<>(body, status);
     }
