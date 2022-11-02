@@ -30,7 +30,7 @@ public class BrandsInit {
     @Bean
     CommandLineRunner run() {  // The run() method will be executed after the application starts
         return args -> {
-            ArrayList<String> brandsArray = new ArrayList<String>();
+            ArrayList<String> tempArray = new ArrayList<String>();
             try { 
                 HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create("https://vpic.nhtsa.dot.gov/api/vehicles/getallmakes?format=json"))
@@ -62,7 +62,7 @@ public class BrandsInit {
                     arr = arr[1].split("}");
                     arr = arr[0].split("\"");
                     System.out.println(arr[1]);
-                    brandsArray.add(arr[1]);
+                    tempArray.add(arr[1]);
                 }
                 //System.out.println(obj.get(5));
             } catch (ParseException e) {
@@ -87,13 +87,17 @@ public class BrandsInit {
             //     "Audi",
             //     "Volkswagen"
             // };
+            final String[] brandsArray = new String[tempArray.size()];
+            for (int i = 0; i < tempArray.size(); i++) {
+                brandsArray[i] = tempArray.get(i);
+            }
 
             // make sure Joke database is populated with starting jokes
-            for (String brand : brandsArray) {
-                List<CarBrands> test = repository.findByBrandIgnoreCase(brand);  // JPA lookup
-                if (test.size() == 0)
-                    repository.save(new CarBrands(null, brand, 0, 0)); //JPA save
-            }
+            // for (String brand : brandsArray) {
+            //     List<CarBrands> test = repository.findByBrandIgnoreCase(brand);  // JPA lookup
+            //     if (test.size() == 0)
+            //         repository.save(new CarBrands(null, brand, 0, 0)); //JPA save
+            // }
             
         };
     }
