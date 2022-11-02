@@ -29,7 +29,6 @@ public class TopCarBrandAPIController {
         // responseHeaders.set("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
         // System.out.println(responseHeaders);
         ResponseEntity<List<CarBrands>> ent =  new ResponseEntity<>( repository.findAll(), HttpStatus.OK);
-        System.out.println(ent);
         return ent;
         
     }

@@ -62,7 +62,6 @@ public class BrandsInit {
                         arr = temp.split("Make_Name\":");
                         arr = arr[1].split("}");
                         arr = arr[0].split("\"");
-                        System.out.println(arr[1]);
                         tempArray.add(arr[1]);
                     }
                     //System.out.println(obj.get(5));
@@ -72,10 +71,12 @@ public class BrandsInit {
                 }
 
                 final String[] brandsArray = new String[tempArray.size()];
+                int count = 0;
                 for (int i = 0; i < tempArray.size(); i++) {
                     brandsArray[i] = tempArray.get(i);
+                    count++;
                 }
-
+                System.out.println(count);
 
                 // DO NOT UNCOMMENT UNLESS REMAKING SQL FILE
 
