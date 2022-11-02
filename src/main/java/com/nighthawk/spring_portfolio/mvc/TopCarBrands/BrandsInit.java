@@ -29,77 +29,68 @@ public class BrandsInit {
     
     @Bean
     CommandLineRunner run() {  // The run() method will be executed after the application starts
-        return args -> {
-            ArrayList<String> tempArray = new ArrayList<String>();
-            try { 
-                HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create("https://vpic.nhtsa.dot.gov/api/vehicles/getallmakes?format=json"))
-                    .method("GET", HttpRequest.BodyPublishers.noBody())
-                    .build();
-                HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
-                this.body = (JSONObject) new JSONParser().parse(response.body());
-                this.status = HttpStatus.OK;  
-            }
-            catch (Exception e) {  
-                HashMap<String, String> status = new HashMap<>();
-                status.put("status", "RapidApi failure: " + e);
-
-                this.body = (JSONObject) status;
-                this.status = HttpStatus.INTERNAL_SERVER_ERROR;
-            }
-            JSONParser parser = new JSONParser();
-            String jsonData = body.get("Results").toString();
-            try {
-                JSONArray obj = (JSONArray) parser.parse(jsonData);
-                Object obj2;
-                String temp;
-                String[] arr = null;
-                for (int i=0;i<obj.size(); i++) {
-                    temp = "";
-                    obj2 = parser.parse(obj.get(i).toString());
-                    temp = obj2.toString();
-                    arr = temp.split("Make_Name\":");
-                    arr = arr[1].split("}");
-                    arr = arr[0].split("\"");
-                    System.out.println(arr[1]);
-                    tempArray.add(arr[1]);
+        try {
+            return args -> {
+                ArrayList<String> tempArray = new ArrayList<String>();
+                try { 
+                    HttpRequest request = HttpRequest.newBuilder()
+                        .uri(URI.create("https://vpic.nhtsa.dot.gov/api/vehicles/getallmakes?format=json"))
+                        .method("GET", HttpRequest.BodyPublishers.noBody())
+                        .build();
+                    HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+                    this.body = (JSONObject) new JSONParser().parse(response.body());
+                    this.status = HttpStatus.OK;  
                 }
-                //System.out.println(obj.get(5));
-            } catch (ParseException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-            // Fail safe data validations
+                catch (Exception e) {  
+                    HashMap<String, String> status = new HashMap<>();
+                    status.put("status", "RapidApi failure: " + e);
 
-            // final String[] brandsArray = {
-            //     "Porsche",
-            //     "Tesla",
-            //     "Kia",
-            //     "Honda",
-            //     "Jaguar",
-            //     "Mazda",
-            //     "Volvo",
-            //     "Toyota",
-            //     "Hyundai",
-            //     "BMW",
-            //     "Lexus",
-            //     "Nissan",
-            //     "Audi",
-            //     "Volkswagen"
-            // };
-            final String[] brandsArray = new String[tempArray.size()];
-            for (int i = 0; i < tempArray.size(); i++) {
-                brandsArray[i] = tempArray.get(i);
-            }
+                    this.body = (JSONObject) status;
+                    this.status = HttpStatus.INTERNAL_SERVER_ERROR;
+                }
+                JSONParser parser = new JSONParser();
+                String jsonData = body.get("Results").toString();
+                try {
+                    JSONArray obj = (JSONArray) parser.parse(jsonData);
+                    Object obj2;
+                    String temp;
+                    String[] arr = null;
+                    for (int i=0;i<obj.size(); i++) {
+                        temp = "";
+                        obj2 = parser.parse(obj.get(i).toString());
+                        temp = obj2.toString();
+                        arr = temp.split("Make_Name\":");
+                        arr = arr[1].split("}");
+                        arr = arr[0].split("\"");
+                        System.out.println(arr[1]);
+                        tempArray.add(arr[1]);
+                    }
+                    //System.out.println(obj.get(5));
+                } catch (ParseException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
 
-            // make sure Joke database is populated with starting jokes
-            // for (String brand : brandsArray) {
-            //     List<CarBrands> test = repository.findByBrandIgnoreCase(brand);  // JPA lookup
-            //     if (test.size() == 0)
-            //         repository.save(new CarBrands(null, brand, 0, 0)); //JPA save
-            // }
+                final String[] brandsArray = new String[tempArray.size()];
+                for (int i = 0; i < tempArray.size(); i++) {
+                    brandsArray[i] = tempArray.get(i);
+                }
+
+
+                // DO NOT UNCOMMENT UNLESS REMAKING SQL FILE
+
+                // make sure brands database is populated with starting brand
+                // for (String brand : brandsArray) {
+                //     List<CarBrands> test = repository.findByBrandIgnoreCase(brand);  // JPA lookup
+                //     if (test.size() == 0)
+                //         repository.save(new CarBrands(null, brand, 0, 0)); //JPA save
+                // }
+                
+            };
+        } catch (Exception e) {
             
-        };
+        }
+        return null;
     }
 }
 
