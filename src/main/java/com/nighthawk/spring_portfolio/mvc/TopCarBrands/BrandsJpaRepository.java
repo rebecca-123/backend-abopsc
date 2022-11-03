@@ -9,6 +9,6 @@ public interface BrandsJpaRepository extends JpaRepository<CarBrands, Long> {
     void save(String Brand);
 
     // A
-    List<CarBrands> findAllByOrderByBrandAsc();  // returns a List of Jokes in Ascending order
-    List<CarBrands> findByBrandIgnoreCase(String brand);  // look to see if Joke(s) exist
+    List<CarBrands> findAllByOrderByBrandAsc();  // returns a List of Brands in Ascending order
+    List<CarBrands> findByBrandIgnoreCase(String brand);  // look to see if Brand(s) exist
 }
