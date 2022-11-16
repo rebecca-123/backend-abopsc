@@ -18,12 +18,12 @@ public class TopCarBrandAPIController {
     @Autowired
     private BrandsJpaRepository repository;
 
-    /* GET List of Jokes
+    /* GET List of Brands
      * @GetMapping annotation is used for mapping HTTP GET requests onto specific handler methods.
      */
     @GetMapping("/")
     public ResponseEntity<List<CarBrands>> getBrands() {
-        // ResponseEntity returns List of Jokes provide by JPA findAll()
+        // ResponseEntity returns List of Brands provide by JPA findAll()
         // HttpHeaders responseHeaders = new HttpHeaders();
         // responseHeaders.set("Access-Control-Allow-Origin", "4000");
         // responseHeaders.set("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -55,7 +55,7 @@ public class TopCarBrandAPIController {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);  // Failed HTTP response: status code, headers, and body
     }
 
-    /* Update Jeer
+    /* Update Dislike
      */
     @PutMapping("/dislike/{id}")
     public ResponseEntity<CarBrands> setDislike (@PathVariable long id) {

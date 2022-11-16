@@ -16,8 +16,8 @@ public class CarBrands {
     private Long id;  // Unique identifier
 
     @Column(unique=true)
-    private String brand;  // The Joke
+    private String brand;  // The Brand
 
-    private int like;  // Store joke likes
-    private int dislike;  // Store joke jeers
+    private int like;  // Store brand likes
+    private int dislike;  // Store brand dislikes
 }
