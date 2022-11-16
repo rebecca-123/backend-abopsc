@@ -24,6 +24,7 @@ public class BrandsInit {
     
     // Inject repositories
     @Autowired BrandsJpaRepository repository;
+
     private JSONObject body;
     private Object status;
     
