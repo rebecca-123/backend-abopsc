@@ -14,10 +14,12 @@ public class APCalendar {
         return false;
         }
     
-    public static String fetchCars(String year) {
-        String base = "https://vpic.nhtsa.dot.gov/api/vehicles/getmodelsformakeyear/make/honda/modelyear/";
+    // Method to generate the url to call the nhtsa api
+    public static String fetchCars(String year, String brand) {
+        String base = "https://vpic.nhtsa.dot.gov/api/vehicles/getmodelsformakeyear/make/";
+        String queryByYear = "/modelyear/";
         String extension = "?format=json";
-        String url = base + year + extension;
+        String url = base + brand + queryByYear + year + extension;
         return url;
     }
         

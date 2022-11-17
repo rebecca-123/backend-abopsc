@@ -52,38 +52,37 @@ public class CalendarApiController {
       return ResponseEntity.ok(json);  // JSON response, see ExceptionHandlerAdvice for throws
     }
 
-    // add other methods
-    @GetMapping("/fetchCars/{year}")
-    public ResponseEntity<JSONObject> getUrl(@PathVariable String year) {
+    // method for getting the cars in an inputted year
+    @GetMapping("/fetchCars/{brand}/{year}")
+    public ResponseEntity<JSONObject> getUrl(@PathVariable String brand, @PathVariable String year) {
         // Backend Year Object
         Year year_obj = new Year();
-        year_obj.setStringYear(year);  // evaluates Leap Year
+        year_obj.setStringYear(year, brand);  // updating year object with the year
 
-        String url = year_obj.getUrl(year);
+        String url = year_obj.getUrl(year, brand); // object generates the URL. Method gets it.
 
-        System.out.println(url);
+        System.out.println(url); // tester
 
 
-        try {  //APIs can fail (ie Internet or Service down)
+        // API Call
+        try {  
             HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
                 .method("GET", HttpRequest.BodyPublishers.noBody())
                 .build();
             HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
-            //JSONParser extracts text body and parses to JSONObject
             this.body = (JSONObject) new JSONParser().parse(response.body());
             
-            this.status = HttpStatus.OK;  //200 success
+            this.status = HttpStatus.OK; 
         }
-        catch (Exception e) {  //capture failure info
+        catch (Exception e) { 
             HashMap<String, String> status = new HashMap<>();
             status.put("status", "failure: " + e);
 
-            //Setup object for error
-            this.status = HttpStatus.INTERNAL_SERVER_ERROR; //500 error
+            this.status = HttpStatus.INTERNAL_SERVER_ERROR; 
         }
 
-        //return JSONObject in RESTful style
+        //return JSONObject
         return new ResponseEntity<>(body, status);
     }
 }

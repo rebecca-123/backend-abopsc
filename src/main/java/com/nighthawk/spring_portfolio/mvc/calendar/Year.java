@@ -8,6 +8,7 @@ package com.nighthawk.spring_portfolio.mvc.calendar;
 class Year {
    private int year;
    private String stringYear;
+   private String brand;
    private boolean isLeapYear;
    private String url;
 
@@ -23,9 +24,10 @@ class Year {
       this.setIsLeapYear(year);
    }
 
-    public void setStringYear(String year) {
+    public void setStringYear(String year, String brand) {
         this.stringYear = year;
-        this.setUrl(stringYear);
+        this.brand = brand;
+        this.setUrl(stringYear, brand);
     }
 
    /* isLeapYear getter/setters */
@@ -36,12 +38,13 @@ class Year {
       this.isLeapYear = APCalendar.isLeapYear(year);
    }
 
-   public String getUrl(String year) {
-        return APCalendar.fetchCars(year);
+   // Car Fetch URL getter/setters
+   public String getUrl(String year, String brand) {
+        return APCalendar.fetchCars(year, brand);
    }
 
-   private void setUrl(String year) {
-        this.url = APCalendar.fetchCars(year);
+   private void setUrl(String year, String brand) {
+        this.url = APCalendar.fetchCars(year, brand);
    }
 
 
@@ -50,9 +53,6 @@ class Year {
       return ( "{ \"year\": "  +this.year+  ", " + "\"isLeapYear\": "  +this.isLeapYear+ " }" );
    }	
 
-    public String urlToString() {
-        return ( "{ \"year\": "  +this.year+  ", " + "\"url\": " + "\"" + this.url + "\"" + " }" );
-    }
 
    /* standard toString placeholder until class is extended */
    public String toString() { 
