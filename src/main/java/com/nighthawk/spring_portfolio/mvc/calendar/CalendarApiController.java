@@ -61,9 +61,6 @@ public class CalendarApiController {
 
         String url = year_obj.getUrl(year, brand); // object generates the URL. Method gets it.
 
-        System.out.println(url); // tester
-
-
         // API Call
         try {  
             HttpRequest request = HttpRequest.newBuilder()
