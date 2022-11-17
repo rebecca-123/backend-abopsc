@@ -31,7 +31,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/calendar")
 public class CalendarApiController {
 
-    public String body;
+    public JSONObject body;
     public HttpStatus status;
 
     /** GET isLeapYear endpoint
@@ -54,19 +54,14 @@ public class CalendarApiController {
 
     // add other methods
     @GetMapping("/fetchCars/{year}")
-    public ResponseEntity<JsonNode> getUrl(@PathVariable String year) throws JsonMappingException, JsonProcessingException {
+    public ResponseEntity<JSONObject> getUrl(@PathVariable String year) {
         // Backend Year Object
         Year year_obj = new Year();
         year_obj.setStringYear(year);  // evaluates Leap Year
 
-        String url = "\"" + year_obj.getUrl(year) + "\"";
+        String url = year_obj.getUrl(year);
 
         System.out.println(url);
-
-        //ObjectMapper mapper = new ObjectMapper(); 
-        //JsonNode json = mapper.readTree(year_obj.urlToString()); // this requires exception handling
-  
-        //return ResponseEntity.ok(json);  // JSON response, see ExceptionHandlerAdvice for throws
 
 
         try {  //APIs can fail (ie Internet or Service down)
@@ -76,10 +71,8 @@ public class CalendarApiController {
                 .build();
             HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
             //JSONParser extracts text body and parses to JSONObject
-            this.body = (String) new JSONParser().parse(response.body());
+            this.body = (JSONObject) new JSONParser().parse(response.body());
             
-            System.out.println(body);
-
             this.status = HttpStatus.OK;  //200 success
         }
         catch (Exception e) {  //capture failure info
@@ -90,10 +83,7 @@ public class CalendarApiController {
             this.status = HttpStatus.INTERNAL_SERVER_ERROR; //500 error
         }
 
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode json = mapper.readTree(body);
-
         //return JSONObject in RESTful style
-        return ResponseEntity.ok(json);
+        return new ResponseEntity<>(body, status);
     }
 }
