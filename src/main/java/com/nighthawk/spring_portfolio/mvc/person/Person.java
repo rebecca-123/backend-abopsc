@@ -4,6 +4,7 @@ import java.text.DateFormat;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -81,6 +82,14 @@ public class Person {
     @Type(type="json")
     @Column(columnDefinition = "jsonb")
     private Map<String,Map<String, Object>> stats = new HashMap<>(); 
+
+    @Type(type="json")
+    @Column(columnDefinition = "jsonb")
+    private ArrayList<String> carList = new ArrayList<String>();
+
+    public void addCar(String car) {
+        this.carList.add(car);
+    }
     
 
     // Constructor used when building object from an API
@@ -89,6 +98,7 @@ public class Person {
         this.password = password;
         this.name = name;
         this.dob = dob;
+        this.carList = new ArrayList<String>();
     }
 
     // A custom getter to return age from dob attribute
@@ -102,11 +112,12 @@ public class Person {
     /* Person To String method */
     public String personToString() {
         return ( "{ \"email\": "  +this.email+  ", " + "\"password\": "  +this.password 
-        +  ", " + "\"name\": "  +this.name + ", " + "\"dob\": "  +this.dob +" }" );
+        +  ", " + "\"name\": "  +this.name + ", " + "\"dob\": "  + this.dob + ", " + "\"list\": "  +this.carList +" }" );
     }	
 
     /** Tester method */
     public static void main(String[] args) {
+
         Person person1 = new Person();
         System.out.println(person1.personToString());
         

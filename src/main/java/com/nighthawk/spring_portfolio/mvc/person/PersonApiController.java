@@ -126,4 +126,27 @@ public class PersonApiController {
         
     }
 
+    @PostMapping(value = "/addCar", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Person> addCar(@RequestBody final Map<String,Object> stat_map) {
+        // find ID
+        long id=Long.parseLong((String)stat_map.get("id"));  
+        Optional<Person> optional = repository.findById((id));
+        if (optional.isPresent()) {  // Good ID
+            Person person = optional.get();  // value from findByID
+
+            // Extract Attributes from JSON
+            String car = (String)stat_map.get("car");
+            
+            // Add car to carlist
+            person.addCar(car);  
+            repository.save(person);  // conclude by writing the stats updates
+
+            // return Person with update Stats
+            return new ResponseEntity<>(person, HttpStatus.OK);
+        }
+        // return Bad ID
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST); 
+        
+    }
+
 }
