@@ -87,11 +87,19 @@ public class Person {
     @Column(columnDefinition = "jsonb")
     private ArrayList<String> carList = new ArrayList<String>();
 
+    @Type(type="json")
+    @Column(columnDefinition = "jsonb")
+    private ArrayList<Map<String,Map<String, Object>>> allStats = new ArrayList<Map<String,Map<String, Object>>>();
+
+    public void addStat(Map<String,Map<String, Object>> stat) {
+        this.allStats.add(stat);
+    }
+
     public void addCar(String car) {
         this.carList.add(car);
     }
-    
 
+    
     // Constructor used when building object from an API
     public Person(String email, String password, String name, Date dob) {
         this.email = email;
@@ -99,6 +107,7 @@ public class Person {
         this.name = name;
         this.dob = dob;
         this.carList = new ArrayList<String>();
+        this.allStats = new ArrayList<Map<String,Map<String, Object>>>();
     }
 
     // A custom getter to return age from dob attribute
