@@ -95,6 +95,10 @@ public class Person {
         this.allStats.add(stat);
     }
 
+    public void addStatToHash(String date, Map<String, Object> map) {
+        this.stats.put(date, map);
+    }
+
     public void addCar(String car) {
         this.carList.add(car);
     }
