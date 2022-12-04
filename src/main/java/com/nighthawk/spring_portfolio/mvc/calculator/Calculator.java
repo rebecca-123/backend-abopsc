@@ -46,7 +46,7 @@ public class Calculator {
     // Create a 1 argument constructor expecting a mathematical expression
     public Calculator(String expression) {
         // modified constructor for error handling
-        
+
         // original input
         this.expression = expression;
 
@@ -267,6 +267,16 @@ public class Calculator {
 
     }
 
+    public String calcToJSON() {
+        if (this.tokens == null) {
+            return "200";
+        }
+
+        String json = "{ \"Expression\": \"" + this.expression + "\", \"Tokens\": \"" + this.tokens + 
+        "\", \"RPN\": \"" + this.reverse_polish + "\", \"Result\": " + this.result + " }";
+
+        return json;
+    }
 
     // Tester method
     public static void main(String[] args) {
