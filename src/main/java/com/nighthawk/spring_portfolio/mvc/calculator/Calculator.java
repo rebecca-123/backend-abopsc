@@ -26,6 +26,7 @@ public class Calculator {
     {
         // Map<"token", precedence>
         OPERATORS.put("^", 2);
+        OPERATORS.put("p", 2);
         OPERATORS.put("*", 3);
         OPERATORS.put("/", 3);
         OPERATORS.put("%", 3);
@@ -146,6 +147,7 @@ public class Calculator {
                 case "/":
                 case "%":
                 case "^":
+                case "p":
                     // While stack
                     // not empty AND stack top element
                     // and is an operator
@@ -205,6 +207,9 @@ public class Calculator {
                         result = num2 % num1;
                         break;
                     case "^":
+                        result = Math.pow(num2, num1);
+                        break;
+                    case "p":
                         result = Math.pow(num2, num1);
                         break;
                     default:
@@ -269,7 +274,7 @@ public class Calculator {
 
     public String calcToJSON() {
         if (this.tokens == null) {
-            return "200";
+            return "BAD REQUEST";
         }
 
         String json = "{ \"Expression\": \"" + this.expression + "\", \"Tokens\": \"" + this.tokens + 
@@ -307,6 +312,11 @@ public class Calculator {
 
         Calculator powerMath = new Calculator("2^7");
         System.out.println("Power Math\n" + powerMath);
+
+        System.out.println();
+
+        Calculator powerMath2 = new Calculator("2p7");
+        System.out.println("Power Math 2\n" + powerMath2);
 
         System.out.println();
 

@@ -12,11 +12,11 @@ public class CalculatorApiController {
     @GetMapping("/{expression}")
     public ResponseEntity<String> getResult(@PathVariable String expression) {
         String result = new Calculator(expression).calcToJSON();
-        if (result != null && !result.equals("200")) {
+        if (result != null && !result.equals("BAD REQUEST")) {
             return new ResponseEntity<String>(result, HttpStatus.OK);
         }
         
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);       
+        return new ResponseEntity<String>(result, HttpStatus.BAD_REQUEST);       
     }
 
 }
