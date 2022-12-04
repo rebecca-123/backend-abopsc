@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
+import java.lang.Math;
 
 /* In mathematics,
     an expression or mathematical expression is a finite combination of symbols that is well-formed
@@ -24,11 +25,13 @@ public class Calculator {
     private final Map<String, Integer> OPERATORS = new HashMap<>();
     {
         // Map<"token", precedence>
+        OPERATORS.put("^", 2);
         OPERATORS.put("*", 3);
         OPERATORS.put("/", 3);
         OPERATORS.put("%", 3);
         OPERATORS.put("+", 4);
         OPERATORS.put("-", 4);
+
     }
 
     // Helper definition for supported operators
@@ -42,17 +45,26 @@ public class Calculator {
 
     // Create a 1 argument constructor expecting a mathematical expression
     public Calculator(String expression) {
+        // modified constructor for error handling
+        
         // original input
         this.expression = expression;
 
-        // parse expression into terms
-        this.termTokenizer();
+        if(this.isValid(this.expression)) {
+            // parse expression into terms
+            this.termTokenizer();
 
-        // place terms into reverse polish notation
-        this.tokensToReversePolishNotation();
+            // place terms into reverse polish notation
+            this.tokensToReversePolishNotation();
 
-        // calculate reverse polish notation
-        this.rpnToResult();
+            // calculate reverse polish notation
+            this.rpnToResult();
+        }
+        else {
+            System.out.println("You had an error.");
+        }
+
+
     }
 
     // Test if token is an operator
@@ -75,6 +87,7 @@ public class Calculator {
 
     // Term Tokenizer takes original expression and converts it to ArrayList of tokens
     private void termTokenizer() {
+
         // contains final list of tokens
         this.tokens = new ArrayList<>();
 
@@ -132,6 +145,7 @@ public class Calculator {
                 case "*":
                 case "/":
                 case "%":
+                case "^":
                     // While stack
                     // not empty AND stack top element
                     // and is an operator
@@ -176,18 +190,25 @@ public class Calculator {
                 // Calculate intermediate results
                 switch(token) {
                     case "+":
-                      result = num1 + num2;
-                      break;
+                        result = num1 + num2;
+                        break;
                     case "*":
-                      result = num1 * num2;
-                      break;
+                        result = num1 * num2;
+                        break;
                     case "/":
-                        result = num1 / num2;
+                        result = num2 / num1;
+                        break;
                     case "-":
-                        result = num1 - num2;
+                        result = num2-num1;
+                        break;
                     case "%":
-                        result = num1 % num2;
+                        result = num2 % num1;
+                        break;
+                    case "^":
+                        result = Math.pow(num2, num1);
+                        break;
                     default:
+                        break;
                       // code block
                 }
 
@@ -205,18 +226,82 @@ public class Calculator {
         this.result = calcStack.pop();
     }
 
+    // Checks if parenthesis are valid for error handling
+    public boolean isValid(String expression) {
+        // stack to match delimeters
+        Stack<Integer> delimeters = new Stack<>();
+        // iterating through each character of expression
+        for(int i = 0; i < expression.length(); i++) {
+            // using preset array and mapping index of found delimeter
+            // note that even index is open, and odd index is closed
+            int bracketVal = "(){}[]".indexOf(expression.substring(i, i + 1));
+            // if not a bracket, do nothing
+            if (bracketVal == -1) {
+                ;
+            }
+            // if closed bracket, check if delimeters is empty (if the first character is closed bracket, that is no good)
+            // if not, check if the first value in the stack is NOT the open version of the closed bracket (bracketVal -1)
+            // both conditions true means invalid expression
+            else if(bracketVal % 2 == 1) {
+                if(delimeters.isEmpty() || delimeters.pop() != bracketVal - 1) return false;
+            } 
+            // otherwise, push onto stack for comparison later
+            else {
+                delimeters.push(bracketVal);        
+            }
+        }
+        return delimeters.isEmpty();
+    }
+
     // Print the expression, terms, and result
     public String toString() {
-        return ("Original expression: " + this.expression + "\n" +
-                "Tokenized expression: " + this.tokens.toString() + "\n" +
-                "Reverse Polish Notation: " +this.reverse_polish.toString() + "\n" +
-                "Final result: " + String.format("%.2f", this.result));
+        // added try catch for error handling
+        try {
+            return ("Original expression: " + this.expression + "\n" +
+            "Tokenized expression: " + this.tokens.toString() + "\n" +
+            "Reverse Polish Notation: " +this.reverse_polish.toString() + "\n" +
+            "Final result: " + String.format("%.2f", this.result));
+        } catch(Exception e) {
+            return "Erorr";
+        }
+
     }
+
 
     // Tester method
     public static void main(String[] args) {
-        // Random set of test cases
         Calculator simpleMath = new Calculator("100 + 200  * 3");
         System.out.println("Simple Math\n" + simpleMath);
+
+        System.out.println();
+
+        Calculator parenthesisMath = new Calculator("(100 + 200)  * 3");
+        System.out.println("Parenthesis Math\n" + parenthesisMath);
+
+        System.out.println();
+
+        Calculator decimalMath = new Calculator("100.2 - 99.3");
+        System.out.println("Decimal Math\n" + decimalMath);
+
+        System.out.println();
+
+        Calculator moduloMath = new Calculator("300 % 200");
+        System.out.println("Modulo Math\n" + moduloMath);
+
+        System.out.println();
+
+        Calculator divisionMath = new Calculator("300/200");
+        System.out.println("Division Math\n" + divisionMath);
+
+        System.out.println();
+
+        Calculator powerMath = new Calculator("2^7");
+        System.out.println("Power Math\n" + powerMath);
+
+        System.out.println();
+
+        Calculator badMath = new Calculator("(1 + (3 - 4)");
+        System.out.println("Bad Math\n" + badMath);
+
     }
 }
