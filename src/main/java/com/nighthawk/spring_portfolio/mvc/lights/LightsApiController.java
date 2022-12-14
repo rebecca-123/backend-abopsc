@@ -20,7 +20,7 @@ public class LightsApiController {
     public ResponseEntity<String> getLightData() {
         if (result == null) {
             lightBoard = new LightBoard(5, 5); 
-            this.beepForAnHour();      
+            this.startLights();      
         }
         result = lightBoard.toString();
         if (result != null && !result.equals("BAD REQUEST")) {
@@ -32,14 +32,14 @@ public class LightsApiController {
 
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
-    public void beepForAnHour() {
-        final Runnable beeper = new Runnable() {
+    public void startLights() {
+        final Runnable decrementer = new Runnable() {
             public void run() { lightBoard.decrementLights(); }
         };
-        final ScheduledFuture<?> beeperHandle =
-            scheduler.scheduleAtFixedRate(beeper, 1, 1, SECONDS);
+        final ScheduledFuture<?> decrementerHandle =
+            scheduler.scheduleAtFixedRate(decrementer, 1, 1, SECONDS);
         scheduler.schedule(new Runnable() {
-            public void run() { beeperHandle.cancel(true); }
+            public void run() { decrementerHandle.cancel(true); }
         }, 60 * 60, SECONDS);
     }
 
