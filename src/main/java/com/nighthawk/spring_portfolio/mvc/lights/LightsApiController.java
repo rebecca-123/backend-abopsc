@@ -40,7 +40,7 @@ public class LightsApiController {
             scheduler.scheduleAtFixedRate(decrementer, 1, 1, SECONDS);
         scheduler.schedule(new Runnable() {
             public void run() { decrementerHandle.cancel(true); }
-        }, 60 * 60, SECONDS);
+        }, 60 * 60, HOURS);
     }
 
 }

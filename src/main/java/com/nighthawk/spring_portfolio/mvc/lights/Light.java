@@ -13,7 +13,7 @@ public class Light {
 
     public Light() {
         this.on = true;
-        this.luminosity = 1000;
+        this.luminosity = 100;
         this.quality = 100;
     }
 
@@ -27,7 +27,7 @@ public class Light {
 
     public void decrementLight() {
         if (this.luminosity > 0) {
-            this.luminosity -= 10 * (double) 1/quality;
+            this.luminosity -= 1000 * (double) 1/quality;
         }
         else {
             this.luminosity = 0;
