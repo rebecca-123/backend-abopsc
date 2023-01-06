@@ -1,4 +1,5 @@
 package com.nighthawk.spring_portfolio.mvc.lights;
+import java.lang.Math;
 
 public class Light {
     boolean on;
@@ -13,8 +14,8 @@ public class Light {
 
     public Light() {
         this.on = true;
-        this.luminosity = 100;
-        this.quality = 100;
+        this.luminosity = 50 + 200 * Math.random();
+        this.quality = (int) (50 + 50 * Math.random());
     }
 
     public void lightSwitch() {
