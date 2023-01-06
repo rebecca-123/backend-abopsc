@@ -36,7 +36,7 @@ public class LightBoard {
             for (int col = 0; col < lights[row].length; col++) {
                 lights[row][col].decrementLight();
                 if (lights[row][col].luminosity < 1) {
-                    lights[row][col].luminosity = 1000;
+                    lights[row][col].luminosity = 100;
                 }
             }
         }  
