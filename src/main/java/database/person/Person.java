@@ -1,9 +1,6 @@
 package database.person;
 
-public class Person {
-    
-}
-import com.nighthawk.csa.mvc.database.role.Role;
+import database.role.Role;
 import org.springframework.format.annotation.DateTimeFormat;
 import lombok.*;
 
