@@ -1,6 +1,6 @@
-package database.person;
+package com.nighthawk.spring_portfolio.database.person;
 
-import database.role.Role;
+import com.nighthawk.spring_portfolio.database.role.Role;
 import org.springframework.format.annotation.DateTimeFormat;
 import lombok.*;
 
