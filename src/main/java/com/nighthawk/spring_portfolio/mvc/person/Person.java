@@ -1,148 +1,148 @@
-package com.nighthawk.spring_portfolio.mvc.person;
+// package com.nighthawk.spring_portfolio.mvc.person;
 
-import java.text.DateFormat;
-import java.time.LocalDate;
-import java.time.Period;
-import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+// import java.text.DateFormat;
+// import java.time.LocalDate;
+// import java.time.Period;
+// import java.time.ZoneId;
+// import java.util.ArrayList;
+// import java.util.Date;
+// import java.util.HashMap;
+// import java.util.Map;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
+// import javax.persistence.Column;
+// import javax.persistence.Entity;
+// import javax.persistence.GeneratedValue;
+// import javax.persistence.GenerationType;
+// import javax.persistence.Id;
+// import javax.validation.constraints.Email;
+// import javax.validation.constraints.NotEmpty;
+// import javax.validation.constraints.Size;
 
-import org.hibernate.annotations.Type;
-import org.hibernate.annotations.TypeDef;
-import org.springframework.format.annotation.DateTimeFormat;
+// import org.hibernate.annotations.Type;
+// import org.hibernate.annotations.TypeDef;
+// import org.springframework.format.annotation.DateTimeFormat;
 
-import com.vladmihalcea.hibernate.type.json.JsonType;
-
-
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-
-import java.text.SimpleDateFormat;
+// import com.vladmihalcea.hibernate.type.json.JsonType;
 
 
-/*
-Person is a POJO, Plain Old Java Object.
-First set of annotations add functionality to POJO
---- @Setter @Getter @ToString @NoArgsConstructor @RequiredArgsConstructor
-The last annotation connect to database
---- @Entity
- */
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Entity
-@TypeDef(name="json", typeClass = JsonType.class)
-public class Person {
+// import lombok.AllArgsConstructor;
+// import lombok.Data;
+// import lombok.NoArgsConstructor;
+// import lombok.NonNull;
+
+// import java.text.SimpleDateFormat;
+
+
+// /*
+// Person is a POJO, Plain Old Java Object.
+// First set of annotations add functionality to POJO
+// --- @Setter @Getter @ToString @NoArgsConstructor @RequiredArgsConstructor
+// The last annotation connect to database
+// --- @Entity
+//  */
+// @Data
+// @AllArgsConstructor
+// @NoArgsConstructor
+// @Entity
+// @TypeDef(name="json", typeClass = JsonType.class)
+// public class Person {
     
-    // automatic unique identifier for Person record
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+//     // automatic unique identifier for Person record
+//     @Id
+//     @GeneratedValue(strategy = GenerationType.AUTO)
+//     private Long id;
 
-    // email, password, roles are key attributes to login and authentication
-    @NotEmpty
-    @Size(min=5)
-    @Column(unique=true)
-    @Email
-    private String email;
+//     // email, password, roles are key attributes to login and authentication
+//     @NotEmpty
+//     @Size(min=5)
+//     @Column(unique=true)
+//     @Email
+//     private String email;
 
-    @NotEmpty
-    private String password;
+//     @NotEmpty
+//     private String password;
 
-    // @NonNull, etc placed in params of constructor: "@NonNull @Size(min = 2, max = 30, message = "Name (2 to 30 chars)") String name"
-    @NonNull
-    @Size(min = 2, max = 30, message = "Name (2 to 30 chars)")
-    private String name;
+//     // @NonNull, etc placed in params of constructor: "@NonNull @Size(min = 2, max = 30, message = "Name (2 to 30 chars)") String name"
+//     @NonNull
+//     @Size(min = 2, max = 30, message = "Name (2 to 30 chars)")
+//     private String name;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date dob;
+//     @DateTimeFormat(pattern = "yyyy-MM-dd")
+//     private Date dob;
     
 
-    /* HashMap is used to store JSON for daily "stats"
-    "stats": {
-        "2022-11-13": {
-            "calories": 2200,
-            "steps": 8000
-        }
-    }
-    */
-    @Type(type="json")
-    @Column(columnDefinition = "jsonb")
-    private Map<String,Map<String, Object>> stats = new HashMap<>(); 
+//     /* HashMap is used to store JSON for daily "stats"
+//     "stats": {
+//         "2022-11-13": {
+//             "calories": 2200,
+//             "steps": 8000
+//         }
+//     }
+//     */
+//     @Type(type="json")
+//     @Column(columnDefinition = "jsonb")
+//     private Map<String,Map<String, Object>> stats = new HashMap<>(); 
 
-    @Type(type="json")
-    @Column(columnDefinition = "jsonb")
-    private ArrayList<String> carList = new ArrayList<String>();
+//     @Type(type="json")
+//     @Column(columnDefinition = "jsonb")
+//     private ArrayList<String> carList = new ArrayList<String>();
 
-    @Type(type="json")
-    @Column(columnDefinition = "jsonb")
-    private ArrayList<Map<String,Map<String, Object>>> allStats = new ArrayList<Map<String,Map<String, Object>>>();
+//     @Type(type="json")
+//     @Column(columnDefinition = "jsonb")
+//     private ArrayList<Map<String,Map<String, Object>>> allStats = new ArrayList<Map<String,Map<String, Object>>>();
 
-    public void addStat(Map<String,Map<String, Object>> stat) {
-        this.allStats.add(stat);
-    }
+//     public void addStat(Map<String,Map<String, Object>> stat) {
+//         this.allStats.add(stat);
+//     }
 
-    public void addStatToHash(String date, Map<String, Object> map) {
-        this.stats.put(date, map);
-    }
+//     public void addStatToHash(String date, Map<String, Object> map) {
+//         this.stats.put(date, map);
+//     }
 
-    public void addCar(String car) {
-        this.carList.add(car);
-    }
+//     public void addCar(String car) {
+//         this.carList.add(car);
+//     }
 
     
-    // Constructor used when building object from an API
-    public Person(String email, String password, String name, Date dob) {
-        this.email = email;
-        this.password = password;
-        this.name = name;
-        this.dob = dob;
-        this.carList = new ArrayList<String>();
-        this.allStats = new ArrayList<Map<String,Map<String, Object>>>();
-    }
+//     // Constructor used when building object from an API
+//     public Person(String email, String password, String name, Date dob) {
+//         this.email = email;
+//         this.password = password;
+//         this.name = name;
+//         this.dob = dob;
+//         this.carList = new ArrayList<String>();
+//         this.allStats = new ArrayList<Map<String,Map<String, Object>>>();
+//     }
 
-    // A custom getter to return age from dob attribute
-    public int getAge() {
-        if (this.dob != null) {
-            LocalDate birthDay = this.dob.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-            return Period.between(birthDay, LocalDate.now()).getYears(); }
-        return -1;
-    }
+//     // A custom getter to return age from dob attribute
+//     public int getAge() {
+//         if (this.dob != null) {
+//             LocalDate birthDay = this.dob.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+//             return Period.between(birthDay, LocalDate.now()).getYears(); }
+//         return -1;
+//     }
 
-    /* Person To String method */
-    public String personToString() {
-        return ( "{ \"email\": "  +this.email+  ", " + "\"password\": "  +this.password 
-        +  ", " + "\"name\": "  +this.name + ", " + "\"dob\": "  + this.dob + ", " + "\"list\": "  +this.carList +" }" );
-    }	
+//     /* Person To String method */
+//     public String personToString() {
+//         return ( "{ \"email\": "  +this.email+  ", " + "\"password\": "  +this.password 
+//         +  ", " + "\"name\": "  +this.name + ", " + "\"dob\": "  + this.dob + ", " + "\"list\": "  +this.carList +" }" );
+//     }	
 
-    /** Tester method */
-    public static void main(String[] args) {
+//     /** Tester method */
+//     public static void main(String[] args) {
 
-        Person person1 = new Person();
-        System.out.println(person1.personToString());
+//         Person person1 = new Person();
+//         System.out.println(person1.personToString());
         
-        Date dob = new Date();
-        try {
-            dob = new SimpleDateFormat("MM-dd-yyyy").parse("11-23-2022");
-        } catch (Exception e) {
-        }
+//         Date dob = new Date();
+//         try {
+//             dob = new SimpleDateFormat("MM-dd-yyyy").parse("11-23-2022");
+//         } catch (Exception e) {
+//         }
 
-        Person person2 = new Person("person2@gmail.com", "password", "person2", dob);
-        System.out.println(person2.personToString());
+//         Person person2 = new Person("person2@gmail.com", "password", "person2", dob);
+//         System.out.println(person2.personToString());
 
-    }
+//     }
 
-}
+// }
