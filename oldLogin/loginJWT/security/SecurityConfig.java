@@ -1,6 +1,4 @@
-package com.nighthawk.spring_portfolio.login.security;
-
-import com.nighthawk.spring_portfolio.login.jwt.*;
+package com.nighthawk.spring_portfolio.loginJWT.security;
 
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -19,6 +17,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import com.nighthawk.spring_portfolio.loginJWT.jwt.*;
 
 /*
 * To enable HTTP Security in Spring, extend the WebSecurityConfigurerAdapter. 

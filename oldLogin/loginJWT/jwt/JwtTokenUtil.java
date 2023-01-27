@@ -1,4 +1,4 @@
-package com.nighthawk.spring_portfolio.login.jwt;
+package com.nighthawk.spring_portfolio.loginJWT.jwt;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;

@@ -1,4 +1,4 @@
-package com.nighthawk;
+package com.nighthawk.spring_portfolio.database;
 
 import com.nighthawk.spring_portfolio.database.person.Person;
 import com.nighthawk.spring_portfolio.database.person.PersonJpaRepository;
