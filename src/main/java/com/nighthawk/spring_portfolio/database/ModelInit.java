@@ -2,7 +2,9 @@ package com.nighthawk.spring_portfolio.database;
 
 import com.nighthawk.spring_portfolio.database.role.Role;
 import com.nighthawk.spring_portfolio.database.role.RoleJpaRepository;
+import com.nighthawk.spring_portfolio.database.car.CarJpaRepository;
 import com.nighthawk.spring_portfolio.database.person.Person;
+import com.nighthawk.spring_portfolio.database.car.Car;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -17,6 +19,7 @@ public class ModelInit {
     // Inject repositories
     @Autowired RoleJpaRepository roleJpaRepository;
     @Autowired ModelRepository modelRepository;
+    @Autowired CarJpaRepository carJpaRepository;
 
     @Bean
     CommandLineRunner run() {  // The run() method will be executed after the application starts
@@ -41,6 +44,13 @@ public class ModelInit {
             // modelRepository.defaults("123querty", "ROLE_USER");
 
             // modelRepository.addRoleToPerson("sahilsamar031@gmail.com", "ROLE_ADMIN");
+            
+            // String[] cars = {"Tesla Model 3", "Honda Odyssey"};
+            // for (String car : cars) {
+            //     if (carJpaRepository.findByName(car) == null)
+            //         carJpaRepository.save(new Car(null, car));
+            // }
+            // modelRepository.addCarToPersonCarList("sahilsamar031@gmail.com", "Tesla Model 3");
 
 
         };
