@@ -30,7 +30,7 @@ public class ModelInit {
             // ***** Uncomment for Person Database Reset ******
 
 
-            // String[] roles = {"ROLE_USER", "ROLE_DEALERSHIP", "ROLE_ADMIN", "ROLE_TESTER"};
+            // String[] roles = {"ROLE_USER", "ROLE_DEALERSHIP", "ROLE_ADMIN", "ROLE_TESTER", "ROLE_ANONYMOUS"};
             // for (String role : roles) {
             //     if (roleJpaRepository.findByName(role) == null)
             //         roleJpaRepository.save(new Role(null, role));
@@ -43,7 +43,7 @@ public class ModelInit {
                 
             // modelRepository.defaults("123querty", "ROLE_USER");
 
-            //modelRepository.addRoleToPerson("sahilsamar031@gmail.com", "ROLE_ADMIN");
+            // modelRepository.addRoleToPerson("anonymous@email.com", "ROLE_ANONYMOUS");
             
             // String[] cars = {"Tesla Model 3", "Honda Odyssey"};
             // for (String car : cars) {
