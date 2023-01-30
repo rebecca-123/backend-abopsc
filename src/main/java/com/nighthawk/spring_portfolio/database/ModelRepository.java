@@ -4,6 +4,8 @@ import com.nighthawk.spring_portfolio.database.person.Person;
 import com.nighthawk.spring_portfolio.database.person.PersonJpaRepository;
 import com.nighthawk.spring_portfolio.database.role.Role;
 import com.nighthawk.spring_portfolio.database.role.RoleJpaRepository;
+import com.nighthawk.spring_portfolio.database.car.Car;
+import com.nighthawk.spring_portfolio.database.car.CarJpaRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -33,6 +35,8 @@ public class ModelRepository implements UserDetailsService {  // "implements" ti
     private PersonJpaRepository personJpaRepository;
     @Autowired  // Inject RoleJpaRepository
     private RoleJpaRepository roleJpaRepository;
+    @Autowired  // Inject CarJpaRepository
+    private CarJpaRepository carJpaRepository;
 
     // Setup Password style for Database storing and lookup
     @Autowired  // Inject PasswordEncoder
@@ -138,6 +142,23 @@ public class ModelRepository implements UserDetailsService {  // "implements" ti
                     }
                 }
                 if (addRole) person.getRoles().add(role);   // everything is valid for adding role
+            }
+        }
+    }
+
+    public void addCarToPersonCarList(String email, String carName) { // by passing in the two strings you are giving the user that certain role
+        Person person = personJpaRepository.findByEmail(email);
+        if (person != null) {   // verify person
+            Car car = carJpaRepository.findByName(carName);
+            if (car != null) { // verify role
+                boolean addCar = true;
+                for (Car carObj : person.getCarList()) {    // only add if user is missing role
+                    if (carObj.getName().equals(carName)) {
+                        addCar = false;
+                        break;
+                    }
+                }
+                if (addCar) person.getCarList().add(car);   // everything is valid for adding role
             }
         }
     }

@@ -1,6 +1,10 @@
 package com.nighthawk.spring_portfolio.database.person;
 
 import com.nighthawk.spring_portfolio.database.role.Role;
+import com.nighthawk.spring_portfolio.database.car.Car;
+
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.springframework.format.annotation.DateTimeFormat;
 import lombok.*;
 
@@ -40,8 +44,15 @@ public class Person {
     @NotEmpty
     private String password;
 
-    @ManyToMany(fetch = EAGER)
+    @ManyToMany
+    @LazyCollection(LazyCollectionOption.FALSE)
+
     private Collection<Role> roles = new ArrayList<>();
+
+    @ManyToMany
+    @LazyCollection(LazyCollectionOption.FALSE)
+
+    private Collection<Car> carList = new ArrayList();
 
     // @NonNull: Places this in @RequiredArgsConstructor
     @NonNull

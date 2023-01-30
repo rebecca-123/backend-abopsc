@@ -2,6 +2,11 @@ package com.nighthawk.spring_portfolio.database;
 
 import com.nighthawk.spring_portfolio.database.role.Role;
 import com.nighthawk.spring_portfolio.database.role.RoleJpaRepository;
+import com.nighthawk.spring_portfolio.database.person.Person;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
@@ -16,21 +21,26 @@ public class ModelInit {
     @Bean
     CommandLineRunner run() {  // The run() method will be executed after the application starts
         return args -> {
-            // Fail safe data validations
 
-            // make sure Role database is populated with defaults
-            String[] roles = {"ROLE_STUDENT", "ROLE_TEACHER", "ROLE_ADMIN", "ROLE_TESTER"};
-            for (String role : roles) {
-                if (roleJpaRepository.findByName(role) == null)
-                    roleJpaRepository.save(new Role(null, role));
-            }
+            System.out.println("Person Databases Init");
 
-            // make sure every record added has a Default encrypted password and ROLE_STUDENT
-            modelRepository.defaults("123querty", "ROLE_STUDENT");
+            // ***** Uncomment for Person Database Reset ******
 
-            // make sure privileged roles exist for Teacher
-            modelRepository.addRoleToPerson("jmort1021@gmail.com", "ROLE_TEACHER");
-            modelRepository.addRoleToPerson("jmort1021@gmail.com", "ROLE_ADMIN");
+
+            // String[] roles = {"ROLE_USER", "ROLE_DEALERSHIP", "ROLE_ADMIN", "ROLE_TESTER"};
+            // for (String role : roles) {
+            //     if (roleJpaRepository.findByName(role) == null)
+            //         roleJpaRepository.save(new Role(null, role));
+            // }
+
+            // Date dob = new SimpleDateFormat("MM-dd-yyyy").parse("11-07-2005");
+
+            // Person person = new Person("sahilsamar031@gmail.com", "test123", "Sahil Samar", dob, modelRepository.findRole("ROLE_TESTER") );
+            // modelRepository.save(person);
+                
+            // modelRepository.defaults("123querty", "ROLE_USER");
+
+            // modelRepository.addRoleToPerson("sahilsamar031@gmail.com", "ROLE_ADMIN");
 
 
         };

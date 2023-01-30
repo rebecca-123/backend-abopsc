@@ -1,4 +1,4 @@
-package com.nighthawk.spring_portfolio.security;
+package com.nighthawk.spring_portfolio.database.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
@@ -29,13 +29,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         /* security rules ...
             ... initial implementation is focused on protecting database information
             ... "DELETE" is primary concern in authority rules, ADMIN only
-            ... "POST", actions desire STUDENT role
+            ... "POST", actions desire USER role
          */
         http
             .authorizeRequests()
-                .antMatchers(POST, "/api/person/post/**").hasAnyAuthority("ROLE_STUDENT")
+                .antMatchers(POST, "/api/person/post/**").hasAnyAuthority("ROLE_USER")
                 .antMatchers(DELETE, "/api/person/delete/**").hasAnyAuthority("ROLE_ADMIN")
-                .antMatchers("/database/personupdate/**").hasAnyAuthority("ROLE_STUDENT")
+                .antMatchers("/database/personupdate/**").hasAnyAuthority("ROLE_USER")
                 .antMatchers("/database/persondelete/**").hasAnyAuthority("ROLE_ADMIN")
                 .antMatchers( "/api/person/**").permitAll()
                 .antMatchers( "/api/refresh/token/**").permitAll()
