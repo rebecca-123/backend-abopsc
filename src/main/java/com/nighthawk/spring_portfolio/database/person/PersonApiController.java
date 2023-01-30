@@ -83,4 +83,17 @@ public class PersonApiController {
         // return resulting list and status, error checking should be added
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
+
+    // Method to call addCarToPersonCarList from ModelRepository to add a car to a person's car list, taking email and car name as parameters from URI
+    @PostMapping(value = "/addCar", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> addCarToPersonCarList(@RequestParam("email") String email,
+                                                        @RequestParam("carName") String carName) {
+        // custom JPA query to filter on term
+        repository.addCarToPersonCarList(email, carName);
+
+        // return resulting list and status, error checking should be added
+        return new ResponseEntity<>("Car added to person's car list", HttpStatus.OK);
+    }
+
+
 }

@@ -36,14 +36,14 @@ public class ModelInit {
             //         roleJpaRepository.save(new Role(null, role));
             // }
 
-            // Date dob = new SimpleDateFormat("MM-dd-yyyy").parse("11-07-2005");
+            // Date dob = new SimpleDateFormat("MM-dd-yyyy").parse("01-01-2000");
 
-            // Person person = new Person("sahilsamar031@gmail.com", "test123", "Sahil Samar", dob, modelRepository.findRole("ROLE_TESTER") );
+            // Person person = new Person("anonymous@email.com", "test123", "Anonymous", dob, modelRepository.findRole("ROLE_USER") );
             // modelRepository.save(person);
                 
             // modelRepository.defaults("123querty", "ROLE_USER");
 
-            // modelRepository.addRoleToPerson("sahilsamar031@gmail.com", "ROLE_ADMIN");
+            //modelRepository.addRoleToPerson("sahilsamar031@gmail.com", "ROLE_ADMIN");
             
             // String[] cars = {"Tesla Model 3", "Honda Odyssey"};
             // for (String car : cars) {
