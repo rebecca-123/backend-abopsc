@@ -146,19 +146,19 @@ public class ModelRepository implements UserDetailsService {  // "implements" ti
         }
     }
 
-    public void addCarToPersonCarList(String email, String carName) { // by passing in the two strings you are giving the user that certain role
+    public void addCarToPersonCarList(String email, String carName) { 
         Person person = personJpaRepository.findByEmail(email);
         if (person != null) {   // verify person
             Car car = carJpaRepository.findByName(carName);
             if (car != null) { // verify role
                 boolean addCar = true;
-                for (Car carObj : person.getCarList()) {    // only add if user is missing role
+                for (Car carObj : person.getCarList()) {    // only add if user doesn't already have car in list
                     if (carObj.getName().equals(carName)) {
                         addCar = false;
                         break;
                     }
                 }
-                if (addCar) person.getCarList().add(car);   // everything is valid for adding role
+                if (addCar) person.getCarList().add(car);   // everything is valid for adding car
             }
         }
     }

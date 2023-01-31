@@ -64,7 +64,7 @@ public class PersonApiController {
             return new ResponseEntity<>(dobString +" error; try MM-dd-yyyy", HttpStatus.BAD_REQUEST);
         }
         // A person object WITHOUT ID will create a new record with default roles as student
-        Person person = new Person(email, password, name, dob, repository.findRole("ROLE_STUDENT") );
+        Person person = new Person(email, password, name, dob, repository.findRole("ROLE_USER") );
         repository.save(person);
         return new ResponseEntity<>(email +" is created successfully", HttpStatus.CREATED);
     }
@@ -91,7 +91,7 @@ public class PersonApiController {
         // custom JPA query to filter on term
         repository.addCarToPersonCarList(email, carName);
 
-        // return resulting list and status, error checking should be added
+        // return resulting list and status
         return new ResponseEntity<>("Car added to person's car list", HttpStatus.OK);
     }
 
