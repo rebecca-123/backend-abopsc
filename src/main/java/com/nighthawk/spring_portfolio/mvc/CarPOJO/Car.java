@@ -1,24 +1,24 @@
-package com.nighthawk.spring_portfolio.mvc.CarPOJO;
+// package com.nighthawk.spring_portfolio.mvc.CarPOJO;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import javax.persistence.*;
+// import lombok.AllArgsConstructor;
+// import lombok.Data;
+// import lombok.NoArgsConstructor;
+// import javax.persistence.*;
 
-@Data 
-@NoArgsConstructor
-@AllArgsConstructor
-@Entity 
-public class Car {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id; 
+// @Data 
+// @NoArgsConstructor
+// @AllArgsConstructor
+// @Entity 
+// public class Car {
+//     @Id
+//     @GeneratedValue(strategy = GenerationType.AUTO)
+//     private Long id; 
 
-    @Column(unique=true)
-    private String car;
+//     @Column(unique=true)
+//     private String car;
 
-    private String brand;
+//     private String brand;
 
-    private int like;  
-    private int dislike;  
-}
+//     private int like;  
+//     private int dislike;  
+// }
