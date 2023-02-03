@@ -34,12 +34,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
             .authorizeRequests()
                 .antMatchers(GET, "/api/person/get/**").hasAnyAuthority("ROLE_ANONYMOUS")
-                .antMatchers(POST, "/api/person/post/**").hasAnyAuthority("ROLE_USER")
                 .antMatchers(DELETE, "/api/person/delete/**").hasAnyAuthority("ROLE_ADMIN")
                 .antMatchers("/database/personupdate/**").hasAnyAuthority("ROLE_USER")
                 .antMatchers("/database/persondelete/**").hasAnyAuthority("ROLE_ADMIN")
                 .antMatchers( "/api/person/**").permitAll()
                 .antMatchers( "/api/person/post").permitAll()
+                .antMatchers( "/api/person/post**").permitAll()
                 .antMatchers( "/api/refresh/token/**").permitAll()
                 .antMatchers("/", "/starters/**", "/frontend/**", "/mvc/**", "/database/person/**", "/database/personcreate", "/database/scrum/**", "/course/**").permitAll()
                 .antMatchers("/resources/**", "/static/**",  "/images/**", "/scss/**").permitAll()
