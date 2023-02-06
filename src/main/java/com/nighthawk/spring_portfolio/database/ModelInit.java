@@ -45,11 +45,12 @@ public class ModelInit {
 
             // modelRepository.addRoleToPerson("anonymous@email.com", "ROLE_ANONYMOUS");
             
-            // String[] cars = {"Tesla Model 3", "Honda Odyssey"};
+            // String[] cars = {"Tesla Model 3", "Honda Odyssey", "Toyota Prius", "Honda Civic", "Tesla Model X"};
             // for (String car : cars) {
             //     if (carJpaRepository.findByName(car) == null)
-            //         carJpaRepository.save(new Car(null, car));
+            //         carJpaRepository.save(new Car(null, car, "Description", "Image Link"));
             // }
+
             // modelRepository.addCarToPersonCarList("sahilsamar031@gmail.com", "Tesla Model 3");
 
 

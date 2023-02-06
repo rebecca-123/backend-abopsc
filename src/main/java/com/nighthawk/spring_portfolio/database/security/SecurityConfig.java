@@ -53,10 +53,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
             .logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                .logoutSuccessUrl("/database/person")
+                .logoutSuccessUrl("/")
                 .permitAll()
         ;
         // Cross-Site Request Forgery needs to be disabled to allow activation of JS Fetch URIs
         http.csrf().disable();
+        
     }
 }
