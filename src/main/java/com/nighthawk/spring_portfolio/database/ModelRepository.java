@@ -149,10 +149,7 @@ public class ModelRepository implements UserDetailsService {  // "implements" ti
     /* Car Section */
 
     public void saveCar(Car car) {
-        Car carObj = carJpaRepository.findByName(car.getName());
-        if (carObj == null) {  // only add if it is not found
-            carJpaRepository.save(car);
-        }
+        carJpaRepository.save(car);
     }
 
     public  List<Car>listAllCars() {

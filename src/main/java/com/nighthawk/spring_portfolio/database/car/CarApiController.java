@@ -54,7 +54,7 @@ public class CarApiController {
     public ResponseEntity<Object> postPerson(@RequestParam("name") String name, @RequestParam("imageLink") String imageLink,
                                              @RequestParam("description") String description) {
 
-        carJpaRepository.save(new Car(null, name, imageLink, description));
+        repository.saveCar(new Car(null, name, imageLink, description));
         return new ResponseEntity<>(name +" is created successfully", HttpStatus.CREATED);
     }
 
