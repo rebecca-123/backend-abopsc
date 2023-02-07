@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
+
 
 @Data
 @NoArgsConstructor
@@ -31,6 +33,7 @@ public class Car {
     private String model;
 
     @Column()
+    @Size(min = 4, max = 4)
     private int year;
 
     public Car(String name, String imageLink, String description, String make, String model, int year) {
