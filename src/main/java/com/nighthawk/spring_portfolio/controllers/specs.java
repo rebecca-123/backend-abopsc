@@ -71,7 +71,7 @@ public class specs {
                 
                 //RapidAPI header
                 HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create("https://car-specs.p.rapidapi.com/v2/cars/makes/%7BmakeId%7D/models"))
+                    .uri(URI.create("https://car-specs.p.rapidapi.com/v2/cars/makes/%7BmakeId%7D/models")) //only shows for the models, figure out how to use the database into it
                     .header("x-rapidapi-key", "032f716b5amsh1241419d17ff651p1d3c54jsna32e706ab7f6")
                     .header("x-rapidapi-host", "car-specs.p.rapidapi.com")
                     .method("GET", HttpRequest.BodyPublishers.noBody())
