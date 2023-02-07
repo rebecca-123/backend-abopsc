@@ -55,7 +55,7 @@ public class CarApiController {
                                              @RequestParam("description") String description, @RequestParam("make") String make,
                                              @RequestParam("model") String model, @RequestParam("year") int year) {
 
-        repository.saveCar(new Car(null, name, imageLink, description));
+        repository.saveCar(new Car(null, name, imageLink, description, make, model, year));
         return new ResponseEntity<>(name +" is created successfully", HttpStatus.CREATED);
     }
 
