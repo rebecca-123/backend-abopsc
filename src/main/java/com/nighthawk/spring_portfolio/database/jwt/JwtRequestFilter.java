@@ -33,8 +33,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
 
-		response.setHeader("Access-Control-Allow-Origin", "*");
-
 		final Cookie[] cookies = request.getCookies();
 		String username = null;
 		String jwtToken = null;
