@@ -24,10 +24,23 @@ public class Car {
     @Column()
     private String description;
 
-    public Car(String name, String imageLink, String description) {
+    @Column()
+    private String make;
+
+    @Column()
+    private String model;
+
+    @Column()
+    private int year;
+
+    public Car(String name, String imageLink, String description, String make, String model, int year) {
         this.name = name;
         this.imageLink = imageLink;
         this.description = description;
+        this.make = make;
+        this.model = model;
+        this.year = year;
+        
     }
 
 }
