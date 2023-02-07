@@ -6,6 +6,8 @@ import com.nighthawk.spring_portfolio.database.role.Role;
 import com.nighthawk.spring_portfolio.database.role.RoleJpaRepository;
 import com.nighthawk.spring_portfolio.database.car.Car;
 import com.nighthawk.spring_portfolio.database.car.CarJpaRepository;
+import com.nighthawk.spring_portfolio.database.review.Review;
+import com.nighthawk.spring_portfolio.database.review.ReviewJpaRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -37,6 +39,9 @@ public class ModelRepository implements UserDetailsService {  // "implements" ti
     private RoleJpaRepository roleJpaRepository;
     @Autowired  // Inject CarJpaRepository
     private CarJpaRepository carJpaRepository;
+    @Autowired  // Inject ReviewJpaRepository
+    private ReviewJpaRepository reviewJpaRepository;
+
 
     // Setup Password style for Database storing and lookup
     @Autowired  // Inject PasswordEncoder
@@ -145,7 +150,8 @@ public class ModelRepository implements UserDetailsService {  // "implements" ti
             }
         }
     }
-    
+
+
     /* Car Section */
 
     public void saveCar(Car car) {
@@ -187,5 +193,15 @@ public class ModelRepository implements UserDetailsService {  // "implements" ti
         }
     }
 
+
+    /* Review Section */
+
+    public void saveReview(Review review) {
+        reviewJpaRepository.save(review);
+    }
+
+    public  List<Review>listAllReviews() {
+        return reviewJpaRepository.findAll();
+    }
 
 }
