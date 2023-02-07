@@ -90,7 +90,19 @@
                         </li>
                     </ul>
                 </div>
+
+                <th:block sec:authorize="isAnonymous()">
+                    <div class="px-3">
+                        <a th:href='@{/login}' class="link-dark">Login</a>
+                    </div>
+                    </th:block>
+                    <th:block sec:authorize="isAuthenticated()">
+                    <div class="px-3">
+                       <a th:href='@{/logout}' class="link-dark">Logout</a>
+                    </div>
+                </th:block>
             </div>
+
 
 
   

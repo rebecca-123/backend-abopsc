@@ -95,5 +95,11 @@ public class PersonApiController {
         return new ResponseEntity<>("Car added to person's car list", HttpStatus.OK);
     }
 
+    @GetMapping("/getPersonCarList")
+    public ResponseEntity<?> getPersonCarList(@RequestParam("email") String email) {
+        Person person = repository.getByEmail(email);
+        return new ResponseEntity<>(person.getCarList(), HttpStatus.OK);
+    }
+
 
 }

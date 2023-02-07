@@ -145,6 +145,30 @@ public class ModelRepository implements UserDetailsService {  // "implements" ti
             }
         }
     }
+    
+    /* Car Section */
+
+    public void saveCar(Car car) {
+        carJpaRepository.save(car);
+    }
+
+    public  List<Car>listAllCars() {
+        return carJpaRepository.findAll();
+    }
+
+    public Car findCar(String carName) {
+        return carJpaRepository.findByName(carName);
+    }
+
+    public Car getCar(long id) {
+        return (carJpaRepository.findById(id).isPresent())
+                ? carJpaRepository.findById(id).get()
+                : null;
+    }
+
+    public void deleteCar(long id) {
+        carJpaRepository.deleteById(id);
+    }
 
     public void addCarToPersonCarList(String email, String carName) { 
         Person person = personJpaRepository.findByEmail(email);
@@ -162,5 +186,6 @@ public class ModelRepository implements UserDetailsService {  // "implements" ti
             }
         }
     }
+
 
 }
