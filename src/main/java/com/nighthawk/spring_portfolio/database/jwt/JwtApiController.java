@@ -9,7 +9,9 @@ import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -45,6 +47,14 @@ public class JwtApiController {
 			.build();
 		return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, tokenCookie.toString()).build();
 	}
+
+	@GetMapping("/getUsername")
+	public ResponseEntity<?> getUsername(@RequestHeader("Authorization") String token) throws Exception {
+		String username = jwtTokenUtil.getUsernameFromToken(token);
+		return ResponseEntity.ok().body(username);
+	}
+
+
 
 	private void authenticate(String username, String password) throws Exception {
 		try {
