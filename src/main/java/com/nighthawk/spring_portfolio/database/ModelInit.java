@@ -4,6 +4,7 @@ import com.nighthawk.spring_portfolio.database.role.Role;
 import com.nighthawk.spring_portfolio.database.role.RoleJpaRepository;
 import com.nighthawk.spring_portfolio.database.car.CarJpaRepository;
 import com.nighthawk.spring_portfolio.database.person.Person;
+import com.nighthawk.spring_portfolio.database.person.PersonJpaRepository;
 import com.nighthawk.spring_portfolio.database.car.Car;
 
 import java.text.SimpleDateFormat;
@@ -20,6 +21,7 @@ public class ModelInit {
     @Autowired RoleJpaRepository roleJpaRepository;
     @Autowired ModelRepository modelRepository;
     @Autowired CarJpaRepository carJpaRepository;
+    @Autowired PersonJpaRepository personJpaRepository;
 
     @Bean
     CommandLineRunner run() {  // The run() method will be executed after the application starts
@@ -36,10 +38,16 @@ public class ModelInit {
             //         roleJpaRepository.save(new Role(null, role));
             // }
 
-            // Date dob = new SimpleDateFormat("MM-dd-yyyy").parse("01-01-2000");
+            Date dob = new SimpleDateFormat("MM-dd-yyyy").parse("11-07-2005");
 
-            // Person person = new Person("anonymous@email.com", "test123", "Anonymous", dob, modelRepository.findRole("ROLE_USER") );
-            // modelRepository.save(person);
+            String email = "sahilsamar031@gmail.com";
+
+            Person person = new Person(email, "123qwerty", "Anonymous", dob, modelRepository.findRole("ROLE_ADMIN") );
+            
+            if (personJpaRepository.findByEmail(email) == null) {
+                modelRepository.save(person);
+            }
+            
                 
             // modelRepository.defaults("123querty", "ROLE_USER");
 

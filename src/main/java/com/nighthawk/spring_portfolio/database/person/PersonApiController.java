@@ -101,5 +101,11 @@ public class PersonApiController {
         return new ResponseEntity<>(person.getCarList(), HttpStatus.OK);
     }
 
+    @GetMapping("/getPersonRoles")
+    public ResponseEntity<?> getPersonRoles(@RequestParam("email") String email) {
+        Person person = repository.getByEmail(email);
+        return new ResponseEntity<>(person.getRoles(), HttpStatus.OK);
+    }
+
 
 }
