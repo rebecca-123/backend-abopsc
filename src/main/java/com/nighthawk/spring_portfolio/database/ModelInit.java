@@ -42,7 +42,7 @@ public class ModelInit {
 
             String email = "sahilsamar031@gmail.com";
 
-            Person person = new Person(email, "123qwerty", "Anonymous", dob, modelRepository.findRole("ROLE_ADMIN") );
+            Person person = new Person(email, "123qwerty", "Sahil Samar", dob, modelRepository.findRole("ROLE_ADMIN") );
             
             if (personJpaRepository.findByEmail(email) == null) {
                 modelRepository.save(person);
