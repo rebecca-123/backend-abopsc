@@ -40,6 +40,7 @@ public class PersonApiController {
         return new ResponseEntity<>( repository.get(id), HttpStatus.OK);
     }
 
+
     /*
     DELETE individual Person using ID
      */
@@ -107,5 +108,10 @@ public class PersonApiController {
         return new ResponseEntity<>(person.getRoles(), HttpStatus.OK);
     }
 
+    @GetMapping("/getPersonName")
+    public ResponseEntity<?> getPersonName(@RequestParam("email") String email) {
+        Person person = repository.getByEmail(email);
+        return new ResponseEntity<>(person.getName(), HttpStatus.OK);
+    }
 
 }
