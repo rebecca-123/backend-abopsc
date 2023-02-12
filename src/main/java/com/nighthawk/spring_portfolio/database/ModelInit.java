@@ -59,6 +59,8 @@ public class ModelInit {
             //         carJpaRepository.save(new Car(null, car, "Description", "Image Link"));
             // }
 
+            System.out.println(carJpaRepository.findByName("Tesla Model 3").toString());
+
             // modelRepository.addCarToPersonCarList("sahilsamar031@gmail.com", "Tesla Model 3");
 
 
