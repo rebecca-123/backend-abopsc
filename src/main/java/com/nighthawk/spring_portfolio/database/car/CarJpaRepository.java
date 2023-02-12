@@ -6,5 +6,5 @@ import java.util.List;
 public interface  CarJpaRepository extends JpaRepository<Car, Long> {
     Car findByName(String name);
     List<Car> findAll();
-    void deleteById(Long id);
+    // void deleteById(Long id);
 }

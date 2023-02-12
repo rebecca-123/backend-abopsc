@@ -2,16 +2,16 @@ package com.nighthawk.spring_portfolio.database.car;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-// import org.springframework.http.MediaType;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.nighthawk.spring_portfolio.database.ModelRepository;
-// import com.nighthawk.spring_portfolio.database.car.CarJpaRepository;
+import com.nighthawk.spring_portfolio.database.car.CarJpaRepository;
 
 import java.util.*;
 
-// import java.text.SimpleDateFormat;
+import java.text.SimpleDateFormat;
 
 @RestController
 @RequestMapping("/api/carInventory/")
