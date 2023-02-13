@@ -45,4 +45,15 @@ public class Car {
         
     }
 
+    public String toString() {
+        return( "{" + 
+            "\"name\": " + name + "," +
+            "\"imageLink\": " +  imageLink + "," + 
+            "\"description\": " +  description + "," +
+            "\"make\": " +  make + "," +
+            "\"model\": " +  model + "," +
+            "\"year\": " + year + 
+            "}" );
+    }
+
 }

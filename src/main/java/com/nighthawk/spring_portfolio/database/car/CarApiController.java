@@ -51,7 +51,7 @@ public class CarApiController {
     POST Aa record by Requesting Parameters from URI
      */
     @PostMapping( "/post/")
-    public ResponseEntity<Object> postPerson(@RequestParam("name") String name, @RequestParam("imageLink") String imageLink,
+    public ResponseEntity<Object> postCar(@RequestParam("name") String name, @RequestParam("imageLink") String imageLink,
                                              @RequestParam("description") String description, @RequestParam("make") String make,
                                              @RequestParam("model") String model, @RequestParam("year") int year) {
 
@@ -59,5 +59,24 @@ public class CarApiController {
         return new ResponseEntity<>(name +" is created successfully", HttpStatus.CREATED);
     }
 
+    /*
+    PUT Aa record by Requesting Parameters from URI
+     */
+    @PutMapping( "updateCar/{id}")
+    public ResponseEntity<Object> updateCar(@PathVariable Long id, @RequestParam("name") String name, @RequestParam("imageLink") String imageLink,
+                                             @RequestParam("description") String description, @RequestParam("make") String make,
+                                             @RequestParam("model") String model, @RequestParam("year") int year) {
+
+        
+        Car caredit = repository.getCar(id);
+        caredit.setName(name);
+        caredit.setImageLink(imageLink);
+        caredit.setDescription(description);
+        caredit.setMake(make);
+        caredit.setModel(model);
+        caredit.setYear(year);
+        repository.saveCar(caredit);
+        return new ResponseEntity<>(name +" is updated successfully", HttpStatus.ACCEPTED);
+    }
 
 }
