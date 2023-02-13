@@ -4,6 +4,7 @@ import com.nighthawk.spring_portfolio.database.role.Role;
 import com.nighthawk.spring_portfolio.database.role.RoleJpaRepository;
 import com.nighthawk.spring_portfolio.database.car.CarJpaRepository;
 import com.nighthawk.spring_portfolio.database.person.Person;
+import com.nighthawk.spring_portfolio.database.person.PersonJpaRepository;
 import com.nighthawk.spring_portfolio.database.car.Car;
 
 import java.text.SimpleDateFormat;
@@ -20,6 +21,7 @@ public class ModelInit {
     @Autowired RoleJpaRepository roleJpaRepository;
     @Autowired ModelRepository modelRepository;
     @Autowired CarJpaRepository carJpaRepository;
+    @Autowired PersonJpaRepository personJpaRepository;
 
     @Bean
     CommandLineRunner run() {  // The run() method will be executed after the application starts
@@ -52,7 +54,7 @@ public class ModelInit {
             // }
 
             // modelRepository.addCarToPersonCarList("sahilsamar031@gmail.com", "Tesla Model 3");
-
+            System.out.println(personJpaRepository.findByEmail("test1@gmail.com").toString());
 
         };
     }

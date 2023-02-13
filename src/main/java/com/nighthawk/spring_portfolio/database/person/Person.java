@@ -79,4 +79,13 @@ public class Person {
         return -1;
     }
 
+    public String toString() {
+        return( "{" + 
+            "\"name\": " + name + "," +
+            "\"email\": " +  email + "," + 
+            "\"password\": " +  password + "," + 
+            "\"dob\": " + dob + 
+            "}" );
+    }
+
 }
