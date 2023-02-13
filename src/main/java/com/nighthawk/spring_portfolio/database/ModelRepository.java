@@ -176,6 +176,10 @@ public class ModelRepository implements UserDetailsService {  // "implements" ti
         carJpaRepository.deleteById(id);
     }
 
+    // public void updateCar(long id, Car car){
+    //     carJpaRepository.save(car);
+    // }
+
     public void addCarToPersonCarList(String email, String carName) { 
         Person person = personJpaRepository.findByEmail(email);
         if (person != null) {   // verify person

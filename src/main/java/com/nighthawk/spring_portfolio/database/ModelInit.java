@@ -38,10 +38,16 @@ public class ModelInit {
             //         roleJpaRepository.save(new Role(null, role));
             // }
 
-            // Date dob = new SimpleDateFormat("MM-dd-yyyy").parse("01-01-2000");
+            Date dob = new SimpleDateFormat("MM-dd-yyyy").parse("11-07-2005");
 
-            // Person person = new Person("anonymous@email.com", "test123", "Anonymous", dob, modelRepository.findRole("ROLE_USER") );
-            // modelRepository.save(person);
+            String email = "sahilsamar031@gmail.com";
+
+            Person person = new Person(email, "123qwerty", "Sahil Samar", dob, modelRepository.findRole("ROLE_ADMIN") );
+            
+            if (personJpaRepository.findByEmail(email) == null) {
+                modelRepository.save(person);
+            }
+            
                 
             // modelRepository.defaults("123querty", "ROLE_USER");
 
@@ -52,6 +58,8 @@ public class ModelInit {
             //     if (carJpaRepository.findByName(car) == null)
             //         carJpaRepository.save(new Car(null, car, "Description", "Image Link"));
             // }
+
+            System.out.println(carJpaRepository.findByName("Tesla Model 3").toString());
 
             // modelRepository.addCarToPersonCarList("sahilsamar031@gmail.com", "Tesla Model 3");
             System.out.println(personJpaRepository.findByEmail("test1@gmail.com").toString());
