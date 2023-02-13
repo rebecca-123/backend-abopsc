@@ -62,7 +62,7 @@ public class ModelInit {
             System.out.println(carJpaRepository.findByName("Tesla Model 3").toString());
 
             // modelRepository.addCarToPersonCarList("sahilsamar031@gmail.com", "Tesla Model 3");
-
+            System.out.println(personJpaRepository.findByEmail("test1@gmail.com").toString());
 
         };
     }
