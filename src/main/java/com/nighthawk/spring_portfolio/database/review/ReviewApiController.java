@@ -34,7 +34,7 @@ public class ReviewApiController {
      */
     @PostMapping( "/post/")
     public ResponseEntity<Object> postPerson(@RequestParam("name") String name, @RequestParam("email") String email,
-                                             @RequestParam("phone number") String phone, @RequestParam("stars") int stars,
+                                             @RequestParam("phoneNumber") String phone, @RequestParam("stars") int stars,
                                              @RequestParam("comments") String comments) {
 
         repository.saveReview(new Review(null, name, email, phone, stars, comments));
