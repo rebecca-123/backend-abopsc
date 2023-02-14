@@ -15,6 +15,7 @@ import java.util.Date;
 import java.util.HashMap;
 
 import org.bson.codecs.pojo.annotations.BsonId;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.http.HttpStatus;
@@ -57,17 +58,20 @@ import org.springframework.web.bind.annotation.*;
 //     }
 // }
 
+
+
+
 @RestController // annotation to create a RESTful web services
 @RequestMapping("/api/specs")  //prefix of API
 @ResponseBody
 public class specs {
-    private String body; //last run result
+    private JSONArray body; //last run result
     private HttpStatus status; //last run status
     String last_run = null; //last run day of month
 
     // GET Covid 19 Stats
     @GetMapping("/makes")   //added to end of prefix as endpoint
-    public String getMakes() {
+    public JSONArray getMakes() {
 
         //calls API once a day, sets body and status properties
         // String today = new Date().toString().substring(0,10); 
@@ -89,7 +93,8 @@ public class specs {
                 System.out.println("hahahaha");
                 String temp = response.body();
                 System.out.println(temp);
-                this.body = temp;
+                this.body = (JSONArray) new JSONParser().parse(response.body());
+                
 
                 //System.out.prinltn()
 
@@ -99,7 +104,7 @@ public class specs {
             catch (Exception e) {  //capture failure info
                 HashMap<String, String> status = new HashMap<>();
 
-                this.body = e.toString();
+                // this.body = e.toString();
 
                 System.out.println("error");
                 System.out.println(e);
@@ -113,199 +118,228 @@ public class specs {
             
             }
         // }
-        return this.body;  // JSON response, see ExceptionHandlerAdvice for throws
 
         //return JSONObject in RESTful style
-        // return new ResponseEntity<>(body, status);
+        return this.body;  // JSON response, see ExceptionHandlerAdvice for throws
+   //     return new ResponseEntity<>(body, status);
+
+}
+@GetMapping("/models/{modelid}")   //added to end of prefix as endpoint
+public JSONArray getModels(@PathVariable String modelid) {
+
+    //calls API once a day, sets body and status properties
+    String today = new Date().toString().substring(0,10); 
+    if (last_run == null || !today.equals(last_run)) // this thing gave me problems
+    {
+        try {  //APIs can fail (ie Internet or Service down)
+            
+            //RapidAPI header
+            HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("https://car-specs.p.rapidapi.com/v2/cars/makes/" + modelid + "/models"))
+                .header("x-rapidapi-key", "84b76dff13msh558c4194f6512fep1b309fjsn7f546fb2bbc5") //032f716b5amsh1241419d17ff651p1d3c54jsna32e706ab7f6
+                .header("x-rapidapi-host", "car-specs.p.rapidapi.com")
+                .build();
+
+            //RapidAPI request and response
+            HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+
+            //JSONParser extracts text body and parses to JSONObject
+            System.out.println("hahahaha");
+            String temp = response.body();
+            System.out.println(temp);
+            this.body = (JSONArray) new JSONParser().parse(response.body());
+            
+
+            //System.out.prinltn()
+
+            this.status = HttpStatus.OK;  //200 success
+            // this.last_run = today; //updates it so when it pulls each day
+        }
+        catch (Exception e) {  //capture failure info
+            HashMap<String, String> status = new HashMap<>();
+
+            // this.body = e.toString();
+
+            System.out.println("error");
+            System.out.println(e);
+
+            status.put("status", "RapidApi failure: " + e);
+
+            //Setup object for error
+            // this.body = (JSONObject) status;
+            // this.status = HttpStatus.INTERNAL_SERVER_ERROR; //500 error
+            this.last_run = null;
+        
+        }
     }
-    // @GetMapping("/models/{id}")
-    // public ResponseEntity<JSONObject> getModels(@PathVariable String id) {
-    //     // Backend Year Object
-    //     Year year_obj = new Year();
-    //     // year_obj.setStringYear(id);   // updating year object with the year
 
-    //     // String url = year_obj.getUrl(id); // object generates the URL. Method gets it.
+    //return JSONObject in RESTful style
+    return this.body;  // JSON response, see ExceptionHandlerAdvice for throws
+//     return new ResponseEntity<>(body, status);
 
+}
+@GetMapping("/generations/{genid}")   //added to end of prefix as endpoint
+public JSONArray getGeneration(@PathVariable String genid) {
 
-    //     //calls API once a day, sets body and status properties
-    //     // String today = new Date().toString().substring(0,10); 
-    //     // if (last_run == null || !today.equals(last_run)) // this thing gave me problems
-    //     // {
-    //         try {  //APIs can fail (ie Internet or Service down)
-                
-    //             //RapidAPI header
-    //             HttpRequest request = HttpRequest.newBuilder()
-    //                 .uri(URI.create("https://car-specs.p.rapidapi.com/v2/cars/makes/" + id + "/models"))
-    //                 .header("x-rapidapi-key", "84b76dff13msh558c4194f6512fep1b309fjsn7f546fb2bbc5")
-    //                 .header("x-rapidapi-host", "car-specs.p.rapidapi.com")
-    //                 .build();
-
-    //             //RapidAPI request and response
-    //             HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
-
-    //             //JSONParser extracts text body and parses to JSONObject
-    //             this.body = (JSONObject) new JSONParser().parse(response.body());
-
-    //             this.status = HttpStatus.OK;  //200 success
-    //             // this.last_run = today; //updates it so when it pulls each day
-    //         }
-    //         catch (Exception e) {  //capture failure info
-    //             HashMap<String, String> status = new HashMap<>();
-
-    //             status.put("status", "RapidApi failure: " + e);
-
-    //             //Setup object for error
-    //             // this.body = (JSONObject) status;
-    //             // this.status = HttpStatus.INTERNAL_SERVER_ERROR; //500 error
-    //             this.last_run = null;
+    //calls API once a day, sets body and status properties
+    // String today = new Date().toString().substring(0,10); 
+    // if (last_run == null || !today.equals(last_run)) // this thing gave me problems
+    // {
+        try {  //APIs can fail (ie Internet or Service down)
             
-    //         }
-    //     // }
+            //RapidAPI header
+            HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("https://car-specs.p.rapidapi.com/v2/cars/models/" + genid + "/generations"))
+                .header("x-rapidapi-key", "84b76dff13msh558c4194f6512fep1b309fjsn7f546fb2bbc5") //032f716b5amsh1241419d17ff651p1d3c54jsna32e706ab7f6
+                .header("x-rapidapi-host", "car-specs.p.rapidapi.com")
+                .build();
 
-    //     //return JSONObject in RESTful style
-    //     return new ResponseEntity<>(body, status);
-    // }
-    // @GetMapping("/generations/{modelid}")
-    // public ResponseEntity<JSONObject> getGen(@PathVariable String modelid) {
-    //     // Backend Year Object
-    //     Year year_obj = new Year();
-    //     // year_obj.setStringYear(id);   // updating year object with the year
+            //RapidAPI request and response
+            HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
 
-    //     // String url = year_obj.getUrl(id); // object generates the URL. Method gets it.
-
-
-    //     //calls API once a day, sets body and status properties
-    //     // String today = new Date().toString().substring(0,10); 
-    //     // if (last_run == null || !today.equals(last_run)) // this thing gave me problems
-    //     // {
-    //         try {  //APIs can fail (ie Internet or Service down)
-                
-    //             //RapidAPI header
-    //             HttpRequest request = HttpRequest.newBuilder()
-    //                 .uri(URI.create("https://car-specs.p.rapidapi.com/v2/cars/models/" + modelid + "/generations/"))
-    //                 .header("x-rapidapi-key", "84b76dff13msh558c4194f6512fep1b309fjsn7f546fb2bbc5")
-    //                 .header("x-rapidapi-host", "car-specs.p.rapidapi.com")
-    //                 .build();
-
-    //             //RapidAPI request and response
-    //             HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
-
-    //             //JSONParser extracts text body and parses to JSONObject
-    //             this.body = (JSONObject) new JSONParser().parse(response.body());
-
-    //             this.status = HttpStatus.OK;  //200 success
-    //             // this.last_run = today; //updates it so when it pulls each day
-    //         }
-    //         catch (Exception e) {  //capture failure info
-    //             HashMap<String, String> status = new HashMap<>();
-
-    //             status.put("status", "RapidApi failure: " + e);
-
-    //             //Setup object for error
-    //             // this.body = (JSONObject) status;
-    //             // this.status = HttpStatus.INTERNAL_SERVER_ERROR; //500 error
-    //             this.last_run = null;
+            //JSONParser extracts text body and parses to JSONObject
+            System.out.println("hahahaha");
+            String temp = response.body();
+            System.out.println(temp);
+            this.body = (JSONArray) new JSONParser().parse(response.body());
             
-    //         }
-    //     // }
 
-    //     //return JSONObject in RESTful style
-    //     return new ResponseEntity<>(body, status);
+            //System.out.prinltn()
+
+            this.status = HttpStatus.OK;  //200 success
+            // this.last_run = today; //updates it so when it pulls each day
+        }
+        catch (Exception e) {  //capture failure info
+            HashMap<String, String> status = new HashMap<>();
+
+            // this.body = e.toString();
+
+            System.out.println("error");
+            System.out.println(e);
+
+            status.put("status", "RapidApi failure: " + e);
+
+            //Setup object for error
+            // this.body = (JSONObject) status;
+            // this.status = HttpStatus.INTERNAL_SERVER_ERROR; //500 error
+            this.last_run = null;
+        
+        }
     // }
-    // @GetMapping("/trims/{trimid}")
-    // public ResponseEntity<JSONObject> getTrims(@PathVariable String trimid) {
-    //     // Backend Year Object
-    //     Year year_obj = new Year();
-    //     // year_obj.setStringYear(id);   // updating year object with the year
 
-    //     // String url = year_obj.getUrl(id); // object generates the URL. Method gets it.
+    //return JSONObject in RESTful style
+    return this.body;  // JSON response, see ExceptionHandlerAdvice for throws
+//     return new ResponseEntity<>(body, status);
 
+}
+@GetMapping("/trims/{trimid}")   //added to end of prefix as endpoint
+public JSONArray gettrims(@PathVariable String trimid) {
 
-    //     //calls API once a day, sets body and status properties
-    //     // String today = new Date().toString().substring(0,10); 
-    //     // if (last_run == null || !today.equals(last_run)) // this thing gave me problems
-    //     // {
-    //         try {  //APIs can fail (ie Internet or Service down)
-                
-    //             //RapidAPI header
-    //             HttpRequest request = HttpRequest.newBuilder()
-    //                 .uri(URI.create("https://car-specs.p.rapidapi.com/v2/cars/generations/" + trimid + "/trims"))
-    //                 .header("x-rapidapi-key", "84b76dff13msh558c4194f6512fep1b309fjsn7f546fb2bbc5")
-    //                 .header("x-rapidapi-host", "car-specs.p.rapidapi.com")
-    //                 .build();
-
-    //             //RapidAPI request and response
-    //             HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
-
-    //             //JSONParser extracts text body and parses to JSONObject
-    //             this.body = (JSONObject) new JSONParser().parse(response.body());
-
-    //             this.status = HttpStatus.OK;  //200 success
-    //             // this.last_run = today; //updates it so when it pulls each day
-    //         }
-    //         catch (Exception e) {  //capture failure info
-    //             HashMap<String, String> status = new HashMap<>();
-
-    //             status.put("status", "RapidApi failure: " + e);
-
-    //             //Setup object for error
-    //             // this.body = (JSONObject) status;
-    //             // this.status = HttpStatus.INTERNAL_SERVER_ERROR; //500 error
-    //             this.last_run = null;
+    //calls API once a day, sets body and status properties
+    // String today = new Date().toString().substring(0,10); 
+    // if (last_run == null || !today.equals(last_run)) // this thing gave me problems
+    // {
+        try {  //APIs can fail (ie Internet or Service down)
             
-    //         }
-    //     // }
+            //RapidAPI header
+            HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("https://car-specs.p.rapidapi.com/v2/cars/generations/" + trimid + "/trims"))
+                .header("x-rapidapi-key", "84b76dff13msh558c4194f6512fep1b309fjsn7f546fb2bbc5") //032f716b5amsh1241419d17ff651p1d3c54jsna32e706ab7f6
+                .header("x-rapidapi-host", "car-specs.p.rapidapi.com")
+                .build();
 
-    //     //return JSONObject in RESTful style
-    //     return new ResponseEntity<>(body, status);
-    // }
-    // @GetMapping("/specs/{specid}")
-    // public ResponseEntity<JSONObject> getSpecs(@PathVariable String specid) {
-    //     // Backend Year Object
-    //     Year year_obj = new Year();
-    //     // year_obj.setStringYear(id);   // updating year object with the year
+            //RapidAPI request and response
+            HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
 
-    //     // String url = year_obj.getUrl(id); // object generates the URL. Method gets it.
-
-
-    //     //calls API once a day, sets body and status properties
-    //     // String today = new Date().toString().substring(0,10); 
-    //     // if (last_run == null || !today.equals(last_run)) // this thing gave me problems
-    //     // {
-    //         try {  //APIs can fail (ie Internet or Service down)
-                
-    //             //RapidAPI header
-    //             HttpRequest request = HttpRequest.newBuilder()
-    //                 .uri(URI.create("https://car-specs.p.rapidapi.com/v2/cars/trims/" + specid))
-    //                 .header("x-rapidapi-key", "84b76dff13msh558c4194f6512fep1b309fjsn7f546fb2bbc5")
-    //                 .header("x-rapidapi-host", "car-specs.p.rapidapi.com")
-    //                 .build();
-
-    //             //RapidAPI request and response
-    //             HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
-
-    //             //JSONParser extracts text body and parses to JSONObject
-    //             this.body = (JSONObject) new JSONParser().parse(response.body());
-
-    //             this.status = HttpStatus.OK;  //200 success
-    //             // this.last_run = today; //updates it so when it pulls each day
-    //         }
-    //         catch (Exception e) {  //capture failure info
-    //             HashMap<String, String> status = new HashMap<>();
-
-    //             status.put("status", "RapidApi failure: " + e);
-
-    //             //Setup object for error
-    //             // this.body = (JSONObject) status;
-    //             // this.status = HttpStatus.INTERNAL_SERVER_ERROR; //500 error
-    //             this.last_run = null;
+            //JSONParser extracts text body and parses to JSONObject
+            System.out.println("hahahaha");
+            String temp = response.body();
+            System.out.println(temp);
+            this.body = (JSONArray) new JSONParser().parse(response.body());
             
-    //         }
-    //     // }
 
-    //     //return JSONObject in RESTful style
-    //     return new ResponseEntity<>(body, status);
+            //System.out.prinltn()
+
+            this.status = HttpStatus.OK;  //200 success
+            // this.last_run = today; //updates it so when it pulls each day
+        }
+        catch (Exception e) {  //capture failure info
+            HashMap<String, String> status = new HashMap<>();
+
+            // this.body = e.toString();
+
+            System.out.println("error");
+            System.out.println(e);
+
+            status.put("status", "RapidApi failure: " + e);
+
+            //Setup object for error
+            // this.body = (JSONObject) status;
+            // this.status = HttpStatus.INTERNAL_SERVER_ERROR; //500 error
+            this.last_run = null;
+        
+        }
     // }
+
+    //return JSONObject in RESTful style
+    return this.body;  // JSON response, see ExceptionHandlerAdvice for throws
+//     return new ResponseEntity<>(body, status);
+
+}
+@GetMapping("/specs/{specid}")   //added to end of prefix as endpoint
+public JSONArray getSpecs(@PathVariable String specid) {
+
+    //calls API once a day, sets body and status properties
+    // String today = new Date().toString().substring(0,10); 
+    // if (last_run == null || !today.equals(last_run)) // this thing gave me problems
+    // {
+        try {  //APIs can fail (ie Internet or Service down)
+            
+            //RapidAPI header
+            HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("https://car-specs.p.rapidapi.com/v2/cars/trims/" + specid))
+                .header("x-rapidapi-key", "84b76dff13msh558c4194f6512fep1b309fjsn7f546fb2bbc5") //032f716b5amsh1241419d17ff651p1d3c54jsna32e706ab7f6
+                .header("x-rapidapi-host", "car-specs.p.rapidapi.com")
+                .build();
+
+            //RapidAPI request and response
+            HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+
+            //JSONParser extracts text body and parses to JSONObject
+            System.out.println("hahahaha");
+            String temp = response.body();
+            System.out.println(temp);
+            this.body = (JSONArray) new JSONParser().parse(response.body());
+            
+
+            //System.out.prinltn()
+
+            this.status = HttpStatus.OK;  //200 success
+            // this.last_run = today; //updates it so when it pulls each day
+        }
+        catch (Exception e) {  //capture failure info
+            HashMap<String, String> status = new HashMap<>();
+
+            // this.body = e.toString();
+
+            System.out.println("error");
+            System.out.println(e);
+
+            status.put("status", "RapidApi failure: " + e);
+
+            //Setup object for error
+            // this.body = (JSONObject) status;
+            // this.status = HttpStatus.INTERNAL_SERVER_ERROR; //500 error
+            this.last_run = null;
+        
+        }
+    // }
+
+    //return JSONObject in RESTful style
+    return this.body;  // JSON response, see ExceptionHandlerAdvice for throws
+//     return new ResponseEntity<>(body, status);
+
+}
 }
 
 
