@@ -66,6 +66,7 @@ import org.springframework.web.bind.annotation.*;
 @ResponseBody
 public class specs {
     private JSONArray body; //last run result
+    private JSONObject specs;
     private HttpStatus status; //last run status
     String last_run = null; //last run day of month
 
@@ -287,7 +288,7 @@ public JSONArray gettrims(@PathVariable String trimid) {
 
 }
 @GetMapping("/specs/{specid}")   //added to end of prefix as endpoint
-public JSONArray getSpecs(@PathVariable String specid) {
+public JSONObject getSpecs(@PathVariable String specid) {
 
     //calls API once a day, sets body and status properties
     // String today = new Date().toString().substring(0,10); 
@@ -309,7 +310,7 @@ public JSONArray getSpecs(@PathVariable String specid) {
             System.out.println("hahahaha");
             String temp = response.body();
             System.out.println(temp);
-            this.body = (JSONArray) new JSONParser().parse(response.body());
+            this.specs = (JSONObject) new JSONParser().parse(response.body());
             
 
             //System.out.prinltn()
@@ -336,7 +337,7 @@ public JSONArray getSpecs(@PathVariable String specid) {
     // }
 
     //return JSONObject in RESTful style
-    return this.body;  // JSON response, see ExceptionHandlerAdvice for throws
+    return this.specs;  // JSON response, see ExceptionHandlerAdvice for throws
 //     return new ResponseEntity<>(body, status);
 
 }
