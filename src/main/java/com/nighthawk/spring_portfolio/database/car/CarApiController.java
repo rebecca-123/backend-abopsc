@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -45,10 +46,8 @@ public class CarApiController {
     DELETE individual Car using ID
      */
     @GetMapping("delete/{id}")
-    // public ResponseEntity<Object> deleteCar(@PathVariable long id) {
     public RedirectView deleteCar(@PathVariable long id) {
         repository.deleteCar(id);
-        // return new ResponseEntity<>( ""+ id +" deleted", HttpStatus.OK);
         return new RedirectView("https://ad1616.github.io/breadbops-frontend/inventory");
     }
 
@@ -63,6 +62,18 @@ public class CarApiController {
         repository.saveCar(new Car(null, name, imageLink, description, make, model, year));
         return new ResponseEntity<>(name +" is created successfully", HttpStatus.CREATED);
     }
+
+
+
+    @RequestMapping("updateCarInventory/{id}")
+    public String updateCarForm(@PathVariable Long id, Model model){
+
+        Car objcarupdate = repository.getCar(id);
+        model.addAttribute(objcarupdate);
+        return "carupdate";
+
+    }
+
 
     /*
     PUT Aa record by Requesting Parameters from URI
