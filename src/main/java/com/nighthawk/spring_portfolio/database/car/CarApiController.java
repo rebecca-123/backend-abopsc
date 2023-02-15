@@ -13,6 +13,8 @@ import com.nighthawk.spring_portfolio.database.car.CarJpaRepository;
 
 import java.util.*;
 
+import javax.servlet.http.HttpServletResponse;
+
 import java.text.SimpleDateFormat;
 
 @RestController
@@ -72,7 +74,8 @@ public class CarApiController {
         Car objcarupdate = repository.getCar(id);
         model.addAttribute(objcarupdate);
         // return "carupdate";
-        return "carupdate";
+        // resp.sendRedirect("https://ad1616.github.io/breadbops-frontend/carupdate");
+        return "/carupdate";
 
     }
 
