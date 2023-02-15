@@ -67,12 +67,12 @@ public class CarApiController {
 
 
     @RequestMapping("updateCarInventory/{id}")
-    public RedirectView updateCarForm(@PathVariable Long id, Model model){
+    public String updateCarForm(@PathVariable Long id, Model model){
 
         Car objcarupdate = repository.getCar(id);
         model.addAttribute(objcarupdate);
         // return "carupdate";
-        return new RedirectView("https://ad1616.github.io/breadbops-frontend/carupdate");
+        return "carupdate";
 
     }
 
