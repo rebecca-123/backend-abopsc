@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 
 import com.nighthawk.spring_portfolio.database.ModelRepository;
 import com.nighthawk.spring_portfolio.database.car.CarJpaRepository;
@@ -38,13 +39,17 @@ public class CarApiController {
         return new ResponseEntity<>( repository.getCar(id), HttpStatus.OK);
     }
 
+
+
     /*
     DELETE individual Car using ID
      */
     @GetMapping("delete/{id}")
-    public ResponseEntity<Object> deleteCar(@PathVariable long id) {
+    // public ResponseEntity<Object> deleteCar(@PathVariable long id) {
+    public RedirectView deleteCar(@PathVariable long id) {
         repository.deleteCar(id);
-        return new ResponseEntity<>( ""+ id +" deleted", HttpStatus.OK);
+        // return new ResponseEntity<>( ""+ id +" deleted", HttpStatus.OK);
+        return new RedirectView("https://ad1616.github.io/breadbops-frontend/inventory");
     }
 
     /*
