@@ -41,7 +41,7 @@ public class CarApiController {
     /*
     DELETE individual Car using ID
      */
-    @DeleteMapping("delete/{id}")
+    @getMapping("delete/{id}")
     public ResponseEntity<Object> deleteCar(@PathVariable long id) {
         repository.deleteCar(id);
         return new ResponseEntity<>( ""+ id +" deleted", HttpStatus.OK);
