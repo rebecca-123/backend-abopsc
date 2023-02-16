@@ -82,7 +82,7 @@ public class CarApiController {
     /*
     PUT Aa record by Requesting Parameters from URI
      */
-    @PutMapping( "updateCar/{id}")
+    @PostMapping( "updateCar/{id}")
     public ResponseEntity<Object> updateCar(@PathVariable Long id, @RequestParam("name") String name, @RequestParam("imageLink") String imageLink,
                                              @RequestParam("description") String description, @RequestParam("make") String make,
                                              @RequestParam("model") String model, @RequestParam("year") int year) {
