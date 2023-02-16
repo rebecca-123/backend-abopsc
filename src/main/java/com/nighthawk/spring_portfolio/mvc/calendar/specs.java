@@ -83,7 +83,7 @@ public class specs {
                 //RapidAPI header
                 HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create("https://car-specs.p.rapidapi.com/v2/cars/makes"))
-                    .header("x-rapidapi-key", "84b76dff13msh558c4194f6512fep1b309fjsn7f546fb2bbc5") //032f716b5amsh1241419d17ff651p1d3c54jsna32e706ab7f6
+                    .header("x-rapidapi-key", "80ed0e7619msh300fdfb6098c24cp160b71jsn6b8d978c56ec") //032f716b5amsh1241419d17ff651p1d3c54jsna32e706ab7f6
                     .header("x-rapidapi-host", "car-specs.p.rapidapi.com")
                     .build();
 
@@ -137,7 +137,7 @@ public JSONArray getModels(@PathVariable String modelid) {
             //RapidAPI header
             HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("https://car-specs.p.rapidapi.com/v2/cars/makes/" + modelid + "/models"))
-                .header("x-rapidapi-key", "84b76dff13msh558c4194f6512fep1b309fjsn7f546fb2bbc5") //032f716b5amsh1241419d17ff651p1d3c54jsna32e706ab7f6
+                .header("x-rapidapi-key", "80ed0e7619msh300fdfb6098c24cp160b71jsn6b8d978c56ec") //032f716b5amsh1241419d17ff651p1d3c54jsna32e706ab7f6
                 .header("x-rapidapi-host", "car-specs.p.rapidapi.com")
                 .build();
 
@@ -191,7 +191,7 @@ public JSONArray getGeneration(@PathVariable String genid) {
             //RapidAPI header
             HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("https://car-specs.p.rapidapi.com/v2/cars/models/" + genid + "/generations"))
-                .header("x-rapidapi-key", "84b76dff13msh558c4194f6512fep1b309fjsn7f546fb2bbc5") //032f716b5amsh1241419d17ff651p1d3c54jsna32e706ab7f6
+                .header("x-rapidapi-key", "80ed0e7619msh300fdfb6098c24cp160b71jsn6b8d978c56ec") //032f716b5amsh1241419d17ff651p1d3c54jsna32e706ab7f6
                 .header("x-rapidapi-host", "car-specs.p.rapidapi.com")
                 .build();
 
@@ -245,7 +245,7 @@ public JSONArray gettrims(@PathVariable String trimid) {
             //RapidAPI header
             HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("https://car-specs.p.rapidapi.com/v2/cars/generations/" + trimid + "/trims"))
-                .header("x-rapidapi-key", "84b76dff13msh558c4194f6512fep1b309fjsn7f546fb2bbc5") //032f716b5amsh1241419d17ff651p1d3c54jsna32e706ab7f6
+                .header("x-rapidapi-key", "80ed0e7619msh300fdfb6098c24cp160b71jsn6b8d978c56ec") //032f716b5amsh1241419d17ff651p1d3c54jsna32e706ab7f6
                 .header("x-rapidapi-host", "car-specs.p.rapidapi.com")
                 .build();
 
@@ -299,7 +299,7 @@ public JSONObject getSpecs(@PathVariable String specid) {
             //RapidAPI header
             HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("https://car-specs.p.rapidapi.com/v2/cars/trims/" + specid))
-                .header("x-rapidapi-key", "84b76dff13msh558c4194f6512fep1b309fjsn7f546fb2bbc5") //032f716b5amsh1241419d17ff651p1d3c54jsna32e706ab7f6
+                .header("x-rapidapi-key", "80ed0e7619msh300fdfb6098c24cp160b71jsn6b8d978c56ec") //032f716b5amsh1241419d17ff651p1d3c54jsna32e706ab7f6
                 .header("x-rapidapi-host", "car-specs.p.rapidapi.com")
                 .build();
 
@@ -335,6 +335,60 @@ public JSONObject getSpecs(@PathVariable String specid) {
         
         }
     // }
+
+    //return JSONObject in RESTful style
+    return this.specs;  // JSON response, see ExceptionHandlerAdvice for throws
+//     return new ResponseEntity<>(body, status);
+
+}
+@GetMapping("/integra/{specid}")   //added to end of prefix as endpoint
+public JSONObject getIntegra(@PathVariable String specid) {
+
+    //calls API once a day, sets body and status properties
+    String today = new Date().toString().substring(0,10); 
+    if (last_run == null || !today.equals(last_run)) // this thing gave me problems
+    {
+        try {  //APIs can fail (ie Internet or Service down)
+            
+            //RapidAPI header
+            HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("https://car-specs.p.rapidapi.com/v2/cars/trims/71325"))
+                .header("x-rapidapi-key", "80ed0e7619msh300fdfb6098c24cp160b71jsn6b8d978c56ec") //032f716b5amsh1241419d17ff651p1d3c54jsna32e706ab7f6
+                .header("x-rapidapi-host", "car-specs.p.rapidapi.com")
+                .build();
+
+            //RapidAPI request and response
+            HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+
+            //JSONParser extracts text body and parses to JSONObject
+            System.out.println("hahahaha");
+            String temp = response.body();
+            System.out.println(temp);
+            this.specs = (JSONObject) new JSONParser().parse(response.body());
+            
+
+            //System.out.prinltn()
+
+            this.status = HttpStatus.OK;  //200 success
+            // this.last_run = today; //updates it so when it pulls each day
+        }
+        catch (Exception e) {  //capture failure info
+            HashMap<String, String> status = new HashMap<>();
+
+            // this.body = e.toString();
+
+            System.out.println("error");
+            System.out.println(e);
+
+            status.put("status", "RapidApi failure: " + e);
+
+            //Setup object for error
+            // this.body = (JSONObject) status;
+            // this.status = HttpStatus.INTERNAL_SERVER_ERROR; //500 error
+            this.last_run = null;
+        
+        }
+    }
 
     //return JSONObject in RESTful style
     return this.specs;  // JSON response, see ExceptionHandlerAdvice for throws
