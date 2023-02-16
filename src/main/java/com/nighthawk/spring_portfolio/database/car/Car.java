@@ -37,7 +37,7 @@ public class Car {
 
     public Car(String name, String imageLink, String description, String make, String model, int year) {
         this.name = name;
-        this.imageLink = imageLink;
+        // this.imageLink = imageLink;
         this.description = description;
         this.make = make;
         this.model = model;
@@ -48,7 +48,7 @@ public class Car {
     public String toString() {
         return( "{" + 
             "\"name\": " + name + "," +
-            "\"imageLink\": " +  imageLink + "," + 
+            // "\"imageLink\": " +  imageLink + "," + 
             "\"description\": " +  description + "," +
             "\"make\": " +  make + "," +
             "\"model\": " +  model + "," +

@@ -71,9 +71,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.authorizeRequests()
 				.antMatchers("/api/person/delete/**").authenticated()
 				.antMatchers("/api/carInventory/post/**").authenticated()
+				.antMatchers("/api/carInventory/updateCar/**").authenticated()
 				.and()
 			// support cors on localhost
-			.cors().and()
+			// .cors().and()
 			.headers()
 				.addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-Credentials", "true"))
 				.addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-ExposedHeaders", "*", "Authorization"))

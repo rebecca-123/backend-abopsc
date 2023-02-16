@@ -4,12 +4,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.nighthawk.spring_portfolio.database.ModelRepository;
 import com.nighthawk.spring_portfolio.database.car.CarJpaRepository;
 
 import java.util.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import java.text.SimpleDateFormat;
 
@@ -38,39 +44,57 @@ public class CarApiController {
         return new ResponseEntity<>( repository.getCar(id), HttpStatus.OK);
     }
 
+
+
     /*
     DELETE individual Car using ID
      */
-    @DeleteMapping("delete/{id}")
-    public ResponseEntity<Object> deleteCar(@PathVariable long id) {
+    @GetMapping("delete/{id}")
+    public RedirectView deleteCar(@PathVariable long id) {
         repository.deleteCar(id);
-        return new ResponseEntity<>( ""+ id +" deleted", HttpStatus.OK);
+        return new RedirectView("https://ad1616.github.io/breadbops-frontend/inventory");
     }
 
     /*
     POST Aa record by Requesting Parameters from URI
      */
     @PostMapping( "/post/")
-    public ResponseEntity<Object> postCar(@RequestParam("name") String name, @RequestParam("imageLink") String imageLink,
+    public RedirectView postCar(@RequestParam("name") String name, 
+                                            // @RequestParam("imageLink") String imageLink,
                                              @RequestParam("description") String description, @RequestParam("make") String make,
                                              @RequestParam("model") String model, @RequestParam("year") int year) {
 
-        repository.saveCar(new Car(null, name, imageLink, description, make, model, year));
-        return new ResponseEntity<>(name +" is created successfully", HttpStatus.CREATED);
+        repository.saveCar(new Car(null, name, 
+        // imageLink, 
+        description, make, model, year));
+        // return new ResponseEntity<>(name +" is created successfully", HttpStatus.CREATED);
+        return new RedirectView("https://ad1616.github.io/breadbops-frontend/inventory");
     }
+
+
+
+    // @RequestMapping("updateCarInventory/{id}")
+    // public String carUpdate(@PathVariable("id") int id, Model model) {
+    //     model.addAttribute("car", repository.getCar(id));
+        
+    //     return "/carupdate";
+    // }
+    
+
 
     /*
     PUT Aa record by Requesting Parameters from URI
      */
-    @PutMapping( "updateCar/{id}")
-    public ResponseEntity<Object> updateCar(@PathVariable Long id, @RequestParam("name") String name, @RequestParam("imageLink") String imageLink,
+    @PostMapping( "updateCar/{id}")
+    public ResponseEntity<Object> updateCar(@PathVariable Long id, @RequestParam("name") String name, 
+                                            // @RequestParam("imageLink") String imageLink,
                                              @RequestParam("description") String description, @RequestParam("make") String make,
                                              @RequestParam("model") String model, @RequestParam("year") int year) {
 
         
         Car caredit = repository.getCar(id);
         caredit.setName(name);
-        caredit.setImageLink(imageLink);
+        // caredit.setImageLink(imageLink);
         caredit.setDescription(description);
         caredit.setMake(make);
         caredit.setModel(model);
