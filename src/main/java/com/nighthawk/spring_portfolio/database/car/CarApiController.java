@@ -59,23 +59,26 @@ public class CarApiController {
     POST Aa record by Requesting Parameters from URI
      */
     @PostMapping( "/post/")
-    public RedirectView postCar(@RequestParam("name") String name, @RequestParam("imageLink") String imageLink,
+    public RedirectView postCar(@RequestParam("name") String name, 
+                                            // @RequestParam("imageLink") String imageLink,
                                              @RequestParam("description") String description, @RequestParam("make") String make,
                                              @RequestParam("model") String model, @RequestParam("year") int year) {
 
-        repository.saveCar(new Car(null, name, imageLink, description, make, model, year));
+        repository.saveCar(new Car(null, name, 
+        // imageLink, 
+        description, make, model, year));
         // return new ResponseEntity<>(name +" is created successfully", HttpStatus.CREATED);
         return new RedirectView("https://ad1616.github.io/breadbops-frontend/inventory");
     }
 
 
 
-    @RequestMapping("updateCarInventory/{id}")
-    public String carUpdate(@PathVariable("id") int id, Model model) {
-        model.addAttribute("car", repository.getCar(id));
+    // @RequestMapping("updateCarInventory/{id}")
+    // public String carUpdate(@PathVariable("id") int id, Model model) {
+    //     model.addAttribute("car", repository.getCar(id));
         
-        return "/carupdate";
-    }
+    //     return "/carupdate";
+    // }
     
 
 
@@ -83,14 +86,15 @@ public class CarApiController {
     PUT Aa record by Requesting Parameters from URI
      */
     @PostMapping( "updateCar/{id}")
-    public ResponseEntity<Object> updateCar(@PathVariable Long id, @RequestParam("name") String name, @RequestParam("imageLink") String imageLink,
+    public ResponseEntity<Object> updateCar(@PathVariable Long id, @RequestParam("name") String name, 
+                                            // @RequestParam("imageLink") String imageLink,
                                              @RequestParam("description") String description, @RequestParam("make") String make,
                                              @RequestParam("model") String model, @RequestParam("year") int year) {
 
         
         Car caredit = repository.getCar(id);
         caredit.setName(name);
-        caredit.setImageLink(imageLink);
+        // caredit.setImageLink(imageLink);
         caredit.setDescription(description);
         caredit.setMake(make);
         caredit.setModel(model);
