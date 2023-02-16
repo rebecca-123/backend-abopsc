@@ -14,6 +14,7 @@ import com.nighthawk.spring_portfolio.database.car.CarJpaRepository;
 
 import java.util.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import java.text.SimpleDateFormat;
@@ -70,15 +71,12 @@ public class CarApiController {
 
 
     @RequestMapping("updateCarInventory/{id}")
-    public ModelAndView updateCarForm(@PathVariable Long id){
-        ModelAndView mav = new ModelAndView("https://ad1616.github.io/breadbops-frontend/carupdate");
-        Car objcarupdate = repository.getCar(id);
-        mav.addObject(objcarupdate);
-        // return "carupdate";
-        // resp.sendRedirect("https://ad1616.github.io/breadbops-frontend/carupdate");
-        return mav;
-
+    public String carUpdate(@PathVariable("id") int id, Model model, HttpServletRequest req) {
+        model.addAttribute("car", repository.getCar(id));
+        String contextpathreq = (String)req.getContextPath();
+        return contextpathreq + "carupdate";
     }
+    
 
 
     /*
