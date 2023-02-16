@@ -71,10 +71,10 @@ public class CarApiController {
 
 
     @RequestMapping("updateCarInventory/{id}")
-    public String carUpdate(@PathVariable("id") int id, Model model, HttpServletRequest req) {
+    public String carUpdate(@PathVariable("id") int id, Model model) {
         model.addAttribute("car", repository.getCar(id));
-        String contextpathreq = (String)req.getContextPath();
-        return contextpathreq + "/carupdate";
+        
+        return "/carupdate";
     }
     
 
