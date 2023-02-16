@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.nighthawk.spring_portfolio.database.ModelRepository;
 import com.nighthawk.spring_portfolio.database.car.CarJpaRepository;
@@ -69,13 +70,13 @@ public class CarApiController {
 
 
     @RequestMapping("updateCarInventory/{id}")
-    public String updateCarForm(@PathVariable Long id, Model model){
-
+    public ModelAndView updateCarForm(@PathVariable Long id){
+        ModelAndView mav = new ModelAndView("https://ad1616.github.io/breadbops-frontend/carupdate");
         Car objcarupdate = repository.getCar(id);
-        model.addAttribute(objcarupdate);
+        mav.addObject(objcarupdate);
         // return "carupdate";
         // resp.sendRedirect("https://ad1616.github.io/breadbops-frontend/carupdate");
-        return "/carupdate";
+        return mav;
 
     }
 
