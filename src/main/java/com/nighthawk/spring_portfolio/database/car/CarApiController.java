@@ -60,12 +60,12 @@ public class CarApiController {
      */
     @PostMapping( "/post/")
     public RedirectView postCar(@RequestParam("name") String name, 
-                                            // @RequestParam("imageLink") String imageLink,
+                                            @RequestParam("imageLink") String imageLink,
                                              @RequestParam("description") String description, @RequestParam("make") String make,
                                              @RequestParam("model") String model, @RequestParam("year") int year) {
 
         repository.saveCar(new Car(null, name, 
-        // imageLink, 
+        imageLink, 
         description, make, model, year));
         // return new ResponseEntity<>(name +" is created successfully", HttpStatus.CREATED);
         return new RedirectView("https://ad1616.github.io/breadbops-frontend/inventory");
