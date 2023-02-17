@@ -176,6 +176,10 @@ public class ModelRepository implements UserDetailsService {  // "implements" ti
         carJpaRepository.deleteById(id);
     }
 
+    public void deleteReview(long id) {
+        reviewJpaRepository.deleteById(id);
+    }
+
     // public void updateCar(long id, Car car){
     //     carJpaRepository.save(car);
     // }
