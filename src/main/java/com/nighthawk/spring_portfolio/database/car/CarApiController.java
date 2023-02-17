@@ -60,7 +60,7 @@ public class CarApiController {
     POST Aa record by Requesting Parameters from URI
      */
     @PostMapping( "/post/")
-    public RedirectView postCar(@RequestParam("name") String name, 
+    public ResponseEntity<Object> postCar(@RequestParam("name") String name, 
                                             @RequestParam("imageLink") String imageLink,
                                              @RequestParam("description") String description, @RequestParam("make") String make,
                                              @RequestParam("model") String model, @RequestParam("year") int year) {
@@ -68,8 +68,8 @@ public class CarApiController {
         repository.saveCar(new Car(null, name, 
         imageLink, 
         description, make, model, year));
-        // return new ResponseEntity<>(name +" is created successfully", HttpStatus.CREATED);
-        return new RedirectView("https://ad1616.github.io/breadbops-frontend/inventory");
+        return new ResponseEntity<>(name +" is created successfully", HttpStatus.CREATED);
+        // return new RedirectView("https://ad1616.github.io/breadbops-frontend/inventory");
     }
 
 
@@ -77,7 +77,7 @@ public class CarApiController {
     PUT Aa record by Requesting Parameters from URI
      */
     @PostMapping( "updateCar/{id}")
-    public RedirectView updateCar(@PathVariable Long id, @RequestParam("name") String name, 
+    public ResponseEntity<Object> updateCar(@PathVariable Long id, @RequestParam("name") String name, 
                                             // @RequestParam("imageLink") String imageLink,
                                              @RequestParam("description") String description, @RequestParam("make") String make,
                                              @RequestParam("model") String model, @RequestParam("year") int year) {
@@ -91,8 +91,8 @@ public class CarApiController {
         caredit.setModel(model);
         caredit.setYear(year);
         repository.saveCar(caredit);
-        // return new ResponseEntity<>(name +" is updated successfully", HttpStatus.ACCEPTED);
-        return new RedirectView("https://ad1616.github.io/breadbops-frontend/inventory");
+        return new ResponseEntity<>(name +" is updated successfully", HttpStatus.ACCEPTED);
+        // return new RedirectView("https://ad1616.github.io/breadbops-frontend/inventory");
 
     }
 
