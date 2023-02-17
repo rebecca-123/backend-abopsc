@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 
 import com.nighthawk.spring_portfolio.database.ModelRepository;
 
@@ -97,11 +98,12 @@ public class PersonApiController {
     }
 
     @GetMapping(value = "/deleteCar", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> deleteCarFromPersonCarList(@RequestParam("email") String email,
+    public RedirectView deleteCarFromPersonCarList(@RequestParam("email") String email,
                                                         @RequestParam("carName") String carName) {
         repository.deleteCarFromPersonCarList(email, carName);
 
-        return new ResponseEntity<>("Car delete from person's car list", HttpStatus.OK);
+        return new RedirectView("https://ad1616.github.io/breadbops-frontend/carlist");
+
     }
 
     @GetMapping("/getPersonCarList")
