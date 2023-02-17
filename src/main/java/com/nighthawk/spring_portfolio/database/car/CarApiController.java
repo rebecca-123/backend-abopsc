@@ -45,7 +45,6 @@ public class CarApiController {
     }
 
 
-
     /*
     DELETE individual Car using ID
      */
@@ -54,6 +53,8 @@ public class CarApiController {
         repository.deleteCar(id);
         return new RedirectView("https://ad1616.github.io/breadbops-frontend/inventory");
     }
+    // post and get are the only allowed methods, that's why delete and put are not used
+
 
     /*
     POST Aa record by Requesting Parameters from URI
@@ -72,21 +73,11 @@ public class CarApiController {
     }
 
 
-
-    // @RequestMapping("updateCarInventory/{id}")
-    // public String carUpdate(@PathVariable("id") int id, Model model) {
-    //     model.addAttribute("car", repository.getCar(id));
-        
-    //     return "/carupdate";
-    // }
-    
-
-
     /*
     PUT Aa record by Requesting Parameters from URI
      */
     @PostMapping( "updateCar/{id}")
-    public ResponseEntity<Object> updateCar(@PathVariable Long id, @RequestParam("name") String name, 
+    public RedirectView updateCar(@PathVariable Long id, @RequestParam("name") String name, 
                                             // @RequestParam("imageLink") String imageLink,
                                              @RequestParam("description") String description, @RequestParam("make") String make,
                                              @RequestParam("model") String model, @RequestParam("year") int year) {
@@ -100,7 +91,9 @@ public class CarApiController {
         caredit.setModel(model);
         caredit.setYear(year);
         repository.saveCar(caredit);
-        return new ResponseEntity<>(name +" is updated successfully", HttpStatus.ACCEPTED);
+        // return new ResponseEntity<>(name +" is updated successfully", HttpStatus.ACCEPTED);
+        return new RedirectView("https://ad1616.github.io/breadbops-frontend/inventory");
+
     }
 
 }
