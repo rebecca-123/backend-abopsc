@@ -6,6 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import org.springframework.web.servlet.view.RedirectView;
+
 import com.nighthawk.spring_portfolio.database.ModelRepository;
 import com.nighthawk.spring_portfolio.database.review.ReviewJpaRepository;
 
@@ -28,6 +30,14 @@ public class ReviewApiController {
         return new ResponseEntity<>(repository.listAllReviews(), HttpStatus.OK);
     }
 
+        /*
+    DELETE individual Car using ID
+     */
+    @GetMapping("delete/{id}")
+    public RedirectView deleteReview(@PathVariable long id) {
+        repository.deleteReview(id);
+        return new RedirectView("https://ad1616.github.io/breadbops-frontend/show");
+    }
 
     /*
     POST Aa record by Requesting Parameters from URI
