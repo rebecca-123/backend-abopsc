@@ -96,6 +96,14 @@ public class PersonApiController {
         return new ResponseEntity<>("Car added to person's car list", HttpStatus.OK);
     }
 
+    @GetMapping(value = "/deleteCar", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> deleteCarFromPersonCarList(@RequestParam("email") String email,
+                                                        @RequestParam("carName") String carName) {
+        repository.deleteCarFromPersonCarList(email, carName);
+
+        return new ResponseEntity<>("Car delete from person's car list", HttpStatus.OK);
+    }
+
     @GetMapping("/getPersonCarList")
     public ResponseEntity<?> getPersonCarList(@RequestParam("email") String email) {
         Person person = repository.getByEmail(email);

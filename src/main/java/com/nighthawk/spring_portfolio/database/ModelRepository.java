@@ -197,6 +197,18 @@ public class ModelRepository implements UserDetailsService {  // "implements" ti
         }
     }
 
+    public void deleteCarFromPersonCarList(String email, String carName) { 
+        Person person = personJpaRepository.findByEmail(email);
+        if (person != null) {   // verify person
+            Car car = carJpaRepository.findByName(carName);
+            if (car != null) { // verify car
+                if (person.getCarList().contains(car)) {
+                    person.getCarList().remove(car);
+                }
+            }
+        }
+    }
+
 
     /* Review Section */
 
