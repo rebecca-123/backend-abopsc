@@ -29,40 +29,30 @@ public class ModelInit {
 
             System.out.println("Person Databases Init");
 
-            // ***** Uncomment for Person Database Reset ******
 
+            String[] roles = {"ROLE_USER", "ROLE_ADMIN", "ROLE_ANONYMOUS"};
+            for (String role : roles) {
+                if (roleJpaRepository.findByName(role) == null)
+                    roleJpaRepository.save(new Role(null, role));
+            }
 
-            // String[] roles = {"ROLE_USER", "ROLE_DEALERSHIP", "ROLE_ADMIN", "ROLE_TESTER", "ROLE_ANONYMOUS"};
-            // for (String role : roles) {
-            //     if (roleJpaRepository.findByName(role) == null)
-            //         roleJpaRepository.save(new Role(null, role));
-            // }
+            Date dob1 = new SimpleDateFormat("MM-dd-yyyy").parse("11-07-2005");
+            Date dob2 = new SimpleDateFormat("MM-dd-yyyy").parse("08-11-2005");
 
-            Date dob = new SimpleDateFormat("MM-dd-yyyy").parse("11-07-2005");
+            String email1 = "sahilsamar031@gmail.com";
+            String email2 = "samuel@gmail.com";
 
-            String email = "sahilsamar031@gmail.com";
+            Person person1 = new Person(email1, "123qwerty", "Sahil Samar", dob1, modelRepository.findRole("ROLE_ADMIN") );
+            Person person2 = new Person(email2, "123qwerty", "Samuel Wang", dob2, modelRepository.findRole("ROLE_ADMIN") );
 
-            Person person = new Person(email, "123qwerty", "Sahil Samar", dob, modelRepository.findRole("ROLE_ADMIN") );
-            
-            if (personJpaRepository.findByEmail(email) == null) {
-                modelRepository.save(person);
+            if (personJpaRepository.findByEmail(email1) == null) {
+                modelRepository.save(person1);
             }
             
+            if (personJpaRepository.findByEmail(email2) == null) {
+                modelRepository.save(person2);
+            }
                 
-            // modelRepository.defaults("123querty", "ROLE_USER");
-
-            // modelRepository.addRoleToPerson("anonymous@email.com", "ROLE_ANONYMOUS");
-            
-            // String[] cars = {"Tesla Model 3", "Honda Odyssey", "Toyota Prius", "Honda Civic", "Tesla Model X"};
-            // for (String car : cars) {
-            //     if (carJpaRepository.findByName(car) == null)
-            //         carJpaRepository.save(new Car(null, car, "Description", "Image Link"));
-            // }
-
-            // System.out.println(carJpaRepository.findByName("Tesla Model 3").toString());
-
-            // modelRepository.addCarToPersonCarList("sahilsamar031@gmail.com", "Tesla Model 3");
-            // System.out.println(personJpaRepository.findByEmail("test1@gmail.com").toString());
 
         };
     }
