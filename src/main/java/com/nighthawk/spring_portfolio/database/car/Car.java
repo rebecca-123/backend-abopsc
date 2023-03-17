@@ -21,9 +21,6 @@ public class Car {
     private String name;
 
     @Column()
-    private String imageLink;
-
-    @Column()
     private String description;
 
     @Column()
@@ -35,9 +32,8 @@ public class Car {
     @Column()
     private int year;
 
-    public Car(String name, String imageLink, String description, String make, String model, int year) {
+    public Car(String name, String description, String make, String model, int year) {
         this.name = name;
-        this.imageLink = imageLink;
         this.description = description;
         this.make = make;
         this.model = model;
@@ -48,7 +44,6 @@ public class Car {
     public String toString() {
         return( "{" + 
             "\"name\": " + name + "," +
-            "\"imageLink\": " +  imageLink + "," + 
             "\"description\": " +  description + "," +
             "\"make\": " +  make + "," +
             "\"model\": " +  model + "," +
