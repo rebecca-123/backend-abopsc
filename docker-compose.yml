@@ -14,4 +14,4 @@ volumes:
     driver_opts:
       o: bind
       type: none
-      device: /home/ubuntu/tri2/t6_breadbops_8196/volumes
+      device: /home/ubuntu/tri3/backend-abopsc/volumes
