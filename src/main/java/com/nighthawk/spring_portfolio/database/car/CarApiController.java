@@ -61,13 +61,10 @@ public class CarApiController {
      */
     @PostMapping( "/post/")
     public ResponseEntity<Object> postCar(@RequestParam("name") String name, 
-                                            @RequestParam("imageLink") String imageLink,
                                              @RequestParam("description") String description, @RequestParam("make") String make,
                                              @RequestParam("model") String model, @RequestParam("year") int year) {
 
-        repository.saveCar(new Car(null, name, 
-        imageLink, 
-        description, make, model, year));
+        repository.saveCar(new Car(null, name, description, make, model, year));
         return new ResponseEntity<>(name +" is created successfully", HttpStatus.CREATED);
         // return new RedirectView("https://ad1616.github.io/breadbops-frontend/inventory");
     }
@@ -78,14 +75,12 @@ public class CarApiController {
      */
     @PostMapping( "updateCar/{id}")
     public ResponseEntity<Object> updateCar(@PathVariable Long id, @RequestParam("name") String name, 
-                                            // @RequestParam("imageLink") String imageLink,
                                              @RequestParam("description") String description, @RequestParam("make") String make,
                                              @RequestParam("model") String model, @RequestParam("year") int year) {
 
         
         Car caredit = repository.getCar(id);
         caredit.setName(name);
-        // caredit.setImageLink(imageLink);
         caredit.setDescription(description);
         caredit.setMake(make);
         caredit.setModel(model);
