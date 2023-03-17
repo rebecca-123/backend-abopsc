@@ -4,7 +4,7 @@ services:
     image: java_springv1_t6
     build: .
     ports:
-      - "8196:8196"
+      - "8022:8022"
     volumes:
       - persistent_volume:/app/volumes
     restart: unless-stopped
@@ -14,4 +14,4 @@ volumes:
     driver_opts:
       o: bind
       type: none
-      device: /home/ubuntu/tri3/backend-abopsc/volumes
+      device: /home/ubuntu/tri3/t3_8022_abopsc/volumes
