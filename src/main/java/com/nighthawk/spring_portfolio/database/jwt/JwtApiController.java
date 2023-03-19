@@ -1,4 +1,7 @@
 package com.nighthawk.spring_portfolio.database.jwt;
+import java.util.*;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
@@ -56,6 +59,17 @@ public class JwtApiController {
 	}
 
 
+	@PostMapping("/logout")
+	public void deleteCookie(@RequestBody Map<String, String> requestBody, HttpServletResponse response) {
+		String cookieName = requestBody.get("cookieName");
+		Cookie cookie = new Cookie(cookieName, null);
+		cookie.setPath("/");
+		cookie.setHttpOnly(true);
+		cookie.setMaxAge(0);
+		    cookie.setSecure(false);
+		response.setHeader("Set-Cookie", String.format("%s=%s;Path=/;Max-Age=0;Secure;SameSite=None", cookieName, ""));
+		response.addCookie(cookie);
+	}
 
 	private void authenticate(String username, String password) throws Exception {
 		try {
