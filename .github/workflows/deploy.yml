@@ -20,7 +20,6 @@ jobs:
 #       run: docker-compose exec -T counter_app npm run build
 
   Deploy:
-#     needs: build
     runs-on: ubuntu-latest
     
     steps:
