@@ -29,7 +29,9 @@ jobs:
             PRIVATE_KEY: ${{ secrets.AWS_PRIVATE_KEY  }}
             HOST : ${{ secrets.HOST  }}
             USERNAME : ${{ secrets.USERNAME  }}
-        run: |        
+        run: | 
+            pwd
+            whomami
             cd /home/ubuntu/tri3/t3_8022_abopsc/
             sudo docker-compose down
             cd volumes
