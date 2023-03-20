@@ -18,7 +18,8 @@ jobs:
         run: |
             echo "$PRIVATE_KEY" > private_key && chmod 600 private_key 
             pwd
-            #ssh -i private_key -o StrictHostKeyChecking=no ubuntu@35.168.137.247
+            ssh -i private_key -o StrictHostKeyChecking=no ubuntu@35.168.137.247
+            pwd
             #cd /home/ubuntu/tri3/t3_8022_abopsc/
             #sudo docker-compose down
             #cd volumes
