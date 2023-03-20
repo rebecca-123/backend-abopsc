@@ -5,19 +5,35 @@ on:
     branches: [ master ]
 
 jobs:
-  deploy:
-    name: Deploy
-    runs-on: [ ubuntu-latest ]
+#First we will see the application build or not , then we will deploy in EC2
+  build:
+    runs-on: ubuntu-latest
+    
     steps:
-      - name: Deploy
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.KEY }}
-          port: ${{ secrets.PORT }}
-          script: |
-            cd /home/${{ secrets.USERNAME }}/tri2_t4_f1-backend_8102
+    - uses: actions/checkout@v2
+    
+    - name: Build the docker_compose
+      run: docker-compose up -d --build
+      
+    - name: Buid the application
+      run: docker-compose exec -T counter_app npm run build
+
+  Deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v2 
+      - name: Deploy in EC2
+        env:
+            PRIVATE_KEY: ${{ secrets.AWS_PRIVATE_KEY  }}
+            HOST : ${{ secrets.HOST  }}
+            USERNAME : ${{ secrets.USERNAME  }}
+        run: |
+            echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
+            ssh -o StrictHostKeyChecking=no -i private_key ${USERNAME}@${HOST} '
+            
+            cd /home/${{ secrets.USERNAME }}/tri3/
             sudo docker-compose down
             cd volumes
             git checkout HEAD -- sqlite.db
