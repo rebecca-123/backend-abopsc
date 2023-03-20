@@ -16,6 +16,7 @@ jobs:
             HOST : ${{ secrets.HOST  }}
             USERNAME : ${{ secrets.USERNAME  }}
         run: | 
+            ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} '
             pwd
             whoami
             cd /home/ubuntu/tri3/t3_8022_abopsc/
