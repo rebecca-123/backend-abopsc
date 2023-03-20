@@ -13,17 +13,15 @@ jobs:
       - name: Deploy in EC2
         env:
             PRIVATE_KEY: ${{ secrets.KEY  }}
-            HOST : ${{ secrets.HOST  }}
-            USERNAME : ${{ secrets.USERNAME  }}
         run: |
             echo "$PRIVATE_KEY" > private_key && chmod 600 private_key 
             pwd
             ssh -i private_key -o StrictHostKeyChecking=no ubuntu@35.168.137.247
             pwd
-            #cd /home/ubuntu/tri3/t3_8022_abopsc/
-            #sudo docker-compose down
-            #cd volumes
-            #git checkout HEAD -- sqlite.db
-            #cd ..
-            #git pull
-            #sudo docker-compose up -d --build
+            cd /home/ubuntu/tri3/t3_8022_abopsc/
+            sudo docker-compose down
+            cd volumes
+            git checkout HEAD -- sqlite.db
+            cd ..
+            git pull
+            sudo docker-compose up -d --build
