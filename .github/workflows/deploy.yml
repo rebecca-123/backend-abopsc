@@ -30,7 +30,7 @@ jobs:
             HOST : ${{ secrets.HOST  }}
             USERNAME : ${{ secrets.USERNAME  }}
         run: |        
-            cd /home/${{ secrets.USERNAME }}/tri3/t3_8022_abopsc/
+            cd /home/ubuntu/tri3/t3_8022_abopsc/
             sudo docker-compose down
             cd volumes
             git checkout HEAD -- sqlite.db
