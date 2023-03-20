@@ -31,7 +31,7 @@ jobs:
             USERNAME : ${{ secrets.USERNAME  }}
         run: | 
             pwd
-            whomami
+            whoami
             cd /home/ubuntu/tri3/t3_8022_abopsc/
             sudo docker-compose down
             cd volumes
