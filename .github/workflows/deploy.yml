@@ -16,7 +16,7 @@ jobs:
             HOST : ${{ secrets.HOST  }}
             USERNAME : ${{ secrets.USERNAME  }}
         run: |
-            echo $PRIVATE_KEY | ssh -o StrictHostKeyChecking=no -i /dev/stdin ubuntu@35.168.137.247
+            echo $PRIVATE_KEY | ssh -i /dev/stdin ubuntu@35.168.137.247
             cd /home/ubuntu/tri3/t3_8022_abopsc/
             sudo docker-compose down
             cd volumes
