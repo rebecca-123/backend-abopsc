@@ -15,10 +15,8 @@ jobs:
             PRIVATE_KEY: ${{ secrets.KEY  }}
             HOST : ${{ secrets.HOST  }}
             USERNAME : ${{ secrets.USERNAME  }}
-        run: | 
-            echo "$PRIVATE_KEY"
-            echo "$PRIVATE_KEY" > ./private_key && chmod 600 ./private_key
-            ssh -o StrictHostKeyChecking=no -i ./private_key ${USERNAME}@${HOST}
+        run: |
+            echo $PRIVATE_KEY | ssh -o StrictHostKeyChecking=no -i /dev/stdin ${USERNAME}@${HOST}
             cd /home/ubuntu/tri3/t3_8022_abopsc/
             sudo docker-compose down
             cd volumes
