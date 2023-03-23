@@ -59,7 +59,7 @@ public class JwtApiController {
 	}
 
 
-	@PostMapping("/logout")
+	@PostMapping("/logout") //logout function but need to make sure the cookie is called first with fetch and then deleted with this
 	public void deleteCookie(@RequestBody Map<String, String> requestBody, HttpServletResponse response) {
 		String cookieName = requestBody.get("cookieName");
 		Cookie cookie = new Cookie(cookieName, null);
