@@ -32,9 +32,6 @@ public class Assignment {
     @NotEmpty
     private String type;
 
-    @NotNull
-    private HashMap<String, Boolean> checks = new HashMap<String, Boolean>();
-
     @NonNull
     private Date dueDate;
 
@@ -42,20 +39,6 @@ public class Assignment {
         this.name = name;
         this.type = type;
         this.dueDate = dueDate;
-
-        checks.put("Active", true);
-        checks.put("Started", false);
-        checks.put("Completion", false);
-        checks.put("Live Review", false);
-        checks.put("Graded", false);
-    }
-
-    public void updateCheck(String key, boolean value) {
-        try {
-            checks.replace(key, value);
-        } catch (Exception e) {
-            System.out.println(e);
-        }
     }
 
 }
