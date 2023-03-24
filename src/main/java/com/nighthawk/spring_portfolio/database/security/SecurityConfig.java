@@ -72,6 +72,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/api/person/delete/**").authenticated()
 				.antMatchers("/api/carInventory/post/**").authenticated()
 				.antMatchers("/api/carInventory/updateCar/**").authenticated()
+				.antMatchers("https://abopsc-backend.dontntntnt.de/authenticate/**").permitAll()
 				.and()
 			// support cors on localhost
 			// .cors().and()
