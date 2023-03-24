@@ -52,7 +52,7 @@ public class CarApiController {
     public RedirectView deleteCar(@PathVariable long id) {
         repository.deleteCar(id);
         return new RedirectView("https://ad1616.github.io/breadbops-frontend/inventory");
-    }
+    }   
     // post and get are the only allowed methods, that's why delete and put are not used
 
 
