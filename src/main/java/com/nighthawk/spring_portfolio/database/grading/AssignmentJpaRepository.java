@@ -1,4 +1,4 @@
-package com.nighthawk.spring_portfolio.database.challenge;
+package com.nighthawk.spring_portfolio.database.grading;
 
 import java.util.List;
 
@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface AssignmentJpaRepository extends JpaRepository<Assignment, Long> {
     List<Assignment> findAllById(Long id);
+
+    Assignment findByName(String name);
 
     List<Assignment> findAllByOrderByIdAsc();
 

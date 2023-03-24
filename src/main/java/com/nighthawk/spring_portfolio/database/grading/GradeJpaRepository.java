@@ -1,4 +1,4 @@
-package com.nighthawk.spring_portfolio.database.challenge;
+package com.nighthawk.spring_portfolio.database.grading;
 
 import java.util.List;
 
@@ -7,7 +7,9 @@ import org.springframework.data.jpa.repository.Query;
 
 import com.nighthawk.spring_portfolio.database.person.Person;
 
-public interface GradeJpaRepository extends JpaRepository<Assignment, Long> {
+public interface GradeJpaRepository extends JpaRepository<Grade, Long> {
+    Grade findByPersonAndAssignment(Person person, Assignment assignment);
+
     List<Grade> findAllById(Long id);
 
     List<Grade> findAllByPerson(Person person);
@@ -16,5 +18,5 @@ public interface GradeJpaRepository extends JpaRepository<Assignment, Long> {
 
     // Custom JPA query
     @Query(value = "SELECT * FROM Person p WHERE p.name LIKE ?1 or p.email LIKE ?1", nativeQuery = true)
-    List<Assignment> findByLikeTermNative(String term);
+    List<Grade> findByLikeTermNative(String term);
 }

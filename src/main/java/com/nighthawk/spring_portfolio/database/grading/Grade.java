@@ -1,4 +1,4 @@
-package com.nighthawk.spring_portfolio.database.challenge;
+package com.nighthawk.spring_portfolio.database.grading;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -42,6 +42,7 @@ public class Grade {
 
     private double totalPointValue;
     private double grade;
+    private String comment;
 
     public Grade(double pointValue, Assignment assignment) {
         this.totalPointValue = pointValue;
@@ -54,5 +55,9 @@ public class Grade {
             return;
         }
         this.grade = grade;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 }

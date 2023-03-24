@@ -1,5 +1,6 @@
-package com.nighthawk.spring_portfolio.database.challenge;
+package com.nighthawk.spring_portfolio.database.grading;
 
+import java.sql.Date;
 import java.util.HashMap;
 
 import javax.persistence.Entity;
@@ -8,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+
+import com.mongodb.lang.NonNull;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,13 +27,21 @@ public class Assignment {
     private Long id;
 
     @NotEmpty
+    private String name;
+
+    @NotEmpty
     private String type;
 
     @NotNull
     private HashMap<String, Boolean> checks = new HashMap<String, Boolean>();
 
-    public Assignment(String type) {
+    @NonNull
+    private Date dueDate;
+
+    public Assignment(String name, String type, Date dueDate) {
+        this.name = name;
         this.type = type;
+        this.dueDate = dueDate;
 
         checks.put("Active", true);
         checks.put("Started", false);
