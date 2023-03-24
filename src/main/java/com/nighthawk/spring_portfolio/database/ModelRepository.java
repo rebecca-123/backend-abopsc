@@ -7,7 +7,6 @@ import com.nighthawk.spring_portfolio.database.role.RoleJpaRepository;
 import com.nighthawk.spring_portfolio.database.car.Car;
 import com.nighthawk.spring_portfolio.database.car.CarJpaRepository;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -30,54 +29,61 @@ This class has an instance of Java Persistence API (JPA)
 */
 @Service
 @Transactional
-public class ModelRepository implements UserDetailsService {  // "implements" ties ModelRepo to Spring Security
+public class ModelRepository implements UserDetailsService { // "implements" ties ModelRepo to Spring Security
     // Encapsulate many object into a single Bean (Person, Roles, and Scrum)
-    @Autowired  // Inject PersonJpaRepository
+    @Autowired // Inject PersonJpaRepository
     private PersonJpaRepository personJpaRepository;
-    @Autowired  // Inject RoleJpaRepository
+    @Autowired // Inject RoleJpaRepository
     private RoleJpaRepository roleJpaRepository;
-    @Autowired  // Inject CarJpaRepository
+    @Autowired // Inject CarJpaRepository
     private CarJpaRepository carJpaRepository;
 
-
-
     // Setup Password style for Database storing and lookup
-    @Autowired  // Inject PasswordEncoder
+    @Autowired // Inject PasswordEncoder
     private PasswordEncoder passwordEncoder;
-    @Bean  // Sets up password encoding style
-    PasswordEncoder passwordEncoder(){
+
+    @Bean // Sets up password encoding style
+    PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    /* UserDetailsService Overrides and maps Person & Roles POJO into Spring Security */
+    /*
+     * UserDetailsService Overrides and maps Person & Roles POJO into Spring
+     * Security
+     */
     @Override
-    public org.springframework.security.core.userdetails.UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Person person = personJpaRepository.findByEmail(email); // setting variable user equal to the method finding the username in the database
-        if(person==null){
+    public org.springframework.security.core.userdetails.UserDetails loadUserByUsername(String email)
+            throws UsernameNotFoundException {
+        Person person = personJpaRepository.findByEmail(email); // setting variable user equal to the method finding the
+                                                                // username in the database
+        if (person == null) {
             throw new UsernameNotFoundException("User not found in database");
         }
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        person.getRoles().forEach(role -> { //loop through roles
-            authorities.add(new SimpleGrantedAuthority(role.getName())); //create a SimpleGrantedAuthority by passed in role, adding it all to the authorities list, list of roles gets past in for spring security
+        person.getRoles().forEach(role -> { // loop through roles
+            authorities.add(new SimpleGrantedAuthority(role.getName())); // create a SimpleGrantedAuthority by passed in
+                                                                         // role, adding it all to the authorities list,
+                                                                         // list of roles gets past in for spring
+                                                                         // security
         });
-        return new org.springframework.security.core.userdetails.User(person.getEmail(), person.getPassword(), authorities);
+        return new org.springframework.security.core.userdetails.User(person.getEmail(), person.getPassword(),
+                authorities);
     }
-
 
     /* Person Section */
 
-    public  List<Person>listAll() {
+    public List<Person> listAll() {
         return personJpaRepository.findAllByOrderByNameAsc();
     }
 
     // custom query to find anything containing term in name or email ignoring case
-    public  List<Person>listLike(String term) {
+    public List<Person> listLike(String term) {
         return personJpaRepository.findByNameContainingIgnoreCaseOrEmailContainingIgnoreCase(term, term);
     }
 
     // custom query to find anything containing term in name or email ignoring case
-    public  List<Person>listLikeNative(String term) {
-        String like_term = String.format("%%%s%%",term);  // Like required % rappers
+    public List<Person> listLikeNative(String term) {
+        String like_term = String.format("%%%s%%", term); // Like required % rappers
         return personJpaRepository.findByLikeTermNative(like_term);
     }
 
@@ -101,7 +107,7 @@ public class ModelRepository implements UserDetailsService {  // "implements" ti
     }
 
     public void defaults(String password, String roleName) {
-        for (Person person: listAll()) {
+        for (Person person : listAll()) {
             if (person.getPassword() == null || person.getPassword().isEmpty() || person.getPassword().isBlank()) {
                 person.setPassword(passwordEncoder.encode(password));
             }
@@ -114,17 +120,16 @@ public class ModelRepository implements UserDetailsService {  // "implements" ti
         }
     }
 
-
     /* Roles Section */
 
     public void saveRole(Role role) {
         Role roleObj = roleJpaRepository.findByName(role.getName());
-        if (roleObj == null) {  // only add if it is not found
+        if (roleObj == null) { // only add if it is not found
             roleJpaRepository.save(role);
         }
     }
 
-    public  List<Role>listAllRoles() {
+    public List<Role> listAllRoles() {
         return roleJpaRepository.findAll();
     }
 
@@ -132,23 +137,24 @@ public class ModelRepository implements UserDetailsService {  // "implements" ti
         return roleJpaRepository.findByName(roleName);
     }
 
-    public void addRoleToPerson(String email, String roleName) { // by passing in the two strings you are giving the user that certain role
+    public void addRoleToPerson(String email, String roleName) { // by passing in the two strings you are giving the
+                                                                 // user that certain role
         Person person = personJpaRepository.findByEmail(email);
-        if (person != null) {   // verify person
+        if (person != null) { // verify person
             Role role = roleJpaRepository.findByName(roleName);
             if (role != null) { // verify role
                 boolean addRole = true;
-                for (Role roleObj : person.getRoles()) {    // only add if user is missing role
+                for (Role roleObj : person.getRoles()) { // only add if user is missing role
                     if (roleObj.getName().equals(roleName)) {
                         addRole = false;
                         break;
                     }
                 }
-                if (addRole) person.getRoles().add(role);   // everything is valid for adding role
+                if (addRole)
+                    person.getRoles().add(role); // everything is valid for adding role
             }
         }
     }
-
 
     /* Car Section */
 
@@ -156,7 +162,7 @@ public class ModelRepository implements UserDetailsService {  // "implements" ti
         carJpaRepository.save(car);
     }
 
-    public  List<Car>listAllCars() {
+    public List<Car> listAllCars() {
         return carJpaRepository.findAll();
     }
 
@@ -174,40 +180,20 @@ public class ModelRepository implements UserDetailsService {  // "implements" ti
         carJpaRepository.deleteById(id);
     }
 
-
     // public void updateCar(long id, Car car){
-    //     carJpaRepository.save(car);
+    // carJpaRepository.save(car);
     // }
 
-    public void addCarToPersonCarList(String email, String carName) { 
-        Person person = personJpaRepository.findByEmail(email);
-        if (person != null) {   // verify person
-            Car car = carJpaRepository.findByName(carName);
-            if (car != null) { // verify role
-                boolean addCar = true;
-                for (Car carObj : person.getCarList()) {    // only add if user doesn't already have car in list
-                    if (carObj.getName().equals(carName)) {
-                        addCar = false;
-                        break;
-                    }
-                }
-                if (addCar) person.getCarList().add(car);   // everything is valid for adding car
-            }
-        }
-    }
-
-    public void deleteCarFromPersonCarList(String email, String carName) { 
-        Person person = personJpaRepository.findByEmail(email);
-        if (person != null) {   // verify person
-            Car car = carJpaRepository.findByName(carName);
-            if (car != null) { // verify car
-                if (person.getCarList().contains(car)) {
-                    person.getCarList().remove(car);
-                }
-            }
-        }
-    }
-
-
+    // public void deleteCarFromPersonCarList(String email, String carName) {
+    // Person person = personJpaRepository.findByEmail(email);
+    // if (person != null) { // verify person
+    // Car car = carJpaRepository.findByName(carName);
+    // if (car != null) { // verify car
+    // if (person.getCarList().contains(car)) {
+    // person.getCarList().remove(car);
+    // }
+    // }
+    // }
+    // }
 
 }
