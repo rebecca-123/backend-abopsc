@@ -1,5 +1,7 @@
 package com.nighthawk.spring_portfolio.database.grading;
 
+import java.util.HashMap;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -9,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.NotNull;
 
 import com.nighthawk.spring_portfolio.database.person.Person;
 
@@ -41,12 +44,29 @@ public class Grade {
     private Person person;
 
     private double totalPointValue;
-    private double grade;
+    private double points;
     private String comment;
+
+    @NotNull
+    private HashMap<String, Boolean> checks = new HashMap<String, Boolean>();
 
     public Grade(double pointValue, Assignment assignment) {
         this.totalPointValue = pointValue;
         this.assignment = assignment;
+
+        checks.put("Active", true);
+        checks.put("Started", false);
+        checks.put("Completion", false);
+        checks.put("Live Review", false);
+        checks.put("Graded", false);
+    }
+
+    public void updateCheck(String key, boolean value) {
+        try {
+            checks.replace(key, value);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
 
     public void setGrade(double grade) {
@@ -54,7 +74,7 @@ public class Grade {
             System.out.println("invalid grade, please enter in a valid grade");
             return;
         }
-        this.grade = grade;
+        this.points = grade;
     }
 
     public void setComment(String comment) {

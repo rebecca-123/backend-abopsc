@@ -46,7 +46,6 @@ public class Person {
 
     @ManyToMany
     @LazyCollection(LazyCollectionOption.FALSE)
-
     private Collection<Role> roles = new ArrayList<>();
 
     // @ManyToMany
