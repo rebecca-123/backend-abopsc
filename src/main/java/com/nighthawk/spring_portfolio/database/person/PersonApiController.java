@@ -17,65 +17,67 @@ import java.text.SimpleDateFormat;
 @RequestMapping("/api/person")
 public class PersonApiController {
     /*
-    #### RESTful API ####
-    Resource: https://spring.io/guides/gs/rest-service/
-    */
+     * #### RESTful API ####
+     * Resource: https://spring.io/guides/gs/rest-service/
+     */
 
-    // Autowired enables Control to connect HTML and POJO Object to database easily for CRUD
+    // Autowired enables Control to connect HTML and POJO Object to database easily
+    // for CRUD
     @Autowired
     private ModelRepository repository;
 
     /*
-    GET List of People
+     * GET List of People
      */
     @GetMapping("/all")
     public ResponseEntity<List<Person>> getPeople() {
-        return new ResponseEntity<>( repository.listAll(), HttpStatus.OK);
+        return new ResponseEntity<>(repository.listAll(), HttpStatus.OK);
     }
 
     /*
-    GET individual Person using ID
+     * GET individual Person using ID
      */
     @GetMapping("/{id}")
     public ResponseEntity<Person> getPerson(@PathVariable long id) {
-        return new ResponseEntity<>( repository.get(id), HttpStatus.OK);
+        return new ResponseEntity<>(repository.get(id), HttpStatus.OK);
     }
 
-
     /*
-    DELETE individual Person using ID
+     * DELETE individual Person using ID
      */
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Object> deletePerson(@PathVariable long id) {
         repository.delete(id);
-        return new ResponseEntity<>( ""+ id +" deleted", HttpStatus.OK);
+        return new ResponseEntity<>("" + id + " deleted", HttpStatus.OK);
     }
 
     /*
-    POST Aa record by Requesting Parameters from URI
+     * POST Aa record by Requesting Parameters from URI
      */
-    @PostMapping( "/post/")
+    @PostMapping("/post/")
     public ResponseEntity<Object> postPerson(@RequestParam("email") String email,
-                                             @RequestParam("password") String password,
-                                             @RequestParam("name") String name,
-                                             @RequestParam("dob") String dobString) {
+            @RequestParam("password") String password,
+            @RequestParam("name") String name,
+            @RequestParam("dob") String dobString) {
         Date dob;
         try {
             dob = new SimpleDateFormat("MM-dd-yyyy").parse(dobString);
         } catch (Exception e) {
-            return new ResponseEntity<>(dobString +" error; try MM-dd-yyyy", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(dobString + " error; try MM-dd-yyyy", HttpStatus.BAD_REQUEST);
         }
-        // A person object WITHOUT ID will create a new record with default roles as student
-        Person person = new Person(email, password, name, dob, repository.findRole("ROLE_USER") );
+        // A person object WITHOUT ID will create a new record with default roles as
+        // student
+        Person person = new Person(email, password, name, dob, repository.findRole("ROLE_USER"));
         repository.save(person);
-        return new ResponseEntity<>(email +" is created successfully", HttpStatus.CREATED);
+        return new ResponseEntity<>(email + " is created successfully", HttpStatus.CREATED);
     }
 
     /*
-    The personSearch API looks across database for partial match to term (k,v) passed by RequestEntity body
+     * The personSearch API looks across database for partial match to term (k,v)
+     * passed by RequestEntity body
      */
     @PostMapping(value = "/search", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> personSearch(@RequestBody final Map<String,String> map) {
+    public ResponseEntity<Object> personSearch(@RequestBody final Map<String, String> map) {
         // extract term from RequestEntity
         String term = (String) map.get("term");
 
@@ -84,32 +86,6 @@ public class PersonApiController {
 
         // return resulting list and status, error checking should be added
         return new ResponseEntity<>(list, HttpStatus.OK);
-    }
-
-    // Method to call addCarToPersonCarList from ModelRepository to add a car to a person's car list, taking email and car name as parameters from URI
-    @PostMapping(value = "/addCar", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> addCarToPersonCarList(@RequestParam("email") String email,
-                                                        @RequestParam("carName") String carName) {
-        // custom JPA query to filter on term
-        repository.addCarToPersonCarList(email, carName);
-
-        // return resulting list and status
-        return new ResponseEntity<>("Car added to person's car list", HttpStatus.OK);
-    }
-
-    @GetMapping(value = "/deleteCar", produces = MediaType.APPLICATION_JSON_VALUE)
-    public RedirectView deleteCarFromPersonCarList(@RequestParam("email") String email,
-                                                        @RequestParam("carName") String carName) {
-        repository.deleteCarFromPersonCarList(email, carName);
-
-        return new RedirectView("https://ad1616.github.io/breadbops-frontend/carlist");
-
-    }
-
-    @GetMapping("/getPersonCarList")
-    public ResponseEntity<?> getPersonCarList(@RequestParam("email") String email) {
-        Person person = repository.getByEmail(email);
-        return new ResponseEntity<>(person.getCarList(), HttpStatus.OK);
     }
 
     @GetMapping("/getPersonRoles")
@@ -129,5 +105,30 @@ public class PersonApiController {
         Person person = repository.getByEmail(email);
         return new ResponseEntity<>(person.getAge(), HttpStatus.OK);
     }
+
+    // Method to call addCarToPersonCarList from ModelRepository to add a car to a
+    // person's car list, taking email and car name as parameters from URI
+    // @PostMapping(value = "/addCar", produces = MediaType.APPLICATION_JSON_VALUE)
+    // public ResponseEntity<Object> addCarToPersonCarList(@RequestParam("email")
+    // String email,
+    // @RequestParam("carName") String carName) {
+    // // custom JPA query to filter on term
+    // repository.addCarToPersonCarList(email, carName);
+
+    // // return resulting list and status
+    // return new ResponseEntity<>("Car added to person's car list", HttpStatus.OK);
+    // }
+
+    // @GetMapping(value = "/deleteCar", produces =
+    // MediaType.APPLICATION_JSON_VALUE)
+    // public RedirectView deleteCarFromPersonCarList(@RequestParam("email") String
+    // email,
+    // @RequestParam("carName") String carName) {
+    // repository.deleteCarFromPersonCarList(email, carName);
+
+    // return new
+    // RedirectView("https://ad1616.github.io/breadbops-frontend/carlist");
+
+    // }
 
 }
