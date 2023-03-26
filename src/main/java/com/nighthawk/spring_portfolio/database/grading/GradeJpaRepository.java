@@ -14,6 +14,8 @@ public interface GradeJpaRepository extends JpaRepository<Grade, Long> {
 
     List<Grade> findAllByPerson(Person person);
 
+    List<Grade> findAllByAssignment(Assignment assignment);
+
     List<Grade> findAllByOrderByIdAsc();
 
     // Custom JPA query

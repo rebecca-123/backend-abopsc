@@ -136,4 +136,23 @@ public class GradingApiController {
                 HttpStatus.OK);
     }
 
+    /*
+     * GET List of Grades by Assignment
+     * Lists statuses as well in checks HashMap
+     */
+    @GetMapping("/assignmentGrades")
+    public ResponseEntity<Object> getGradesByAssignment(@RequestBody final Map<String, Object> map) {
+
+        String assignmentString = (String) map.get("assignment");
+
+        Assignment assignment = assignmentRepository.findByName(assignmentString);
+
+        if (assignment.equals(null)) {
+            return new ResponseEntity<>("assignment does not exist",
+                    HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(gradeRepository.findAllByAssignment(assignment), HttpStatus.OK);
+    }
+
 }
