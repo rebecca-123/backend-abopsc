@@ -79,6 +79,31 @@ public class GradingApiController {
         return new ResponseEntity<>("Total Grade of " + person.getName() + ": " + totalGrade, HttpStatus.OK);
     }
 
+    /*
+     * DELETE individual Person using ID
+     * Set as POST since not sure if delete works through aws CORS
+     */
+    @PostMapping("/delete")
+    public ResponseEntity<Object> deletePerson(@RequestBody final Map<String, Object> map) {
+        String assignmentName = (String) map.get("assignment");
+
+        Assignment assignment = assignmentRepository.findByName(assignmentName);
+
+        if (assignment.equals(null)) {
+            return new ResponseEntity<>("person not found", HttpStatus.OK);
+        }
+
+        List<Grade> grades = gradeRepository.findAllByAssignment(assignment);
+
+        for (Grade grade : grades) {
+            gradeRepository.delete(grade);
+        }
+
+        assignmentRepository.delete(assignment);
+
+        return new ResponseEntity<>(assignmentName + " and all relevant grades deleted", HttpStatus.OK);
+    }
+
     @PostMapping("/updateGrade")
     public ResponseEntity<Object> updateGrade(@RequestBody final Map<String, Object> map) {
         String email = (String) map.get("email");

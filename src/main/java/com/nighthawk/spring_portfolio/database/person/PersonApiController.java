@@ -1,5 +1,6 @@
 package com.nighthawk.spring_portfolio.database.person;
 
+import org.hibernate.validator.internal.util.logging.formatter.ObjectArrayFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -12,6 +13,7 @@ import com.nighthawk.spring_portfolio.database.grading.Assignment;
 import com.nighthawk.spring_portfolio.database.grading.AssignmentJpaRepository;
 import com.nighthawk.spring_portfolio.database.grading.Grade;
 import com.nighthawk.spring_portfolio.database.grading.GradeJpaRepository;
+import com.nighthawk.spring_portfolio.database.role.RoleJpaRepository;
 
 import java.util.*;
 
@@ -30,9 +32,12 @@ public class PersonApiController {
     @Autowired
     private ModelRepository repository;
 
-    // Repositories for Grades & Assignments
+    // Individual Repositories for People, Grades & Assignments
     // didn't want to mess up ModelRepository so i didn't add assignment/grade repos
     // there
+    @Autowired
+    private PersonJpaRepository personRepository;
+
     @Autowired
     private AssignmentJpaRepository assignmentRepository;
 
@@ -44,15 +49,20 @@ public class PersonApiController {
      */
     @GetMapping("/all")
     public ResponseEntity<List<Person>> getPeople() {
-        return new ResponseEntity<>(repository.listAll(), HttpStatus.OK);
+        return new ResponseEntity<>(personRepository.findAllByOrderByNameAsc(), HttpStatus.OK);
     }
 
     /*
      * GET individual Person using ID
      */
     @GetMapping("/{id}")
-    public ResponseEntity<Person> getPerson(@PathVariable long id) {
-        return new ResponseEntity<>(repository.get(id), HttpStatus.OK);
+    public ResponseEntity<Object> getPerson(@PathVariable long id) {
+        Person person = personRepository.findById(id).orElse(null);
+        if (person.equals(null)) {
+            return new ResponseEntity<>("person not found", HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(person, HttpStatus.OK);
     }
 
     /*
@@ -60,8 +70,20 @@ public class PersonApiController {
      */
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Object> deletePerson(@PathVariable long id) {
-        repository.delete(id);
-        return new ResponseEntity<>("" + id + " deleted", HttpStatus.OK);
+        Person person = personRepository.findById(id).orElse(null);
+        if (person.equals(null)) {
+            return new ResponseEntity<>("person not found", HttpStatus.OK);
+        }
+
+        List<Grade> grades = gradeRepository.findAllByPerson(person);
+
+        for (Grade grade : grades) {
+            gradeRepository.delete(grade);
+        }
+
+        personRepository.delete(person);
+
+        return new ResponseEntity<>("" + id + " and all relevant grades deleted", HttpStatus.OK);
     }
 
     /*
@@ -83,7 +105,7 @@ public class PersonApiController {
         // A person object WITHOUT ID will create a new record with default roles as
         // student
         Person person = new Person(email, password, name, dob, repository.findRole("ROLE_USER"));
-        repository.save(person);
+        personRepository.save(person);
 
         List<Assignment> assignments = assignmentRepository.findAllByOrderByIdAsc();
 
@@ -99,33 +121,34 @@ public class PersonApiController {
      * The personSearch API looks across database for partial match to term (k,v)
      * passed by RequestEntity body
      */
-    @PostMapping(value = "/search", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> personSearch(@RequestBody final Map<String, String> map) {
-        // extract term from RequestEntity
-        String term = (String) map.get("term");
+    // @PostMapping(value = "/search", produces = MediaType.APPLICATION_JSON_VALUE)
+    // public ResponseEntity<Object> personSearch(@RequestBody final Map<String,
+    // String> map) {
+    // // extract term from RequestEntity
+    // String term = (String) map.get("term");
 
-        // custom JPA query to filter on term
-        List<Person> list = repository.listLikeNative(term);
+    // // custom JPA query to filter on term
+    // List<Person> list = personRepository.listLikeNative(term);
 
-        // return resulting list and status, error checking should be added
-        return new ResponseEntity<>(list, HttpStatus.OK);
-    }
+    // // return resulting list and status, error checking should be added
+    // return new ResponseEntity<>(list, HttpStatus.OK);
+    // }
 
     @GetMapping("/getPersonRoles")
     public ResponseEntity<?> getPersonRoles(@RequestParam("email") String email) {
-        Person person = repository.getByEmail(email);
+        Person person = personRepository.findByEmail(email);
         return new ResponseEntity<>(person.getRoles(), HttpStatus.OK);
     }
 
     @GetMapping("/getPersonName")
     public ResponseEntity<?> getPersonName(@RequestParam("email") String email) {
-        Person person = repository.getByEmail(email);
+        Person person = personRepository.findByEmail(email);
         return new ResponseEntity<>(person.getName(), HttpStatus.OK);
     }
 
     @GetMapping("/getPersonAge")
     public ResponseEntity<?> getPersonAge(@RequestParam("email") String email) {
-        Person person = repository.getByEmail(email);
+        Person person = personRepository.findByEmail(email);
         return new ResponseEntity<>(person.getAge(), HttpStatus.OK);
     }
 
