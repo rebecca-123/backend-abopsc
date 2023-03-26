@@ -49,7 +49,7 @@ public class Grade {
     @NotNull
     private HashMap<String, Boolean> checks = new HashMap<String, Boolean>();
 
-    public Grade(Assignment assignment) {
+    public Grade(Assignment assignment, Person person) {
         this.assignment = assignment;
 
         checks.put("Active", false);

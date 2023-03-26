@@ -38,7 +38,7 @@ public class GradingApiController {
     }
 
     /*
-     * GET List of Grades
+     * GET List of Grades by Person
      */
     @GetMapping("/grades")
     public ResponseEntity<Object> getGrades(@RequestBody final Map<String, Object> map) {
@@ -55,7 +55,7 @@ public class GradingApiController {
         return new ResponseEntity<>(gradeRepository.findAllByPerson(person), HttpStatus.OK);
     }
 
-    @PostMapping("/totalGrade")
+    @GetMapping("/totalGrade")
     public ResponseEntity<Object> totalGrade(@RequestBody final Map<String, Object> map) {
         String email = (String) map.get("email");
 
@@ -191,7 +191,7 @@ public class GradingApiController {
 
         for (Person person : people) {
             if (!checkAdmin(person)) {
-                Grade grade = new Grade(assignment);
+                Grade grade = new Grade(assignment, person);
                 gradeRepository.save(grade);
             }
         }

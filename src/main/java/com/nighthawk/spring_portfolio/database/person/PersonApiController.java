@@ -8,6 +8,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
 import com.nighthawk.spring_portfolio.database.ModelRepository;
+import com.nighthawk.spring_portfolio.database.grading.Assignment;
+import com.nighthawk.spring_portfolio.database.grading.AssignmentJpaRepository;
+import com.nighthawk.spring_portfolio.database.grading.Grade;
+import com.nighthawk.spring_portfolio.database.grading.GradeJpaRepository;
 
 import java.util.*;
 
@@ -25,6 +29,15 @@ public class PersonApiController {
     // for CRUD
     @Autowired
     private ModelRepository repository;
+
+    // Repositories for Grades & Assignments
+    // didn't want to mess up ModelRepository so i didn't add assignment/grade repos
+    // there
+    @Autowired
+    private AssignmentJpaRepository assignmentRepository;
+
+    @Autowired
+    private GradeJpaRepository gradeRepository;
 
     /*
      * GET List of People
@@ -59,16 +72,26 @@ public class PersonApiController {
             @RequestParam("password") String password,
             @RequestParam("name") String name,
             @RequestParam("dob") String dobString) {
+
         Date dob;
         try {
             dob = new SimpleDateFormat("MM-dd-yyyy").parse(dobString);
         } catch (Exception e) {
             return new ResponseEntity<>(dobString + " error; try MM-dd-yyyy", HttpStatus.BAD_REQUEST);
         }
+
         // A person object WITHOUT ID will create a new record with default roles as
         // student
         Person person = new Person(email, password, name, dob, repository.findRole("ROLE_USER"));
         repository.save(person);
+
+        List<Assignment> assignments = assignmentRepository.findAllByOrderByIdAsc();
+
+        for (Assignment assignment : assignments) {
+            Grade grade = new Grade(assignment, person);
+            gradeRepository.save(grade);
+        }
+
         return new ResponseEntity<>(email + " is created successfully", HttpStatus.CREATED);
     }
 
