@@ -34,7 +34,7 @@ public class JwtApiController {
 	@Autowired
 	private ModelRepository personDetailsService;
 
-	@PostMapping("/authenticate")
+	@PostMapping("/authenticate/")
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody Person authenticationRequest) throws Exception {
 		authenticate(authenticationRequest.getEmail(), authenticationRequest.getPassword());
 		final UserDetails userDetails = personDetailsService
