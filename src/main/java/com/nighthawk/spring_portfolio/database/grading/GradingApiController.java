@@ -9,6 +9,7 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import com.nighthawk.spring_portfolio.database.person.Person;
 import com.nighthawk.spring_portfolio.database.person.PersonJpaRepository;
+import com.nighthawk.spring_portfolio.database.role.Role;
 
 import java.util.*;
 import java.text.SimpleDateFormat;
@@ -121,7 +122,7 @@ public class GradingApiController {
      * Endpoint to update checks
      * Make sure endpoint correlates with checks in grades
      */
-    @PostMapping
+    @PostMapping("/updateCheck")
     public ResponseEntity<Object> updateCheck(@RequestBody final Map<String, Object> map) {
         String email = (String) map.get("email");
         String assignmentName = (String) map.get("assignment");
@@ -152,8 +153,54 @@ public class GradingApiController {
                 HttpStatus.OK);
     }
 
-    @PostMapping
-    public ResponseEntity<Object> activateAssignment(@RequestBody final Map<String, Object> map) {
+    // just checks if there's an admin role]
+    // helps to skip admin so they don't have Grade POJOs stored
+    public static boolean checkAdmin(Person person) {
+        for (Role role : person.getRoles()) {
+            if (role.getName().equals("ROLE_ADMIN")) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    @PostMapping("/createAssignment")
+    public ResponseEntity<Object> createAssignment(@RequestBody final Map<String, Object> map) {
+        String name = (String) map.get("name");
+        String type = (String) map.get("type");
+        String pointValueString = (String) map.get("point value");
+        String dateString = (String) map.get("dueDate");
+
+        double pointValue = Double.valueOf(pointValueString);
+        Date dueDate;
+
+        try {
+            dueDate = new SimpleDateFormat("yyyy-MM-dd").parse(dateString);
+        } catch (Exception e) {
+            return new ResponseEntity<>(dateString + " error; try yyyy-MM-dd",
+                    HttpStatus.BAD_REQUEST);
+        }
+
+        Assignment assignment = new Assignment(name, type, pointValue, dueDate);
+        assignmentRepository.save(assignment);
+
+        // initialize grades for every current person that exists for this new
+        // assignment
+        List<Person> people = personRepository.findAllByOrderByNameAsc();
+
+        for (Person person : people) {
+            if (!checkAdmin(person)) {
+                Grade grade = new Grade(assignment);
+                gradeRepository.save(grade);
+            }
+        }
+
+        return new ResponseEntity<>(name + " assignment created successfully", HttpStatus.OK);
+    }
+
+    @PostMapping("/initializeAssignment")
+    public ResponseEntity<Object> initializeAssignment(@RequestBody final Map<String, Object> map) {
         String assignmentName = (String) map.get("assignment");
         Assignment assignment = assignmentRepository.findByName(assignmentName);
 

@@ -43,15 +43,13 @@ public class Grade {
     @ManyToOne(cascade = CascadeType.ALL)
     private Person person;
 
-    private double totalPointValue;
     private double points;
     private String comment;
 
     @NotNull
     private HashMap<String, Boolean> checks = new HashMap<String, Boolean>();
 
-    public Grade(double pointValue, Assignment assignment) {
-        this.totalPointValue = pointValue;
+    public Grade(Assignment assignment) {
         this.assignment = assignment;
 
         checks.put("Active", false);
@@ -70,10 +68,11 @@ public class Grade {
     }
 
     public void setGrade(double grade) {
-        if (grade < 0 || grade > this.totalPointValue) {
+        if (grade < 0 || grade > this.assignment.getTotalPointValue()) {
             System.out.println("invalid grade, please enter in a valid grade");
             return;
         }
+
         this.points = grade;
     }
 

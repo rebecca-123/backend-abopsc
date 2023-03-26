@@ -1,6 +1,6 @@
 package com.nighthawk.spring_portfolio.database.grading;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.HashMap;
 
 import javax.persistence.Entity;
@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PositiveOrZero;
 
 import com.mongodb.lang.NonNull;
 
@@ -32,12 +33,16 @@ public class Assignment {
     @NotEmpty
     private String type;
 
+    @PositiveOrZero
+    private double totalPointValue;
+
     @NonNull
     private Date dueDate;
 
-    public Assignment(String name, String type, Date dueDate) {
+    public Assignment(String name, String type, double pointValue, Date dueDate) {
         this.name = name;
         this.type = type;
+        this.totalPointValue = pointValue;
         this.dueDate = dueDate;
     }
 
