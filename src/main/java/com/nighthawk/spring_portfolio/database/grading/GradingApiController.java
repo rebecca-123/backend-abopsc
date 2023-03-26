@@ -12,6 +12,8 @@ import com.nighthawk.spring_portfolio.database.person.PersonJpaRepository;
 
 import java.util.*;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 
 @RestController
 @RequestMapping("/api/grading")
@@ -88,6 +90,14 @@ public class GradingApiController {
         Person person = personRepository.findByEmail(email);
         Assignment assignment = assignmentRepository.findByName(assignmentName);
 
+        // accounts for late penalty (prob wont use bc we can just do it manually)
+        // ZoneId defaultZoneId = ZoneId.systemDefault();
+        // LocalDate currentDate = LocalDate.now();
+        // Date date = Date.from(currentDate.atStartOfDay(defaultZoneId).toInstant());
+        // if(date.after(assignment.getDueDate())){
+        // score = score*0.9;
+        // }
+
         if (person.equals(null) || assignment.equals(null)) {
             return new ResponseEntity<>("person/assignment does not exist", HttpStatus.BAD_REQUEST);
         }
@@ -100,6 +110,7 @@ public class GradingApiController {
 
         grade.setGrade(score);
         grade.setComment(comment);
+        grade.updateCheck("Graded", true);
         gradeRepository.save(grade);
 
         return new ResponseEntity<>(("Successfully updated grade for " + assignmentName + " for " + email),
@@ -115,6 +126,9 @@ public class GradingApiController {
         String email = (String) map.get("email");
         String assignmentName = (String) map.get("assignment");
         String check = (String) map.get("check");
+        String checkStatus = (String) map.get("status");
+
+        boolean status = Boolean.valueOf(checkStatus);
 
         Person person = personRepository.findByEmail(email);
         Assignment assignment = assignmentRepository.findByName(assignmentName);
@@ -130,10 +144,31 @@ public class GradingApiController {
             return new ResponseEntity<>("grade does not exist", HttpStatus.BAD_REQUEST);
         }
 
-        grade.updateCheck(check, true);
+        grade.updateCheck(check, status);
+
+        gradeRepository.save(grade);
 
         return new ResponseEntity<>((email + " started assignment for " + assignmentName),
                 HttpStatus.OK);
+    }
+
+    @PostMapping
+    public ResponseEntity<Object> activateAssignment(@RequestBody final Map<String, Object> map) {
+        String assignmentName = (String) map.get("assignment");
+        Assignment assignment = assignmentRepository.findByName(assignmentName);
+
+        if (assignment.equals(null)) {
+            return new ResponseEntity<>("assignment does not exist", HttpStatus.BAD_REQUEST);
+        }
+
+        List<Grade> grades = gradeRepository.findAllByAssignment(assignment);
+
+        for (Grade grade : grades) {
+            grade.updateCheck("Active", true);
+            gradeRepository.save(grade);
+        }
+
+        return new ResponseEntity<>((assignmentName + " initialized"), HttpStatus.OK);
     }
 
     /*

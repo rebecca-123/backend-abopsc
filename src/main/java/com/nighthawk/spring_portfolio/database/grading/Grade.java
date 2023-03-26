@@ -54,9 +54,9 @@ public class Grade {
         this.totalPointValue = pointValue;
         this.assignment = assignment;
 
-        checks.put("Active", true);
+        checks.put("Active", false);
         checks.put("Started", false);
-        checks.put("Completion", false);
+        checks.put("Completed", false);
         checks.put("Live Review", false);
         checks.put("Graded", false);
     }
