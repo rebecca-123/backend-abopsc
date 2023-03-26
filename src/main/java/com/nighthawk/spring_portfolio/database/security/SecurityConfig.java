@@ -22,6 +22,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.header.writers.StaticHeadersWriter;
 
+import static org.springframework.security.config.Customizer.withDefaults;
 
 
 /*
@@ -64,39 +65,29 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     // Provide security configuration
 	@Override
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
-		httpSecurity
-			// no CSRF
-			.csrf().disable()
-			// list the requests/endpoints need to be authenticated
-			.authorizeRequests()
-				.antMatchers("/api/person/delete/**").authenticated()
-				.antMatchers("/api/carInventory/post/**").authenticated()
-				.antMatchers("/api/carInventory/updateCar/**").authenticated()
-				.antMatchers("https://abopsc-backend.dontntntnt.de/authenticate/**").permitAll()
-				.and()
-			// support cors on localhost
-			// .cors().and()
-			.headers()
-				.addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-Credentials", "true"))
-				.addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-ExposedHeaders", "*", "Authorization"))
-				.addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-Headers", "Content-Type", "Authorization", "x-csrf-token"))
-				.addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-MaxAge", "600"))
-				.addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-Methods", "POST", "GET", "OPTIONS", "HEAD"))
-				.and()
-			.formLogin()
-                .loginPage("/login")
-                .and()
-            .logout()
-                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                .logoutSuccessUrl("/")
-				.and()
-			// make sure we use stateless session; 
-			// session won't be used to store user's state.
-			.exceptionHandling()
-				.authenticationEntryPoint(jwtAuthenticationEntryPoint)
-				.and()
-				.sessionManagement()
-				.sessionCreationPolicy(SessionCreationPolicy.STATELESS)           
+        httpSecurity
+                // no CSRF
+                .csrf((csrf) -> csrf.disable())
+                // list the requests/endpoints need to be authenticated
+                .authorizeRequests(requests -> requests
+                        .antMatchers("/api/person/delete/**").authenticated()
+                        .antMatchers("/api/carInventory/post/**").authenticated()
+                        .antMatchers("/api/carInventory/updateCar/**").authenticated()
+                        .antMatchers("https://abopsc-backend.dontntntnt.de/authenticate/**").permitAll())
+                // support cors on localhost
+                // .cors().and()
+                .headers(headers -> headers
+                        .addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-Credentials", "true"))
+                        .addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-ExposedHeaders", "*", "Authorization"))
+                        .addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-Headers", "Content-Type", "Authorization", "x-csrf-token"))
+                        .addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-MaxAge", "600"))
+                        .addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-Methods", "POST", "GET", "OPTIONS", "HEAD")))
+                // make sure we use stateless session; 
+                // session won't be used to store user's state.
+                .exceptionHandling(handling -> handling
+                        .authenticationEntryPoint(jwtAuthenticationEntryPoint))
+                .sessionManagement(management -> management
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))           
 		;
 
 		// Add a filter to validate the tokens with every request
