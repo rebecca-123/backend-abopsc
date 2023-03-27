@@ -58,7 +58,7 @@ public class PersonApiController {
     @GetMapping("/{id}")
     public ResponseEntity<Object> getPerson(@PathVariable long id) {
         Person person = personRepository.findById(id).orElse(null);
-        if (person.equals(null)) {
+        if (person == null) {
             return new ResponseEntity<>("person not found", HttpStatus.OK);
         }
 
@@ -71,7 +71,7 @@ public class PersonApiController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Object> deletePerson(@PathVariable long id) {
         Person person = personRepository.findById(id).orElse(null);
-        if (person.equals(null)) {
+        if (person == null) {
             return new ResponseEntity<>("person not found", HttpStatus.OK);
         }
 
@@ -89,7 +89,7 @@ public class PersonApiController {
     /*
      * POST Aa record by Requesting Parameters from URI
      */
-    @PostMapping("/post/")
+    @PostMapping("/post")
     public ResponseEntity<Object> postPerson(@RequestParam("email") String email,
             @RequestParam("password") String password,
             @RequestParam("name") String name,

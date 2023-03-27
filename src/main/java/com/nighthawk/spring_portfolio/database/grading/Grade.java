@@ -36,11 +36,11 @@ public class Grade {
     private Long id;
 
     @JoinColumn(name = "assignment_id")
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     private Assignment assignment;
 
-    @JoinColumn(name = "user_id")
-    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "person_id")
+    @ManyToOne(cascade = CascadeType.MERGE)
     private Person person;
 
     private double points;

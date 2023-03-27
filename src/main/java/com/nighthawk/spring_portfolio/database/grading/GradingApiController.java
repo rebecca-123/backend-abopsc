@@ -47,7 +47,7 @@ public class GradingApiController {
 
         Person person = personRepository.findByEmail(email);
 
-        if (person.equals(null)) {
+        if (person == null) {
             return new ResponseEntity<>("person does not exist",
                     HttpStatus.BAD_REQUEST);
         }
@@ -61,7 +61,7 @@ public class GradingApiController {
 
         Person person = personRepository.findByEmail(email);
 
-        if (person.equals(null)) {
+        if (person == null) {
             return new ResponseEntity<>("person does not exist",
                     HttpStatus.BAD_REQUEST);
         }
@@ -89,7 +89,7 @@ public class GradingApiController {
 
         Assignment assignment = assignmentRepository.findByName(assignmentName);
 
-        if (assignment.equals(null)) {
+        if (assignment == null) {
             return new ResponseEntity<>("person not found", HttpStatus.OK);
         }
 
@@ -124,13 +124,13 @@ public class GradingApiController {
         // score = score*0.9;
         // }
 
-        if (person.equals(null) || assignment.equals(null)) {
+        if (person == null || assignment == null) {
             return new ResponseEntity<>("person/assignment does not exist", HttpStatus.BAD_REQUEST);
         }
 
         Grade grade = gradeRepository.findByPersonAndAssignment(person, assignment);
 
-        if (grade.equals(null)) {
+        if (grade == null) {
             return new ResponseEntity<>("grade does not exist", HttpStatus.BAD_REQUEST);
         }
 
@@ -159,14 +159,14 @@ public class GradingApiController {
         Person person = personRepository.findByEmail(email);
         Assignment assignment = assignmentRepository.findByName(assignmentName);
 
-        if (person.equals(null)) {
+        if (person == null) {
             return new ResponseEntity<>("person does not exist",
                     HttpStatus.BAD_REQUEST);
         }
 
         Grade grade = gradeRepository.findByPersonAndAssignment(person, assignment);
 
-        if (grade.equals(null)) {
+        if (grade == null) {
             return new ResponseEntity<>("grade does not exist", HttpStatus.BAD_REQUEST);
         }
 
@@ -229,7 +229,7 @@ public class GradingApiController {
         String assignmentName = (String) map.get("assignment");
         Assignment assignment = assignmentRepository.findByName(assignmentName);
 
-        if (assignment.equals(null)) {
+        if (assignment == null) {
             return new ResponseEntity<>("assignment does not exist", HttpStatus.BAD_REQUEST);
         }
 
@@ -254,7 +254,7 @@ public class GradingApiController {
 
         Assignment assignment = assignmentRepository.findByName(assignmentString);
 
-        if (assignment.equals(null)) {
+        if (assignment == null) {
             return new ResponseEntity<>("assignment does not exist",
                     HttpStatus.BAD_REQUEST);
         }
