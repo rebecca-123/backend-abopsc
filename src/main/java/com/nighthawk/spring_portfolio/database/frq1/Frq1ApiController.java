@@ -22,8 +22,8 @@ public class Frq1ApiController {
         ArrayList<Integer> carList = new ArrayList<Integer>();
 
         // Create objectmapper to convert String to JSON
-        ObjectMapper mapper = new ObjectMapper();
-        json = mapper.readTree(carList.toString());
+        // ObjectMapper mapper = new ObjectMapper();
+        // json = mapper.readTree(carList.toString());
 
         return ResponseEntity.ok(json);
     }
