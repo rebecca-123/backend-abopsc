@@ -30,13 +30,13 @@ import lombok.NoArgsConstructor;
 @Entity
 public class Grade {
 
-    // identity to prevent database locking
+    // identity id generation to prevent database locking
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @JoinColumn(name = "assignment_id")
-    @OneToOne(cascade = CascadeType.MERGE)
+    @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     private Assignment assignment;
 
     @JoinColumn(name = "person_id")
