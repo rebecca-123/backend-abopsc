@@ -30,13 +30,13 @@ import lombok.NoArgsConstructor;
 @Entity
 public class Grade {
 
-    // automatic unique identifier for completion record
+    // identity to prevent database locking
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @JoinColumn(name = "assignment_id")
-    @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.MERGE)
     private Assignment assignment;
 
     @JoinColumn(name = "person_id")
@@ -51,6 +51,7 @@ public class Grade {
 
     public Grade(Assignment assignment, Person person) {
         this.assignment = assignment;
+        this.person = person;
 
         checks.put("Active", false);
         checks.put("Started", false);
