@@ -12,6 +12,9 @@ import com.nighthawk.spring_portfolio.database.person.PersonJpaRepository;
 import com.nighthawk.spring_portfolio.database.role.Role;
 
 import java.util.*;
+
+import javax.transaction.Transactional;
+
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -84,13 +87,13 @@ public class GradingApiController {
      * Set as POST since not sure if delete works through aws CORS
      */
     @PostMapping("/delete")
-    public ResponseEntity<Object> deletePerson(@RequestBody final Map<String, Object> map) {
+    public ResponseEntity<Object> deleteAssignment(@RequestBody final Map<String, Object> map) {
         String assignmentName = (String) map.get("assignment");
 
         Assignment assignment = assignmentRepository.findByName(assignmentName);
 
         if (assignment == null) {
-            return new ResponseEntity<>("person not found", HttpStatus.OK);
+            return new ResponseEntity<>("assignment not found", HttpStatus.OK);
         }
 
         List<Grade> grades = gradeRepository.findAllByAssignment(assignment);
@@ -190,6 +193,7 @@ public class GradingApiController {
         return false;
     }
 
+    @Transactional
     @PostMapping("/createAssignment")
     public ResponseEntity<Object> createAssignment(@RequestBody final Map<String, Object> map) {
         String name = (String) map.get("name");
@@ -218,6 +222,7 @@ public class GradingApiController {
             if (!checkAdmin(person)) {
                 Grade grade = new Grade(assignment, person);
                 gradeRepository.save(grade);
+                personRepository.save(person);
             }
         }
 
