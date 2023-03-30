@@ -31,7 +31,7 @@ public class Car {
 
     @Column()
     private int year;
-
+    
     public Car(String name, String description, String make, String model, int year) {
         this.name = name;
         this.description = description;
