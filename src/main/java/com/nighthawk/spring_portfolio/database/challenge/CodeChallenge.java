@@ -11,7 +11,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
+@NoArgsConstructor //asdasd
 @AllArgsConstructor
 @Entity
 public class CodeChallenge {
