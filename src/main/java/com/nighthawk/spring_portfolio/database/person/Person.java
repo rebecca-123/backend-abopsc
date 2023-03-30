@@ -36,8 +36,8 @@ public class Person {
 
     // email, password, roles are key to login and authentication
     @NotEmpty
-    @Size(min=5)
-    @Column(unique=true)
+    @Size(min = 5)
+    @Column(unique = true)
     @Email
     private String email;
 
@@ -46,13 +46,12 @@ public class Person {
 
     @ManyToMany
     @LazyCollection(LazyCollectionOption.FALSE)
-
     private Collection<Role> roles = new ArrayList<>();
 
-    @ManyToMany
-    @LazyCollection(LazyCollectionOption.FALSE)
+    // @ManyToMany
+    // @LazyCollection(LazyCollectionOption.FALSE)
 
-    private Collection<Car> carList = new ArrayList();
+    // private Collection<Car> carList = new ArrayList();
 
     // @NonNull: Places this in @RequiredArgsConstructor
     @NonNull
@@ -75,17 +74,18 @@ public class Person {
     public int getAge() {
         if (this.dob != null) {
             LocalDate birthDay = this.dob.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-            return Period.between(birthDay, LocalDate.now()).getYears(); }
+            return Period.between(birthDay, LocalDate.now()).getYears();
+        }
         return -1;
     }
 
     public String toString() {
-        return( "{" + 
-            "\"name\": " + name + "," +
-            "\"email\": " +  email + "," + 
-            "\"password\": " +  password + "," + 
-            "\"dob\": " + dob + 
-            "}" );
+        return ("{" +
+                "\"name\": " + name + "," +
+                "\"email\": " + email + "," +
+                "\"password\": " + password + "," +
+                "\"dob\": " + dob +
+                "}");
     }
 
 }
