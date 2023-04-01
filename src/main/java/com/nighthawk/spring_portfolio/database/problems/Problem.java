@@ -1,5 +1,7 @@
 package com.nighthawk.spring_portfolio.database.problems;
 
+import java.util.HashMap;
+
 import javax.persistence.*;
 import lombok.*;
 
@@ -14,10 +16,9 @@ public class Problem {
     private long id;
 
 
-    // Problem stores the actual problem, String[] stores possible answers, correctAnswer 
+    // HashMap stores answer choices and boolean of correctness (ie 0 is incorrect, 1 is correct)
     private String problem;
-    private String[] answers;
-    private int correctAnswer;
+    private HashMap<String, Boolean> answers;
 
     @ManyToOne
     private ProblemSet problemSet;
