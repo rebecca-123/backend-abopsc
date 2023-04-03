@@ -17,7 +17,7 @@ public class Problem {
 
 
     // HashMap stores answer choices and boolean of correctness (ie 0 is incorrect, 1 is correct)
-    private String problem;
+    private String question;
     private HashMap<String, Boolean> answers;
 
     @ManyToOne
