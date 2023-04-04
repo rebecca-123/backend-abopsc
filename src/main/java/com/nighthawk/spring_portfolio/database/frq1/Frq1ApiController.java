@@ -11,20 +11,20 @@ import java.util.*;
 
 @RestController
 @RequestMapping("/api/frq1")
-public class Frq1ApiController { 
+public class Frq1ApiController {
 
     // private LightBoard lightBoard;
     // private JsonNode json;
 
-    @GetMapping("/{values}")
-    public ResponseEntity<JsonNode> generateCarList(@PathVariable String values)
-            throws JsonMappingException, JsonProcessingException {
-        ArrayList<Integer> carList = new ArrayList<Integer>();
+    // @GetMapping("/{values}")
+    // public ResponseEntity<JsonNode> generateCarList(@PathVariable String values)
+    // throws JsonMappingException, JsonProcessingException {
+    // ArrayList<Integer> carList = new ArrayList<Integer>();
 
-        // Create objectmapper to convert String to JSON
-        ObjectMapper mapper = new ObjectMapper();
-        json = mapper.readTree(carList.toString());
+    // // Create objectmapper to convert String to JSON
+    // ObjectMapper mapper = new ObjectMapper();
+    // json = mapper.readTree(carList.toString());
 
-        return ResponseEntity.ok(json);
-    }
+    // return ResponseEntity.ok(json);
+    // }
 }
