@@ -16,7 +16,8 @@ public class PowerToWeight {
         model.addAttribute("horsepower", horsepower);
         model.addAttribute("weight", weight);
 
-        // float powertoweight = (float) (horsepower * 1.0/ weight);
+        // equation used
+        // float powertoweight = (float) (horsepower * 1.0/ weight)
 
         // load HTML VIEW (range.html)
         return "powertoweight"; 
