@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ProblemJpaRepository extends JpaRepository<Problem, Long> {
     
-    Optional<Problem> findById();
+    Optional<Problem> findById(Long id);
     List<Problem> findByProblemSet(ProblemSet problemSet);
 
 }

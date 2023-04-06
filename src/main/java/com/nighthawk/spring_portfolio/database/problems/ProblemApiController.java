@@ -29,7 +29,7 @@ public class ProblemApiController {
     //                                              question,     answer, correctness
     @PostMapping("/getProblemSetMC")
     public ResponseEntity<Object> getProblemSetMC(@RequestBody final Map<String, Object> map) {
-        Optional<ProblemSet> optionalProblemSet = problemSetJpaRepository.findById((int) map.get("id"));
+        Optional<ProblemSet> optionalProblemSet = problemSetJpaRepository.findById((Long) map.get("id"));
 
         // If the problem set doesn't exist
         if (!optionalProblemSet.isPresent()) {
