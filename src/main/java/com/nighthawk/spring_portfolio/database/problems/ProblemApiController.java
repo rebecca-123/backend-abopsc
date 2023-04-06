@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -57,6 +58,27 @@ public class ProblemApiController {
         }
         
         return new ResponseEntity<>(mc, HttpStatus.OK);
+    }
+
+    @PostMapping("/createProblemSetMC")
+    public ResponseEntity<Object> createProblemSetMC(@RequestBody final Map<String, Object> map) {
+
+        List<Map<String, Object>> problemData = (List<Map<String, Object>>) map.get("problems");
+        ProblemSet problemSet = new ProblemSet();
+
+        problemSet.setName((String) map.get("name"));
+        problemSet = problemSetJpaRepository.save(problemSet);
+
+        for (Map<String, Object> problem : problemData) {
+            Problem problemObject = new Problem();
+            problemObject.setQuestion((String) problem.get("question"));
+            problemObject.setAnswers((HashMap<String, Boolean>) problem.get("answers"));
+            problemJpaRepository.save(problemObject);
+        }
+        Map<String, Object> resp = new HashMap<>();
+        resp.put("id", problemSet.getId());
+        return new ResponseEntity(resp, HttpStatus.OK);
+       
     }
 
 }
