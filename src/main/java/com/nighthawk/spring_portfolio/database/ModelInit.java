@@ -6,6 +6,7 @@ import com.nighthawk.spring_portfolio.database.car.CarJpaRepository;
 import com.nighthawk.spring_portfolio.database.person.Person;
 import com.nighthawk.spring_portfolio.database.person.PersonJpaRepository;
 import com.nighthawk.spring_portfolio.database.car.Car;
+import com.nighthawk.spring_portfolio.database.car.CarApiController;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -22,6 +23,7 @@ public class ModelInit {
     @Autowired ModelRepository modelRepository;
     @Autowired CarJpaRepository carJpaRepository;
     @Autowired PersonJpaRepository personJpaRepository;
+    @Autowired CarApiController carApiController;
 
     @Bean
     CommandLineRunner run() {  // The run() method will be executed after the application starts
@@ -52,8 +54,23 @@ public class ModelInit {
             if (personJpaRepository.findByEmail(email2) == null) {
                 modelRepository.save(person2);
             }
-                
 
+            Car car1 = new Car("Toyota Camry", "Car", "Toyota", "Camry", 2000, 10.7);
+
+            if (carJpaRepository.findByName("Toyota Camry") == null) {
+                modelRepository.saveCar(car1);
+            }
+
+            Car car2 = new Car("Toyota Corolla", "Car", "Toyota", "Corolla", 2002, 12.5);
+
+            if (carJpaRepository.findByName("Toyota Corolla") == null) {
+                modelRepository.saveCar(car2);
+            }
+
+            carApiController.iterationExample();
+            carApiController.objectExample();
+            carApiController.booleanExample();
+                
         };
     }
 }

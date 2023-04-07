@@ -28,6 +28,32 @@ public class CarApiController {
     @Autowired 
     CarJpaRepository carJpaRepository;
 
+    public void iterationExample() {
+        System.out.println("********** Iteration Example **********");
+        List<Car> cars = repository.listAllCars();
+        for (Car car : cars) {
+            System.out.println(car);
+        }
+    }
+
+    public void objectExample() {
+        System.out.println("********** Object Example **********");
+        List<Car> cars = repository.listAllCars();
+        for (Car car : cars) {
+            System.out.println(car.getName());
+        }
+    }
+
+    public void booleanExample() {
+        System.out.println("********** Boolean Example **********");
+        List<Car> cars = repository.listAllCars();
+        for (Car car : cars) {
+            if (car.getMpg() > 11) {
+                System.out.println(car.getName() + " has a MPG of " + car.getMpg());
+            }
+        }
+    }
+
     /*
     GET List of Cars
      */
@@ -62,9 +88,9 @@ public class CarApiController {
     @PostMapping( "/post/")
     public ResponseEntity<Object> postCar(@RequestParam("name") String name, 
                                              @RequestParam("description") String description, @RequestParam("make") String make,
-                                             @RequestParam("model") String model, @RequestParam("year") int year) {
+                                             @RequestParam("model") String model, @RequestParam("year") int year, @RequestParam("mpg") double mpg) {
 
-        repository.saveCar(new Car(null, name, description, make, model, year));
+        repository.saveCar(new Car(null, name, description, make, model, year, mpg));
         return new ResponseEntity<>(name +" is created successfully", HttpStatus.CREATED);
         // return new RedirectView("https://ad1616.github.io/breadbops-frontend/inventory");
     }
@@ -88,6 +114,10 @@ public class CarApiController {
         repository.saveCar(caredit);
         return new ResponseEntity<>(name +" is updated successfully", HttpStatus.ACCEPTED);
         // return new RedirectView("https://ad1616.github.io/breadbops-frontend/inventory");
+
+    }
+
+    public static void main(String[] args) {
 
     }
 

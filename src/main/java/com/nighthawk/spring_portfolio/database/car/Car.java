@@ -31,13 +31,17 @@ public class Car {
 
     @Column()
     private int year;
+
+    @Column()
+    private double mpg;
     
-    public Car(String name, String description, String make, String model, int year) {
+    public Car(String name, String description, String make, String model, int year, double mpg) {
         this.name = name;
         this.description = description;
         this.make = make;
         this.model = model;
         this.year = year;
+        this.mpg = mpg;
         
     }
 
@@ -47,7 +51,8 @@ public class Car {
             "\"description\": " +  description + "," +
             "\"make\": " +  make + "," +
             "\"model\": " +  model + "," +
-            "\"year\": " + year + 
+            "\"year\": " + year + "," +
+            "\"mpg\": " + mpg +
             "}" );
     }
 
