@@ -96,6 +96,11 @@ public class PersonApiController {
             @RequestParam("dob") String dobString) {
 
         Date dob;
+
+        if (personRepository.findByEmail(email) != null) {
+            return new ResponseEntity<>(email + " already exists, please make a new one", HttpStatus.BAD_REQUEST);
+        }
+
         try {
             dob = new SimpleDateFormat("MM-dd-yyyy").parse(dobString);
         } catch (Exception e) {
