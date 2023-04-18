@@ -87,6 +87,8 @@ public class ProblemApiController {
         for (Map<String, Object> problem : problemData) {
             Problem problemObject = new Problem();
             problemObject.setQuestion((String) problem.get("question"));
+
+            // Probably should check this get() later
             problemObject.setAnswers((HashMap<String, Boolean>) problem.get("answers"));
             problemJpaRepository.save(problemObject);
         }
