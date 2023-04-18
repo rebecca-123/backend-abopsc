@@ -10,18 +10,20 @@ import lombok.*;
 @NoArgsConstructor
 @Entity
 public class Problem {
-    
+
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-
-    // HashMap stores answer choices and boolean of correctness (ie 0 is incorrect, 1 is correct)
+    // HashMap stores answer choices and boolean of correctness (ie 0 is incorrect,
+    // 1 is correct)
     private String question;
+
+    // options & correctness
     private HashMap<String, Boolean> answers;
 
-    @ManyToOne
+    @JoinColumn(name = "problemSet_id")
+    @ManyToOne(cascade = CascadeType.MERGE)
     private ProblemSet problemSet;
-
 
 }
