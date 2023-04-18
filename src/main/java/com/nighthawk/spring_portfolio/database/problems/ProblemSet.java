@@ -20,4 +20,9 @@ public class ProblemSet {
     @JoinColumn(name = "assignment_id")
     @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     private Assignment assignment;
+
+    public ProblemSet(String name, Assignment assignment){
+        this.name = name;
+        this.assignment = assignment;
+    }
 }

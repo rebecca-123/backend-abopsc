@@ -20,6 +20,7 @@ import com.nighthawk.spring_portfolio.database.grading.Grade;
 import com.nighthawk.spring_portfolio.database.grading.GradeJpaRepository;
 import com.nighthawk.spring_portfolio.database.person.Person;
 import com.nighthawk.spring_portfolio.database.person.PersonJpaRepository;
+import com.nighthawk.spring_portfolio.database.role.Role;
 
 @RestController
 @RequestMapping("/api/problem")
@@ -39,6 +40,21 @@ public class ProblemApiController {
 
     @Autowired
     private GradeJpaRepository gradeJpaRepository;
+
+    /* data {
+     *  name: "name of problem set",
+     *  problems : {
+     *    question1 : {
+     *     "answer1" : true,
+     *     "answer2" : false,
+     *     "answer3" : false,
+     *     "answer4" : false
+     *      },
+     *    question2 : {},
+     *    ...
+     * }
+     */
+
 
     // Okay basically I'm going to be returning a Map<String, Map<String, Boolean>>
     // question, answer, correctness
@@ -78,24 +94,56 @@ public class ProblemApiController {
         return new ResponseEntity<>(mc, HttpStatus.OK);
     }
 
+    public static boolean checkAdmin(Person person) {
+        for (Role role : person.getRoles()) {
+            if (role.getName().equals("ROLE_ADMIN")) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
 
     @PostMapping("/createProblemSetMC")
     public ResponseEntity<Object> createProblemSetMC(@RequestBody final Map<String, Object> map) {
 
-        List<Map<String, Object>> problemData = (List<Map<String, Object>>) map.get("problems");
-        ProblemSet problemSet = new ProblemSet();
+        Map<String, Object> problemData = (Map<String, Object>) map.get("problems");
 
-        problemSet.setName((String) map.get("name"));
+        Assignment assignment = new Assignment((String) map.get("name"), "quiz", 3.0, null);
+        assignmentJpaRepository.save(assignment);
+
+        List<Person> people = personJpaRepository.findAllByOrderByNameAsc();
+
+        for (Person person : people) {
+            if (!checkAdmin(person)) {
+                Grade grade = new Grade(assignment, person);
+                gradeJpaRepository.save(grade);
+                personJpaRepository.save(person);
+            }
+        }
+
+        ProblemSet problemSet = new ProblemSet((String) map.get("name"), assignment);
         problemSet = problemSetJpaRepository.save(problemSet);
 
-        for (Map<String, Object> problem : problemData) {
-            Problem problemObject = new Problem();
-            problemObject.setQuestion((String) problem.get("question"));
+        // for (Map<String, Object> problem : problemData) {
+        //     Problem problemObject = new Problem();
+        //     problemObject.setQuestion((String) problem.get("question"));
 
-            // Probably should check this get() later
-            problemObject.setAnswers((HashMap<String, Boolean>) problem.get("answers"));
+        //     // Probably should check this get() later
+        //     problemObject.setAnswers((HashMap<String, Boolean>) problem.get("answers"));
+        //     problemJpaRepository.save(problemObject);
+        // }
+
+        for (String question : problemData.keySet()) {
+            Problem problemObject = new Problem();
+            problemObject.setQuestion(question);
+            problemObject.setAnswers((HashMap<String, Boolean>) problemData.get(question));
+            problemObject.setProblemSet(problemSet);
             problemJpaRepository.save(problemObject);
         }
+
+
         Map<String, Object> resp = new HashMap<>();
         resp.put("id", problemSet.getId());
         return new ResponseEntity(resp, HttpStatus.OK);
