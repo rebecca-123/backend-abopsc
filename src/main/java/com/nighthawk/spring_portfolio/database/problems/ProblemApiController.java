@@ -98,6 +98,7 @@ public class ProblemApiController {
 
     }
 
+    // score
     @PostMapping("/score")
     public ResponseEntity<Object> score(@RequestBody final Map<String, Object> map) {
         String problemSetName = (String) map.get("problemSet");
