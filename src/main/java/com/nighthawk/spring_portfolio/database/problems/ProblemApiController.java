@@ -42,9 +42,12 @@ public class ProblemApiController {
 
     // Okay basically I'm going to be returning a Map<String, Map<String, Boolean>>
     // question, answer, correctness
+
+
+    // Get by passing in name of problem set
     @PostMapping("/getProblemSetMC")
-    public ResponseEntity<Object> getProblemSetMC(@RequestBody final Map<String, Object> map) {
-        ProblemSet problemSet = problemSetJpaRepository.findByName((String) map.get("problemSet"));
+    public ResponseEntity<Object> getProblemSetMC(@RequestBody final Map<String, String> map) {
+        ProblemSet problemSet = problemSetJpaRepository.findByName((String) map.get("name"));
 
         // If the problem set doesn't exist
         if (problemSet == null) {
@@ -74,6 +77,7 @@ public class ProblemApiController {
 
         return new ResponseEntity<>(mc, HttpStatus.OK);
     }
+
 
     @PostMapping("/createProblemSetMC")
     public ResponseEntity<Object> createProblemSetMC(@RequestBody final Map<String, Object> map) {
