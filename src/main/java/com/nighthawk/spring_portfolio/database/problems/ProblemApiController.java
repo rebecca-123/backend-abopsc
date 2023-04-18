@@ -63,7 +63,7 @@ public class ProblemApiController {
             return new ResponseEntity<>(resp, HttpStatus.BAD_REQUEST);
         }
 
-        // Put each question and answers in the json respons
+        // Put each question and answers in the json response
         for (int i = 0; i < problems.size(); i++) {
             Problem problem = problems.get(i);
             String question = problem.getQuestion();
