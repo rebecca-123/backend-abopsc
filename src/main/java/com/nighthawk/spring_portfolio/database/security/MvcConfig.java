@@ -17,6 +17,7 @@ public class MvcConfig implements WebMvcConfigurer {
      * ... creates a directory outside "static" folder, "file:volumes/uploads"
      * ... CRITICAL, without this uploaded file will not be loaded/displayed by
      * frontend
+     * 
      */
     @Override
     public void addResourceHandlers(final ResourceHandlerRegistry registry) {
