@@ -36,7 +36,6 @@ public class Assignment {
     @PositiveOrZero
     private double totalPointValue;
 
-    @NonNull
     private Date dueDate;
 
     public Assignment(String name, String type, double pointValue, Date dueDate) {
