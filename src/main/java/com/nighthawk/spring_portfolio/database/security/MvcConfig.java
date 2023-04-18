@@ -12,9 +12,11 @@ public class MvcConfig implements WebMvcConfigurer {
         registry.addViewController("/login").setViewName("login");
     }
 
-    /* map path and location for "uploads" outside of application resources
-       ... creates a directory outside "static" folder, "file:volumes/uploads"
-       ... CRITICAL, without this uploaded file will not be loaded/displayed by frontend
+    /*
+     * map path and location for "uploads" outside of application resources
+     * ... creates a directory outside "static" folder, "file:volumes/uploads"
+     * ... CRITICAL, without this uploaded file will not be loaded/displayed by
+     * frontend
      */
     @Override
     public void addResourceHandlers(final ResourceHandlerRegistry registry) {
@@ -23,7 +25,8 @@ public class MvcConfig implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**").allowedOrigins("https://dontran15.github.io", "http://localhost:4000", "http://127.0.0.1:4000");
+        registry.addMapping("/**").allowedOrigins("https://dontran15.github.io", "http://localhost:4000",
+                "http://127.0.0.1:4000", "https://deimie.github.io");
     }
 
 }
