@@ -29,7 +29,7 @@ public class CarLabApiController {
     // Compare price API (referenced from lesson)
     @GetMapping("/compareprice")
     public ResponseEntity<String> comparePrice(@RequestParam String car1Name, @RequestParam double car1Price, @RequestParam String car2Name, @RequestParam double car2Price) {
-        String cheaperCarName = Car.cheaperCar(car1Name, car1Price, car2Name, car2Price);
+        String cheaperCarName = CarLab.cheaperCar(car1Name, car1Price, car2Name, car2Price);
         return new ResponseEntity<>(cheaperCarName, HttpStatus.OK);
     }
 }

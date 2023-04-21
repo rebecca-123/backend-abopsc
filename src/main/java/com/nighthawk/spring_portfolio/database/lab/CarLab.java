@@ -12,7 +12,7 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Car {
+public class CarLab {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -25,15 +25,15 @@ public class Car {
     @Column()
     private double price;
     
-    public Car(String name, double price) {
+    public CarLab(String name, double price) {
         this.name = name;
         this.price = price;
         
     }
 
     public static String cheaperCar(String car1Name, double car1Price, String car2Name, double car2Price) {
-        Car car1 = new Car(car1Name, car1Price);
-        Car car2 = new Car(car2Name, car2Price);
+        CarLab car1 = new CarLab(car1Name, car1Price);
+        CarLab car2 = new CarLab(car2Name, car2Price);
 
         if (car1.getPrice() < car2.getPrice()) {
             return car1.getName();
