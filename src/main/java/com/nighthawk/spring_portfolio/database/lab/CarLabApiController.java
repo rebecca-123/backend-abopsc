@@ -24,7 +24,13 @@ import java.text.SimpleDateFormat;
 public class CarLabApiController {
 
     @Autowired 
-    CarJpaRepository carJpaRepository;
+    CarLabJpaRepository carLabJpaRepository;
+
+    // GET List of Cars
+    @GetMapping("/")
+    public List<CarLab> listAllCars() {
+        return carLabJpaRepository.findAll();
+    }
 
     // Compare price API (referenced from lesson)
     @GetMapping("/compareprice")
