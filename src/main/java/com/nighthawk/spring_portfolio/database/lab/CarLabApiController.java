@@ -39,6 +39,26 @@ public class CarLabApiController {
         return new ResponseEntity<>(cheaperCarName, HttpStatus.OK);
     }
 
+    @GetMapping("/getcheapest")
+    public ResponseEntity<String> getCheapest() {
+        // use cheaperCar to compare each pair of cars and keep the cheapest one
+        List<CarLab> cars = carLabJpaRepository.findAll();
+        String cheapestCarName = cars.get(0).getName();
+        double cheapestCarPrice = cars.get(0).getPrice();
+
+        for (int i = 1; i < cars.size(); i++) {
+            String carName = cars.get(i).getName();
+            double carPrice = cars.get(i).getPrice();
+            String cheaperCarName = CarLab.cheaperCar(cheapestCarName, cheapestCarPrice, carName, carPrice);
+            if (cheaperCarName.equals(carName)) {
+                cheapestCarName = carName;
+                cheapestCarPrice = carPrice;
+            }
+        }
+
+        return new ResponseEntity<>(cheapestCarName, HttpStatus.OK);
+    }
+
     // add car
     @PostMapping("/addcar")
     public ResponseEntity<String> addCar(@RequestParam String name, @RequestParam double price) {
