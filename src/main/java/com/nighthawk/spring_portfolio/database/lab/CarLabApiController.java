@@ -38,4 +38,20 @@ public class CarLabApiController {
         String cheaperCarName = CarLab.cheaperCar(car1Name, car1Price, car2Name, car2Price);
         return new ResponseEntity<>(cheaperCarName, HttpStatus.OK);
     }
+
+    // add car
+    @PostMapping("/addcar")
+    public ResponseEntity<String> addCar(@RequestParam String name, @RequestParam double price) {
+        CarLab car = new CarLab(name, price);
+        carLabJpaRepository.save(car);
+        return new ResponseEntity<>("Car added successfully", HttpStatus.OK);
+    }
+
+    // delete car
+    @DeleteMapping("/deletecar")
+    public ResponseEntity<String> deleteCar(@RequestParam String name) {
+        CarLab car = carLabJpaRepository.findByName(name);
+        carLabJpaRepository.delete(car);
+        return new ResponseEntity<>("Car deleted successfully", HttpStatus.OK);
+    }
 }
