@@ -142,20 +142,20 @@ public class PersonApiController {
 
     @GetMapping("/getPersonRoles")
     public ResponseEntity<?> getPersonRoles(@RequestParam("email") String email) {
-        Person person = personRepository.findByEmail(email);
-        return new ResponseEntity<>(person.getRoles(), HttpStatus.OK);
+        Optional<Person> person = personRepository.findByEmail(email);
+        return new ResponseEntity<>(person.get().getRoles(), HttpStatus.OK);
     }
 
     @GetMapping("/getPersonName")
     public ResponseEntity<?> getPersonName(@RequestParam("email") String email) {
-        Person person = personRepository.findByEmail(email);
-        return new ResponseEntity<>(person.getName(), HttpStatus.OK);
+        Optional<Person> person = personRepository.findByEmail(email);
+        return new ResponseEntity<>(person.get().getName(), HttpStatus.OK);
     }
 
     @GetMapping("/getPersonAge")
     public ResponseEntity<?> getPersonAge(@RequestParam("email") String email) {
-        Person person = personRepository.findByEmail(email);
-        return new ResponseEntity<>(person.getAge(), HttpStatus.OK);
+        Optional<Person> person = personRepository.findByEmail(email);
+        return new ResponseEntity<>(person.get().getAge(), HttpStatus.OK);
     }
 
     // Method to call addCarToPersonCarList from ModelRepository to add a car to a
