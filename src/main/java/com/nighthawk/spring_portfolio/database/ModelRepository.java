@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 /*
 This class has an instance of Java Persistence API (JPA)
@@ -54,19 +55,19 @@ public class ModelRepository implements UserDetailsService { // "implements" tie
     @Override
     public org.springframework.security.core.userdetails.UserDetails loadUserByUsername(String email)
             throws UsernameNotFoundException {
-        Person person = personJpaRepository.findByEmail(email); // setting variable user equal to the method finding the
+        Optional<Person> person = personJpaRepository.findByEmail(email); // setting variable user equal to the method finding the
                                                                 // username in the database
         if (person == null) {
             throw new UsernameNotFoundException("User not found in database");
         }
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        person.getRoles().forEach(role -> { // loop through roles
+        person.get().getRoles().forEach(role -> { // loop through roles
             authorities.add(new SimpleGrantedAuthority(role.getName())); // create a SimpleGrantedAuthority by passed in
                                                                          // role, adding it all to the authorities list,
                                                                          // list of roles gets past in for spring
                                                                          // security
         });
-        return new org.springframework.security.core.userdetails.User(person.getEmail(), person.getPassword(),
+        return new org.springframework.security.core.userdetails.User(person.get().getEmail(), person.get().getPassword(),
                 authorities);
     }
 
@@ -99,7 +100,7 @@ public class ModelRepository implements UserDetailsService { // "implements" tie
     }
 
     public Person getByEmail(String email) {
-        return (personJpaRepository.findByEmail(email));
+        return (personJpaRepository.findByEmail(email).get());
     }
 
     public void delete(long id) {
@@ -139,19 +140,19 @@ public class ModelRepository implements UserDetailsService { // "implements" tie
 
     public void addRoleToPerson(String email, String roleName) { // by passing in the two strings you are giving the
                                                                  // user that certain role
-        Person person = personJpaRepository.findByEmail(email);
+        Optional<Person> person = personJpaRepository.findByEmail(email);
         if (person != null) { // verify person
             Role role = roleJpaRepository.findByName(roleName);
             if (role != null) { // verify role
                 boolean addRole = true;
-                for (Role roleObj : person.getRoles()) { // only add if user is missing role
+                for (Role roleObj : person.get().getRoles()) { // only add if user is missing role
                     if (roleObj.getName().equals(roleName)) {
                         addRole = false;
                         break;
                     }
                 }
                 if (addRole)
-                    person.getRoles().add(role); // everything is valid for adding role
+                    person.get().getRoles().add(role); // everything is valid for adding role
             }
         }
     }
