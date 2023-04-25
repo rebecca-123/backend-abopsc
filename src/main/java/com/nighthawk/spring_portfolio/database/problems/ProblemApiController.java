@@ -41,24 +41,23 @@ public class ProblemApiController {
     @Autowired
     private GradeJpaRepository gradeJpaRepository;
 
-    /* data {
-     *  name: "name of problem set",
-     *  problems : {
-     *    question1 : {
-     *     "answer1" : true,
-     *     "answer2" : false,
-     *     "answer3" : false,
-     *     "answer4" : false
-     *      },
-     *    question2 : {},
-     *    ...
+    /*
+     * data {
+     * name: "name of problem set",
+     * problems : {
+     * question1 : {
+     * "answer1" : true,
+     * "answer2" : false,
+     * "answer3" : false,
+     * "answer4" : false
+     * },
+     * question2 : {},
+     * ...
      * }
      */
 
-
     // Okay basically I'm going to be returning a Map<String, Map<String, Boolean>>
     // question, answer, correctness
-
 
     // Get by passing in name of problem set
     @PostMapping("/getProblemSetMC")
@@ -104,7 +103,6 @@ public class ProblemApiController {
         return false;
     }
 
-
     @PostMapping("/createProblemSetMC")
     public ResponseEntity<Object> createProblemSetMC(@RequestBody final Map<String, Object> map) {
 
@@ -127,12 +125,12 @@ public class ProblemApiController {
         problemSet = problemSetJpaRepository.save(problemSet);
 
         // for (Map<String, Object> problem : problemData) {
-        //     Problem problemObject = new Problem();
-        //     problemObject.setQuestion((String) problem.get("question"));
+        // Problem problemObject = new Problem();
+        // problemObject.setQuestion((String) problem.get("question"));
 
-        //     // Probably should check this get() later
-        //     problemObject.setAnswers((HashMap<String, Boolean>) problem.get("answers"));
-        //     problemJpaRepository.save(problemObject);
+        // // Probably should check this get() later
+        // problemObject.setAnswers((HashMap<String, Boolean>) problem.get("answers"));
+        // problemJpaRepository.save(problemObject);
         // }
 
         for (String question : problemData.keySet()) {
@@ -142,7 +140,6 @@ public class ProblemApiController {
             problemObject.setProblemSet(problemSet);
             problemJpaRepository.save(problemObject);
         }
-
 
         Map<String, Object> resp = new HashMap<>();
         resp.put("id", problemSet.getId());
