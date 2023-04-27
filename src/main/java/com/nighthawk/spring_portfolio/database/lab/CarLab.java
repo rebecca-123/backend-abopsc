@@ -56,6 +56,7 @@ public class CarLab { // CarLab is a class that represents a car
     @Column()
     private String make;
 
+    // Hack: demonstrate another operation on a different data type
     public static void calcMpg(String car1Name, double car1Price) {
         CarLab car1 = new CarLab(car1Name, car1Price);
 
@@ -81,8 +82,6 @@ public class CarLab { // CarLab is a class that represents a car
             return car2.getName();
         }
     }
-
-    // Hack: demonstrate another operation on a different data type
 
     public static int acceleration(double s1, double s2, double time) {
         return (Math.abs((int) ((s2 - s1) / time)));
